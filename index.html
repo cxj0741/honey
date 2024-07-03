@@ -1,0 +1,159 @@
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+
+  <div
+    className="flex flex-col relative bg-black-dark rounded-tr-[10px] rounded-br-[10px] rounded-tl-[10px] rounded-bl-[10px] lg:rounded-tl-0 lg:rounded-bl-0 w-[335px] lg:w-[407px]">
+    <div id="user-signup-container" className="flex-1 mx-6 lg:mx-10 mt-6 lg:mt-10">
+      <div className="relative">
+        <form data-turbo="true" className="simple_form new_user" id="new_user_registration" novalidate="novalidate"
+          action="/users" accept-charset="UTF-8" method="post"><input type="hidden" name="authenticity_token"
+            value="b3QSUYh9BzLhHHDC-4xOKVeMlFqQbhmjyRfnshJfMGfMi2ehEJI3ld_gBb5h77G0Wi5FNA7VinDj-yUD-6ILeQ"
+            autocomplete="off">
+          <input type="hidden" name="profile_id" id="profile_id_registration"
+            data-main-target="characterIDForGenerateImage" autocomplete="off">
+          <input type="hidden" name="prompt" id="prompt_registration" data-main-target="promptForGenerateImage"
+            autocomplete="off">
+          <div className="form-inputs mb-3">
+            <div className="text-[24px] text-white leading-7 lg:leading-8 font-bold mb-3 lg:mb-3">
+              Sign Up to Continue
+            </div>
+            <div className="w-full flex-col justify-start items-start gap-1.5 inline-flex">
+              <div className="self-stretch flex-col justify-start items-start gap-1.5 flex relative">
+                <div className="w-5 h-5 absolute top-[13px] left-[10px]">
+                  <img alt="Email icon"
+                    src="/assets/filled-email-fc90c315f269441fa73aa876a3941882f9f73cb588fe947851e3412c811e007e.svg">
+                </div>
+                <div className="input email required user_email w-full"><input
+                    className="string email required w-full pl-10 pr-6 py-3 rounded-[10px] border border-black-light bg-black-medium text-sm font-medium text-[#E0E0E0] placeholder-[#E0E0E0]"
+                    id="user_email_registration" required="required" aria-required="true" placeholder="E-mail"
+                    type="email" name="user[email]"></div>
+              </div>
+            </div>
+            <div className="w-full flex-col justify-start items-start inline-flex mt-4">
+              <div className="self-stretch flex-col justify-start items-start gap-1.5 flex relative">
+                <div className="w-5 h-5 absolute top-[13px] left-[10px]">
+                  <img alt="Lock icon"
+                    src="/assets/lock-04efd07dd546792702a534536fd638a4bc066c8c3bc6bdb5d5febf85c22f567e.svg">
+                </div>
+                <div className="w-5 h-5 absolute top-[13px] right-[10px]">
+                  <img alt="Visibility icon"
+                    src="/assets/eye-6954483cd116fa391d5bf9d9252431d2ab19ac69e74f9b05d761ec5a6e51697b.svg"
+                    className="password-toggle-icon cursor-pointer">
+                </div>
+                <div className="input password required user_password field_with_hint w-full"><input
+                    className="password required w-full pl-10 pr-6 py-3 rounded-[10px] border border-black-light bg-black-medium text-sm font-medium text-[#E0E0E0] placeholder-[#E0E0E0]"
+                    id="user_password_registration" required="required" aria-required="true" placeholder="Password"
+                    type="password" name="user[password]"><span className="hint"><span
+                      style="color: gray; display: flex; font-size: 14px; margin-top: 5px;">Minimum 6
+                      characters</span></span></div>
+              </div>
+            </div>
+          </div>
+          <turbo-frame id="recaptchas">
+
+            <input type="hidden" name="g-recaptcha-response-data[signup]" id="g-recaptcha-response-data-signup"
+              data-sitekey="6LciBZ8pAAAAAE9nywycJp39d22puoEkqsLPoAdh" className="g-recaptcha g-recaptcha-response "
+              value="HFbGVifxxDIBUKMnBXQk9GQwVpMDknVjcfLW9oP2ZoLiU8Gjk2LWoXMRZSbT5LYHlUE28iBUoKCBYVcDlYPi4zTmElJXJ1bVQyMWYsL1BNXWRHcSM1SSM5aBpoLgERbgERGxdUTSZaXXhUMwVSOCN3f2FDSFBQeWJXRSQ4aAw0QQ">
+
+          </turbo-frame>
+          <div id="signup-btn">
+            <button name="button" type="submit"
+              className="flex w-full mt-4 px-4 py-3 bg-[#E75275] rounded-[10px] justify-center items-center text-white text-sm font-semibold"
+              id="signup-btn" data-controller="loading-button-state" data-loading-button-state-target="submit"
+              data-action="loading-button-state#handleClick">
+              Create Account
+            </button>
+          </div>
+        </form>
+        <div className="flex flex-row items-center pt-6 pb-5">
+          <div className="flex-1 h-[1px]"
+            style="background: linear-gradient(270deg, rgba(255, 255, 255, 0.30) 0%, rgba(255, 255, 255, 0.00) 100%)">
+          </div>
+          <div className="flex-0 text-white text-sm font-medium mx-4">or continue with</div>
+          <div className="flex-1 h-[1px]"
+            style="background: linear-gradient(270deg, rgba(255, 255, 255, 0.00) 0%, rgba(255, 255, 255, 0.30) 100%)">
+          </div>
+        </div>
+        <div id="authentication_sign_up_container">
+          <form data-turbo="false" action="#" accept-charset="UTF-8" method="post"><input type="hidden"
+              name="authenticity_token"
+              value="OJb_C8KagBpE7JQQk_V9hUZP339xok8RX-sJEcOLZJwBpyAVgFVOHW0HZbIciXLUt6E49MlyxTRVxRiFpJsZfA"
+              autocomplete="off">
+            <input type="hidden" name="authenticity_token" id="authenticity_token"
+              value="bavvivsnpsK-o3vNxAMzhsaWxe1DnQryIGqkK7Byd4B7yhnKzyn5wkzCMNTmNPMR3NFeZqEOgBlgHi_BklcMfw"
+              autocomplete="off">
+            <button name="button" type="submit" formaction="/users/auth/google_oauth2"
+              className="inline-flex items-center justify-center w-full rounded-[10px] px-4 py-2.5 mb-2.5 bg-white"
+              data-controller="loading-button-state" data-action="loading-button-state#handleClick"
+              data-loading-button-state-target="submit" data-loading-button-state-color="black">
+              <img alt="Google" className="h-6 w-6 mr-3"
+                src="/assets/google-auth-a8a364c5c399770d07ce74e6110a120970b1953557a47719692d85ea9334efb6.png">
+              <div className="font-normal text-[#344054]">
+                Google
+              </div>
+            </button>
+            <div className="flex flex-wrap gap-2.5 ">
+              <div className="flex-1">
+                <button name="button" type="submit" formaction="/users/auth/discord"
+                  className="inline-flex items-center justify-center w-full font-normal rounded-[10px] px-4 py-2.5 bg-discord-indigo text-white"
+                  data-controller="loading-button-state" data-action="loading-button-state#handleClick"
+                  data-loading-button-state-target="submit" data-loading-button-state-color="black">
+                  <img alt="discord" className="h-6 w-6 mr-3"
+                    src="/assets/discord-e159d04d15be58e9fe9767c08b3338ee2735feb84f54b7301303c9c49ed543a2.svg">
+                  <div className="text-white font-normal ">
+                    Discord
+                  </div>
+                </button>
+              </div>
+              <div className="flex-1">
+                <button name="button" type="submit" formaction="/users/auth/twitter"
+                  className="inline-flex items-center justify-center w-full font-normal text-[#344054] rounded-[10px] px-4 py-2.5 bg-white"
+                  data-controller="loading-button-state" data-action="loading-button-state#handleClick"
+                  data-loading-button-state-target="submit" data-loading-button-state-color="black">
+                  <img alt="X" className="h-6 w-6 mr-3"
+                    src="/assets/X-26904e26c6e97e747b58528737ef2a47ec6a26e01283df190498f526760cf325.svg">
+                  <div className=" font-normal text-[#344054]">
+                    X
+                  </div>
+                </button>
+              </div>
+            </div>
+            <!-- Closing the flex container -->
+          </form>
+        </div>
+        <div className="text-xxs font-medium text-grey-default text-center mt-5 lg:mt-5 mb-8 lg:mb-5">By signing up, you
+          agree
+          to <a className="underline" href="/legal-information">Terms of Service</a>
+        </div>
+      </div>
+
+    </div>
+    <div className="flex justify-center">
+      <div
+        className="flex lg:hidden items-center bg-[#494949] text-xs font-semibold text-white px-3 py-2 rounded-[10px] mx-6 mb-4 w-max"
+        style="background: rgba(73,73,73,0.6)">
+        <img className="w-4 h-4 mr-2"
+          src="/assets/save-25192159970cbc032b9af1f868c26af8b8e021d232004576a44b6fb83cd9bccd.svg">
+        Your choices will be saved
+      </div>
+    </div>
+    <div className="flex-0 px-8" style="width: 100%; height: 0px; opacity: 0.20; border: 0.50px white solid"></div>
+    <div className="flex flex-0 mt-5 font-medium text-sm justify-center items-center text-white px-8 mb-5">
+      Already have an account yet? &nbsp;
+      <div data-action="click->main#closeRegistrationModal click->main#openSignInModal"
+        className="text-[#E75275] text-sm font-semibold leading-normal cursor-pointer">
+        Sign in
+      </div>
+    </div>
+  </div>
+
+</body>
+
+</html>

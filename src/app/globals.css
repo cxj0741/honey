@@ -6,6 +6,7 @@
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;
   --background-end-rgb: 255, 255, 255;
+  --root-font-size: 16px;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -15,15 +16,24 @@
     --background-end-rgb: 0, 0, 0;
   }
 }
+html{
+  font-size: var(--root-font-size);
+}
 
 body {
   color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
+  /* background: linear-gradient(
       to bottom,
       transparent,
       rgb(var(--background-end-rgb))
     )
-    rgb(var(--background-start-rgb));
+    rgb(var(--background-start-rgb)); */
+
+  /* background-image: url(../assets/bg.png);
+  background-size: cover;
+  background-position: center; */
+
+  background:#121112;
 }
 
 @layer utilities {
