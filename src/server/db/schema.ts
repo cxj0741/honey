@@ -8,11 +8,11 @@ import {
   integer,
   boolean,
   varchar,
-  date,
-  uuid,
-  index,
-  unique,
-  json,
+  // date,
+  // uuid,
+  // index,
+  // unique,
+  // json,
 } from 'drizzle-orm/pg-core'
 
 import type { AdapterAccount } from "next-auth/adapters"
@@ -22,31 +22,41 @@ import type { AdapterAccount } from "next-auth/adapters"
  --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 */
 // 用户基本信息表和鉴权相关信息表
-export const users = pgTable("users", {
+export const users = pgTable("user", {
   id: text("id")
   .primaryKey()
   .$defaultFn(() => crypto.randomUUID()),
-  userId: serial('user_id'),
   name: text("name"),
   email: text("email").notNull(),
-  emailVerified: timestamp("email_verified", { mode: "date" }),
+  emailVerified: timestamp("emailVerified", { mode: "date" }),
   image: text("image"),
   // 这个表格上面的内容是next-auth adapter自动生成的内容
+  userId: serial('user_id'),
   hashPassword: text('hash_password').notNull().default(''),
   isVIP: boolean('is_vip').default(false),
   createdAt: timestamp('created_at', { mode: 'date' }).defaultNow(),
   updatedAt: timestamp('updated_at', { mode: 'date' }).defaultNow(),
 })
+
+// export const users = pgTable("user", {
+//   id: text("id")
+//     .primaryKey()
+//     .$defaultFn(() => crypto.randomUUID()),
+//   name: text("name"),
+//   email: text("email").notNull(),
+//   emailVerified: timestamp("emailVerified", { mode: "date" }),
+//   image: text("image"),
+// })
  
 export const accounts = pgTable(
-  "accounts",
+  "account",
   {
-    userId: text("user_id")
+    userId: text("userId")
       .notNull()
       .references(() => users.id, { onDelete: "cascade" }),
     type: text("type").$type<AdapterAccount['type']>().notNull(),
     provider: text("provider").notNull(),
-    providerAccountId: text("provider_account_id").notNull(),
+    providerAccountId: text("providerAccountId").notNull(),
     refresh_token: text("refresh_token"),
     access_token: text("access_token"),
     expires_at: integer("expires_at"),
@@ -62,16 +72,16 @@ export const accounts = pgTable(
   })
 )
  
-export const sessions = pgTable("sessions", {
-  sessionToken: text("session_token").primaryKey(),
-  userId: text("user_id")
+export const sessions = pgTable("session", {
+  sessionToken: text("sessionToken").primaryKey(),
+  userId: text("userId")
     .notNull()
     .references(() => users.id, { onDelete: "cascade" }),
   expires: timestamp("expires", { mode: "date" }).notNull(),
 })
  
 export const verificationTokens = pgTable(
-  "verification_tokens",
+  "verificationToken",
   {
     identifier: text("identifier").notNull(),
     token: text("token").notNull(),
@@ -85,26 +95,25 @@ export const verificationTokens = pgTable(
 )
  
 export const authenticators = pgTable(
-  "authenticators",
+  "authenticator",
   {
-    credentialId: text("credential_id").notNull().unique(),
-    userId: text("user_id")
+    credentialID: text("credentialID").notNull().unique(),
+    userId: text("userId")
       .notNull()
       .references(() => users.id, { onDelete: "cascade" }),
-    providerAccountId: text("provider_account_id").notNull(),
-    credentialPublicKey: text("credential_public_key").notNull(),
+    providerAccountId: text("providerAccountId").notNull(),
+    credentialPublicKey: text("credentialPublicKey").notNull(),
     counter: integer("counter").notNull(),
-    credentialDeviceType: text("credential_device_type").notNull(),
-    credentialBackedUp: boolean("credential_backed_up").notNull(),
+    credentialDeviceType: text("credentialDeviceType").notNull(),
+    credentialBackedUp: boolean("credentialBackedUp").notNull(),
     transports: text("transports"),
   },
   (authenticator) => ({
     compositePK: primaryKey({
-      columns: [authenticator.userId, authenticator.credentialId],
+      columns: [authenticator.userId, authenticator.credentialID],
     }),
   })
 )
-
 /*
  --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
   上面的表格是next-auth与drizzle-orm结合需要的table信息，直接从网站获取的
@@ -122,6 +131,9 @@ export const bots = pgTable('bots',{
   }).notNull(),
   name: varchar("name", { length: 100 }).notNull(),
   age:integer("age"),
+  description: varchar("description", { length: 500 }).notNull(),
+  image1: varchar("image1", { length: 100 }).notNull(),
+  image2: varchar("image2", { length: 100 }).notNull(),
   body: varchar("body", { length: 100 }).notNull(),
   ethnicity: varchar("ethnicity", { length: 100 }).notNull(),
   personality: varchar("personality", { length: 100 }).notNull(),

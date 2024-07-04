@@ -41,12 +41,12 @@ export default function LeftNav() {
       <div
         onClick={() => {
           // 在跳转页面之前先检测是否有session
-          if (title.toLocaleLowerCase() !== 'explore') {
-            if (!session || session.status !== 'authenticated') {
-              setDialogShow(true)
-              return
-            }
-          }
+          // if (title.toLocaleLowerCase() !== 'explore') {
+          //   if (!session || session.status !== 'authenticated') {
+          //     setDialogShow(true)
+          //     return
+          //   }
+          // }
 
           if (title === 'Chat') {
             setFold(true)
