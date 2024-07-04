@@ -1,17 +1,17 @@
 import { relations } from "drizzle-orm"
 import {
   pgTable,
+  serial,
   timestamp,
   text,
   primaryKey,
   integer,
   boolean,
+  varchar,
   date,
   uuid,
-  varchar,
   index,
   unique,
-  serial,
   json,
 } from 'drizzle-orm/pg-core'
 
@@ -22,13 +22,14 @@ import type { AdapterAccount } from "next-auth/adapters"
  --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 */
 // 用户基本信息表和鉴权相关信息表
-export const users = pgTable("user", {
+export const users = pgTable("users", {
   id: text("id")
-    .primaryKey()
-    .$defaultFn(() => crypto.randomUUID()),
+  .primaryKey()
+  .$defaultFn(() => crypto.randomUUID()),
+  userId: serial('user_id'),
   name: text("name"),
   email: text("email").notNull(),
-  emailVerified: timestamp("emailVerified", { mode: "date" }),
+  emailVerified: timestamp("email_verified", { mode: "date" }),
   image: text("image"),
   // 这个表格上面的内容是next-auth adapter自动生成的内容
   hashPassword: text('hash_password').notNull().default(''),
@@ -38,14 +39,14 @@ export const users = pgTable("user", {
 })
  
 export const accounts = pgTable(
-  "account",
+  "accounts",
   {
-    userId: text("userId")
+    userId: text("user_id")
       .notNull()
       .references(() => users.id, { onDelete: "cascade" }),
     type: text("type").$type<AdapterAccount['type']>().notNull(),
     provider: text("provider").notNull(),
-    providerAccountId: text("providerAccountId").notNull(),
+    providerAccountId: text("provider_account_id").notNull(),
     refresh_token: text("refresh_token"),
     access_token: text("access_token"),
     expires_at: integer("expires_at"),
@@ -61,16 +62,16 @@ export const accounts = pgTable(
   })
 )
  
-export const sessions = pgTable("session", {
-  sessionToken: text("sessionToken").primaryKey(),
-  userId: text("userId")
+export const sessions = pgTable("sessions", {
+  sessionToken: text("session_token").primaryKey(),
+  userId: text("user_id")
     .notNull()
     .references(() => users.id, { onDelete: "cascade" }),
   expires: timestamp("expires", { mode: "date" }).notNull(),
 })
  
 export const verificationTokens = pgTable(
-  "verificationToken",
+  "verification_tokens",
   {
     identifier: text("identifier").notNull(),
     token: text("token").notNull(),
@@ -84,22 +85,22 @@ export const verificationTokens = pgTable(
 )
  
 export const authenticators = pgTable(
-  "authenticator",
+  "authenticators",
   {
-    credentialID: text("credentialID").notNull().unique(),
-    userId: text("userId")
+    credentialId: text("credential_id").notNull().unique(),
+    userId: text("user_id")
       .notNull()
       .references(() => users.id, { onDelete: "cascade" }),
-    providerAccountId: text("providerAccountId").notNull(),
-    credentialPublicKey: text("credentialPublicKey").notNull(),
+    providerAccountId: text("provider_account_id").notNull(),
+    credentialPublicKey: text("credential_public_key").notNull(),
     counter: integer("counter").notNull(),
-    credentialDeviceType: text("credentialDeviceType").notNull(),
-    credentialBackedUp: boolean("credentialBackedUp").notNull(),
+    credentialDeviceType: text("credential_device_type").notNull(),
+    credentialBackedUp: boolean("credential_backed_up").notNull(),
     transports: text("transports"),
   },
   (authenticator) => ({
     compositePK: primaryKey({
-      columns: [authenticator.userId, authenticator.credentialID],
+      columns: [authenticator.userId, authenticator.credentialId],
     }),
   })
 )
@@ -111,10 +112,14 @@ export const authenticators = pgTable(
 */
 
 // 机器人列表
-export const bots = pgTable('bot',{
+export const bots = pgTable('bots',{
   id: text("id")
     .primaryKey()
     .$defaultFn(() => crypto.randomUUID()),
+  botId: serial('bot_id'),
+  type: varchar("type", {
+    enum: ["girls", "guys","anime"],
+  }).notNull(),
   name: varchar("name", { length: 100 }).notNull(),
   age:integer("age"),
   body: varchar("body", { length: 100 }).notNull(),
@@ -124,31 +129,14 @@ export const bots = pgTable('bot',{
   hobbies: varchar("hobbies", { length: 100 }).notNull(),
   relationship: varchar("relationship", { length: 100 }).notNull(),
   isCustom: boolean("is_custom").default(false),
-  end: varchar("end", {
+  endType: varchar("end_type", {
     enum: ["web", "app", "both"],
   }).notNull(),
   delete: boolean('delete').default(false)
 })
 
-/**
-export const usersToGroups = pgTable(
-  'users_to_groups',
-  {
-    userId: integer('user_id')
-      .notNull()
-      .references(() => users.id),
-    groupId: integer('group_id')
-      .notNull()
-      .references(() => groups.id),
-  },
-  (t) => ({
-    pk: primaryKey({ columns: [t.userId, t.groupId] }),
-  }),
-);
- */
-
 export const usersToBots = pgTable(
-  'user_to_bot',
+  'users_to_bots',
   {
     userId: text("user_id").notNull().references(() => users.id),
     botId: text("bot_id").notNull().references(() => bots.id),
@@ -157,18 +145,6 @@ export const usersToBots = pgTable(
     pk: primaryKey({columns:[t.userId, t.botId]})
   })
 )
-/**
-export const usersToGroupsRelations = relations(usersToGroups, ({ one }) => ({
-  group: one(groups, {
-    fields: [usersToGroups.groupId],
-    references: [groups.id],
-  }),
-  user: one(users, {
-    fields: [usersToGroups.userId],
-    references: [users.id],
-  }),
-}));
- */
 
 export const usersRelations1 = relations(users, ({ many }) => ({
   usersToBots: many(usersToBots),
@@ -190,10 +166,11 @@ export const usersToBotsRelations = relations(usersToBots, ({ one }) => ({
 }))
 
 // 订单列表
-export const orders = pgTable("order", {
+export const orders = pgTable("orders", {
   id: text("id")
     .primaryKey()
     .$defaultFn(() => crypto.randomUUID()),
+  orderId: serial('order_id'),
   type: varchar("type", {
     enum: ["1", "3", "12"],
   }).notNull(),
