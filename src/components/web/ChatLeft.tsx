@@ -1,5 +1,12 @@
 import Image from 'next/image'
-export default function Chat() {
+interface Props {
+  activeId: string
+  setActiveId: Function
+  userBotArray: Record<string, any>[]
+}
+export default function ChatLeft({ activeId, setActiveId, userBotArray }: Props) {
+  // function delete(id:string){
+  // }
   return (
     <div
       className="ml-3 w-[340px] p-4 rounded-lg bg-cover bg-center text-white space-y-4 flex flex-col"
@@ -26,25 +33,26 @@ export default function Chat() {
         />
       </label>
       <div className="grow space-y-4 overflow-auto">
-        {[1, 2, 3, 4, 5, 6].map((item) => (
+        {userBotArray.map((item) => (
           <div
-            key={item}
-            className="h-16 p-2 flex items-center justify-between space-x-3 border rounded-lg border-transparent hover:border-[rgba(255,255,255,0.32)] hover:cursor-pointer group"
+            onClick={() => setActiveId(item.id)}
+            key={item.id}
+            className={`h-16 p-2 flex items-center justify-between space-x-3 border rounded-lg hover:border-[rgba(255,255,255,0.32)] hover:cursor-pointer group ${activeId === item.id ? 'border-[rgba(255,255,255,0.32)]' : 'border-transparent'}`}
           >
-            <Image
-              className="rounded-full"
-              width={48}
-              height={48}
-              src="/assets/avatar.png"
-              alt={'avatar'}
-            />
+            <div className="w-12 h-12 rounded-full bg-center bg-contain" style={{ background: `url(${item.image1})` }}>
+              {/* <Image
+                className="rounded-full"
+                width={48}
+                height={48}
+                objectFit='contain'
+                src={item.image1}
+                alt={'avatar'}
+              /> */}
+            </div>
             <div className="grow space-y-1">
-              <div className="font-medium">NAME</div>
+              <div className="font-medium">{item.name}</div>
               <div className="w-[150px] overflow-hidden text-ellipsis whitespace-nowrap">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Sequi
-                nobis at ad optio obcaecati maxime magni odit. Ea, tenetur
-                voluptatum. Sapiente, dolorem consequuntur. Sunt, aspernatur
-                est quis labore quisquam eius?
+                {item.description}
               </div>
             </div>
             <div className="space-y-1">
@@ -59,6 +67,8 @@ export default function Chat() {
                   alt={'avatar'}
                 />
                 <Image
+                  onClick={() => { }}
+                  // onClick={() => delete(item.id)}
                   width={16}
                   height={16}
                   src="/assets/delete.png"

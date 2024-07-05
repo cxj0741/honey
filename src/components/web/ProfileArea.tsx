@@ -4,9 +4,6 @@ import { useRouter } from 'next/navigation'
 
 export default function ProfileArea({ botList }: { botList: any[] }) {
   const router = useRouter()
-  // if (botList.length) {
-  //   botList = new Array(30).fill({ ...botList[0], active: false })
-  // }
   const [activeId, setActiveId] = useState(0)
 
   return (
@@ -20,7 +17,7 @@ export default function ProfileArea({ botList }: { botList: any[] }) {
           <Image
             onMouseEnter={() => setActiveId(item.id)}
             onMouseOut={() => setActiveId(0)}
-            onClick={() => { router.push(`/chat/${item.id}`) }}
+            onClick={() => { router.push(`/chat?botId=${item.id}`) }}
             className="rounded-lg object-cover"
             layout="fill"
             objectFit="cover"

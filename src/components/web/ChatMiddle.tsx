@@ -1,17 +1,30 @@
 import Image from 'next/image'
-export default function ChatMiddle({ fold, setFold }: { fold: boolean, setFold: Function }) {
+interface Props {
+  fold: boolean
+  setFold: Function
+  activeId: string
+  userBotArray: Record<string, any>
+}
+export default function ChatMiddle({ fold, setFold, activeId, userBotArray }: Props) {
+  const [bot] = userBotArray.filter(item => item.id === activeId)
   return (
     <div className="flex-[3] bg-[#1F1D1F] relative">
       {/* CHAT CONTENT HEADER */}
       <div className="px-6 py-4 border-b border-[rgba(255,255,255,0.16)] text-white flex items-center">
-        <Image
-          className="rounded-full"
-          width={48}
-          height={48}
-          src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg"
-          alt="avatar"
-        />
-        <div className="ml-4 text-xl">NAME</div>
+        <div className="w-12 h-12 rounded-full bg-center bg-contain" style={{ background: `url(${bot.image1})` }}>
+          {/* <Image
+            className="rounded-full"
+            // width={48}
+            // height={48}
+            src={bot.image1}
+            layout='fill'
+            objectFit='contain'
+            alt="avatar"
+          /> */}
+        </div>
+        <div className="ml-4 text-xl">
+          {bot.name}
+        </div>
         <div className="grow flex justify-end items-center space-x-4">
           <Image
             width={24}

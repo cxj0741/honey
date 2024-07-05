@@ -172,22 +172,23 @@ export default function LeftNav() {
                 </>
               ) : (
                 <>
-                  <div
-                    onClick={() => {
-                      setType(ACCOUNT.SIGN_IN)
-                      setDialogShow(true)
-                    }}
+                  <Link
+                    // onClick={() => {
+                    //   setType(ACCOUNT.SIGN_IN)
+                    //   setDialogShow(true)
+                    // }}
+                    href="/api/auth/signin"
                     className="w-full h-10 border border-[#ED5088] rounded-lg text-[#ED5088] flex items-center justify-center hover:cursor-pointer">
                     Login
-                  </div>
-                  <div
+                  </Link>
+                  {/* <div
                     onClick={() => {
                       setType(ACCOUNT.SIGN_UP)
                       setDialogShow(true)
                     }}
                     className="w-full h-10 border border-[#ED5088] bg-[#ED5088] rounded-lg text-white flex items-center justify-center hover:cursor-pointer">
                     Register
-                  </div>
+                  </div> */}
                 </>
               )}
           </div>

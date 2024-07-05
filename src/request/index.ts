@@ -31,9 +31,12 @@ function getBots(type: string) {
 }
  */
 
-// const baseURL = process.env.BASE_URL!
-// const baseURL = 'http://localhost:3000'
-const baseURL = 'https://honeybun.vercel.app'
+let baseURL = ''
+if (process.env.NODE_ENV === 'development') {
+  baseURL = 'http://localhost:3000'
+} else {
+  baseURL = 'https://honeybun.vercel.app'
+}
 
 export const TYPE = {
   MALE: 'guys',
@@ -42,10 +45,21 @@ export const TYPE = {
 }
 
 export async function getBots(type: string) {
-  console.log('baseURL', baseURL)
   const res = await fetch(`${baseURL}/api/bots?type=${type}`)
   // console.log('res>>>>>', res)
   const data = await res.json()
   // console.log('data>>>', data)
+  return data
+}
+
+export async function getBotDetail(id: string) {
+  const res = await fetch(`${baseURL}/api/botDetail?id=${id}`)
+  const data = await res.json()
+  return data
+}
+
+export async function deleteUserBot(id: string) {
+  const res = await fetch(`${baseURL}/api/deleteUserBot?id=${id}`)
+  const data = await res.json()
   return data
 }

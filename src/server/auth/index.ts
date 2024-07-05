@@ -13,18 +13,16 @@ export const authOptions: AuthOptions = {
   },
   adapter: DrizzleAdapter(db)  as (Adapter | undefined),
   callbacks: {
-    async signIn(...args) {
-      console.log('sign in args', args)
-      return true
-    }
-  //   async session({ session, token }) {
-  //     console.log("session>>>>>>>>>>", session)
-  //     console.log("token>>>>>>>>>>", token)
-  //     // if (session.user && user) {
-  //     //   session.user.id = user.id;
-  //     // }
-  //     return session;
-  //   },
+    // async signIn(...args) {
+    //   console.log('sign in args', args)
+    //   return true
+    // },
+    async session({ session, token }) {
+      if (session && session.user && token && token.sub) {
+        session.user.id = token.sub;
+      }
+      return session;
+    },
   },
   providers: [
     GoogleProvider({
@@ -34,8 +32,8 @@ export const authOptions: AuthOptions = {
     CredentialsProvider({
       name: "Credentials",
       credentials: {
-        email: { label: "Email", type: "email", placeholder: "enter your email" },
-        password: { label: "Password", type: "password" }
+        email: { label: "Email", type: "email", placeholder: "Enter your email" },
+        password: { label: "Password", type: "password", placeholder: "Enter your email"  }
       },
       async authorize(credentials, req) {
         if (!credentials) return null
@@ -54,7 +52,7 @@ export const authOptions: AuthOptions = {
 
         return null
       },
-    })
+    }),
   ],
   // pages:{
   //   signIn: '/src/app/auth/signin'

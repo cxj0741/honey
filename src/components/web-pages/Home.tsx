@@ -6,12 +6,10 @@ import { TYPE, getBots } from '@/request'
 
 export default function Home() {
   const [botList, setbotList] = useState([])
-
   const handler = async (type: string) => {
     const list = await getBots(type)
     setbotList(list)
   }
-
   useEffect(() => {
     handler(TYPE.FEMALE)
   }, [])

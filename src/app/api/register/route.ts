@@ -17,7 +17,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json(validation.error.errors, { status: 400 })
   }
   const user = await db.query.users.findFirst({
-    where: (users, { eq, and }) => and(eq(users.email, body.email)),
+    where: (users, { eq }) => eq(users.email, body.email),
   })
   if (user) {
     return NextResponse.json({ error: 'User already exists!' }, { status: 400 })

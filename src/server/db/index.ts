@@ -2,38 +2,37 @@ import { drizzle } from 'drizzle-orm/node-postgres'
 import { Client } from 'pg'
 import * as schema from './schema' //获取schema的信息
 
-const client = new Client({
+const proConfig = {
   host: 'ep-round-king-a6u1v4c7.us-west-2.aws.neon.tech',
   port: 5432,
   user: 'default',
   password: 'irIh2csCg9Qe',
-  // 两个数据库 测试环境和正式环境 honeydemo和honeybun
-  database: 'verceldb', 
+  database: 'verceldb',
   ssl: true,
-})
+}
 
-await client.connect()
-export const db = drizzle(client, { schema })
-
-/**
-const client = new Client({
+const devConfig = {
   host: 'localhost',
   port: 5432,
   user: 'postgres',
   password: '123456',
   // 两个数据库 测试环境和正式环境 honeydemo和honeybun
-  database: 'honeytest', 
+  database: 'honeytest',
   ssl: false,
-})
+}
+let config = proConfig
+// console.log('devConfig>>>>>', devConfig)
+if (process.env.NODE_ENV === 'development') {
+  config = devConfig
+} else {
+  config = proConfig
+}
 
+const client = new Client(config)
 await client.connect()
 export const db = drizzle(client, { schema })
- */
 
-// const db = drizzle(client)
-// console.log('db connect>>>>>>>>>>', db)
 // drizzle使用node-progress/pg和postgres交互
-
 // 不使用orm框架直接与数据库交互
 /**
 import { Client } from 'pg'
