@@ -38,6 +38,7 @@ export default function ChatLeft({ setPart }: { setPart: Function }) {
             onClick={() => {
               emitter.emit(FOOTER_NAV_EVENT, false)
               setPart(CHAT_PART.MIDDLE)
+              setHintShow(true)
             }}
             key={item}
             // className="h-16 p-2 flex items-center justify-between space-x-3 border rounded-lg border-transparent hover:border-[rgba(255,255,255,0.32)] hover:cursor-pointer group"

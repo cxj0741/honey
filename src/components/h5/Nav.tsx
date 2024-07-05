@@ -46,7 +46,10 @@ export default function Nav() {
     <>
       {/* HEADER */}
       <div className="z-50 fixed left-0 top-0 w-[100vw] pt-5 pr-4 h-16 bg-[#121112] flex items-center justify-between">
-        <div className="flex items-center" onClick={() => setFold(!fold)}>
+        <div className="flex items-center" onClick={() => {
+          setFold(!fold)
+          setLoginStatus(false)
+        }}>
           <Image
             width={44}
             height={44}

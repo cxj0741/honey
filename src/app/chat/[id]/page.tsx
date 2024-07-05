@@ -6,12 +6,13 @@ import { db } from '@/server/db'
 import { bots } from '@/server/db/schema'
 import { sql } from 'drizzle-orm/sql'
 
-export default async function Chat({ params, searchParams }: { params: string, searchParams: Record<string, any> }) {
-  console.log('params', params)
+export default async function Chat({ params, searchParams }: { params: { id: string }, searchParams: Record<string, any> }) {
+  const id = params.id
+  if (!id) { redirect('/') }
   const bot = await db
     .select()
     .from(bots)
-    .where(sql`${bots.id} = ${params.id!}`)
+    .where(sql`${bots.id} = ${id}`)
   console.log('bot info', bot)
   if (bot.length) {
     return isMobile() ? <H5Chat /> : <WebChat />
