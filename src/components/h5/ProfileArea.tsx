@@ -1,28 +1,36 @@
 import Image from 'next/image'
+import { useRouter } from 'next/navigation'
+import { useState } from 'react'
 
-// export default function ProfileItem(props: Record<string, any>) {
-export default function ProfileArea() {
+export default function ProfileArea({ botList }: { botList: any[] }) {
+  const router = useRouter()
+  // if (botList.length) {
+  //   botList = new Array(30).fill({ ...botList[0], active: false })
+  // }
+  const [activeId, setActiveId] = useState(0)
   return (
+    botList.length &&
     <div className="border-[0.5rem] border-transparent flex flex-wrap">
-      {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((item) => (
+      {botList.map((item) => (
         <div
-          key={item}
+          key={item.id}
           className="w-1/2 aspect-[3/4] border-[0.5rem] border-transparent relative"
         >
           <Image
-            onClick={() => { }}
+            onMouseEnter={() => setActiveId(item.id)}
+            onMouseOut={() => setActiveId(0)}
+            onClick={() => { router.push(`/chat/${item.id}`) }}
             className="rounded-[0.5rem] object-cover"
             layout="fill"
             objectFit='cover'
-            src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg"
+            src={activeId === item.id ? item.image2 : item.image1}
             alt={'avatar'}
           />
           <div className="absolute bottom-0 w-full p-2 text-white space-y-1">
             <div className="text-base font-bold">NAME</div>
             <div className="text-xs">AGE</div>
             <div className="text-xs">
-              this is a description for this guy,this is a description
-              for this guy,this is a description for this guy
+              {item.description.slice(0, 80)}...
             </div>
           </div>
         </div>

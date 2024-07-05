@@ -30,7 +30,7 @@ export default function RootLayout({
           <AuthProvider>
             <Nav />
             <FooterNav />
-            <div className="relative z-0 pt-16 pb-14">
+            <div className="relative z-0 pt-16 pb-14 min-h-[100vh]">
               {children}
             </div>
             <LoginDialog type="Sign In" setType={() => { }} />

@@ -56,37 +56,9 @@ export const authOptions: AuthOptions = {
       },
     })
   ],
-  pages:{
-    // signIn: '/src/app/auth/SignIn.tsx'
-  }
+  // pages:{
+  //   signIn: '/src/app/auth/signin'
+  // }
 }
 
 export const handler = NextAuth(authOptions)
-
-
-// callbacks: {
-//   async signIn(user, account, profile) {
-//     if (account.provider === "email") {
-//       // 处理邮箱密码登录
-//       const userFromDb = await prisma.user.findUnique({ where: { email: user.email } });
-//       if (userFromDb) {
-//         const isValid = await bcrypt.compare(user.password, userFromDb.hashedPassword);
-//         if (!isValid) return false;
-//       } else {
-//         const hashedPassword = await bcrypt.hash(user.password, 10);
-//         await prisma.user.create({ data: { ...user, hashedPassword } });
-//       }
-//     }
-//     return true;
-//   },
-//   async session(session, user) {
-//     session.user.id = user.id;
-//     return session;
-//   },
-//   async jwt(token, user, account, profile, isNewUser) {
-//     if (user) {
-//       token.id = user.id;
-//     }
-//     return token;
-//   },
-// },

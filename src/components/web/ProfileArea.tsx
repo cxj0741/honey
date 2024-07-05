@@ -4,17 +4,17 @@ import { useRouter } from 'next/navigation'
 
 export default function ProfileArea({ botList }: { botList: any[] }) {
   const router = useRouter()
-  if (botList.length) {
-    botList = new Array(30).fill({ ...botList[0], active: false })
-  }
+  // if (botList.length) {
+  //   botList = new Array(30).fill({ ...botList[0], active: false })
+  // }
   const [activeId, setActiveId] = useState(0)
-  
+
   return (
     botList.length &&
     <div className="border-8 border-transparent flex flex-wrap">
-      {botList.map((item, index) => (
+      {botList.map((item) => (
         <div
-          key={item.id + '' + index}
+          key={item.id}
           className="w-1/2 md:w-1/3 lg:w-1/4 aspect-[3/4] border-8 border-transparent relative"
         >
           <Image

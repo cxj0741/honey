@@ -2,30 +2,7 @@
 import Image from 'next/image'
 import ProfileArea from '@/components/web/ProfileArea'
 import { useEffect, useState } from 'react'
-
-/**
-function getBots(type: string) {
-  fetch(`http://localhost:3000/api/bots?type=${type}`).then(res => {
-    console.log('>>>res', res)
-    return res.json()
-  }).then(data => {
-    console.log('data>>>>>', data)
-  })
-}
- */
-const TYPE = {
-  MALE: "guys",
-  FEMALE: 'girls',
-  ANIME: 'anime'
-}
-
-async function getBots(type: string) {
-  const res = await fetch(`http://localhost:3000/api/bots?type=${type}`)
-  // console.log('res>>>>>', res)
-  const data = await res.json()
-  // console.log('data>>>', data)
-  return data
-}
+import { TYPE, getBots } from '@/request'
 
 export default function Home() {
   const [botList, setbotList] = useState([])
