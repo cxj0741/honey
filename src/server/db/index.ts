@@ -3,6 +3,20 @@ import { Client } from 'pg'
 import * as schema from './schema' //获取schema的信息
 
 const client = new Client({
+  host: 'ep-round-king-a6u1v4c7.us-west-2.aws.neon.tech',
+  port: 5432,
+  user: 'default',
+  password: 'irIh2csCg9Qe',
+  // 两个数据库 测试环境和正式环境 honeydemo和honeybun
+  database: 'verceldb', 
+  ssl: true,
+})
+
+await client.connect()
+export const db = drizzle(client, { schema })
+
+/**
+const client = new Client({
   host: 'localhost',
   port: 5432,
   user: 'postgres',
@@ -14,6 +28,7 @@ const client = new Client({
 
 await client.connect()
 export const db = drizzle(client, { schema })
+ */
 
 // const db = drizzle(client)
 // console.log('db connect>>>>>>>>>>', db)
