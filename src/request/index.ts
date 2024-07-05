@@ -32,8 +32,8 @@ function getBots(type: string) {
  */
 
 // const baseURL = process.env.BASE_URL!
-const baseURL = 'http://localhost:3000'
-// const baseURL = 'https://honeybun.ai'
+// const baseURL = 'http://localhost:3000'
+const baseURL = 'https://honeybun.vercel.app'
 
 export const TYPE = {
   MALE: 'guys',
