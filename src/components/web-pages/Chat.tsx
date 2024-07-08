@@ -17,7 +17,7 @@ export default function Chat({ userBotArray, botId }: { userBotArray: Record<str
 
   return (
     <>
-      <div className="p-4 flex-1 flex">
+      <div className="p-4 pr-0 flex-1 flex">
         <ChatLeft activeId={activeId} setActiveId={setActiveId} userBotArray={userBotArray} />
         <ChatMiddle fold={fold} setFold={setFold} activeId={activeId} userBotArray={userBotArray} />
         <ChatRight fold={fold} bot={activeBot} />

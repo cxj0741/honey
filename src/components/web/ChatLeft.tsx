@@ -39,15 +39,7 @@ export default function ChatLeft({ activeId, setActiveId, userBotArray }: Props)
             key={item.id}
             className={`h-16 p-2 flex items-center justify-between space-x-3 border rounded-lg hover:border-[rgba(255,255,255,0.32)] hover:cursor-pointer group ${activeId === item.id ? 'border-[rgba(255,255,255,0.32)]' : 'border-transparent'}`}
           >
-            <div className="w-12 h-12 rounded-full bg-center bg-contain" style={{ background: `url(${item.image1})` }}>
-              {/* <Image
-                className="rounded-full"
-                width={48}
-                height={48}
-                objectFit='contain'
-                src={item.image1}
-                alt={'avatar'}
-              /> */}
+            <div className="w-12 h-12 rounded-full bg-center bg-cover bg-no-repeat" style={{ backgroundImage: `url(${item.image1})` }}>
             </div>
             <div className="grow space-y-1">
               <div className="font-medium">{item.name}</div>

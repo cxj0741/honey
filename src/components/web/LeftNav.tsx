@@ -21,7 +21,7 @@ export default function LeftNav() {
   const [dialogShow, setDialogShow] = useState(false)
   // 三种状态 authenticated unauthenticated loading
   const session = useSession()
-  console.log('session data>>>>>>', session)
+  // console.log('session data>>>>>>', session)
   useEffect(() => {
     console.log('path>>>>>', path)
     if (path.includes('/chat')) {

@@ -1,26 +1,63 @@
 import Image from 'next/image'
+import { useEffect, useState, useRef } from 'react'
+import { sendMessage } from '@/request/handleStream'
+import { getDialogs, saveDialog } from '@/request'
+
 interface Props {
   fold: boolean
   setFold: Function
   activeId: string
   userBotArray: Record<string, any>
 }
+
+function formatUnixTimestamp(unixTimestamp: number) {
+  const dateObj = new Date(unixTimestamp); // 使用毫秒级 Unix 时间戳创建 Date 对象
+  const hours = dateObj.getHours().toString().padStart(2, '0'); // 获取小时并补零
+  const minutes = dateObj.getMinutes().toString().padStart(2, '0'); // 获取分钟并补零
+  return `${hours}:${minutes}`;
+}
+
 export default function ChatMiddle({ fold, setFold, activeId, userBotArray }: Props) {
   const [bot] = userBotArray.filter(item => item.id === activeId)
+  const [chatArray, setChatArray] = useState([] as ({
+    timestamp: number,
+    dialog: { userStr: string, botStr: string }
+  })[])
+
+  const [result, setResult] = useState({
+    timestamp: 0,
+    dialog: { userStr: '', botStr: '' }
+  })
+  const changeArray = async () => {
+    const res = await getDialogs(activeId)
+    // console.log('getDialogs>>>>>>>>>>', res)
+    setChatArray(res)
+  }
+
+  useEffect(() => {
+    changeArray()
+  }, [])
+
+  const inputRef = useRef(null)
+
+  const handleSendMessage = async () => {
+    const userStr = inputRef?.current?.value.trim() || ''
+    inputRef!.current!.value = ''
+    const timestamp = Date.now()
+    await sendMessage(userStr, timestamp, setResult, activeId)
+    setResult({
+      timestamp: 0,
+      dialog: { userStr: '', botStr: '' }
+    })
+    // setChatArray([...chatArray, result])
+    changeArray()
+  }
+
   return (
     <div className="flex-[3] bg-[#1F1D1F] relative">
       {/* CHAT CONTENT HEADER */}
       <div className="px-6 py-4 border-b border-[rgba(255,255,255,0.16)] text-white flex items-center">
-        <div className="w-12 h-12 rounded-full bg-center bg-contain" style={{ background: `url(${bot.image1})` }}>
-          {/* <Image
-            className="rounded-full"
-            // width={48}
-            // height={48}
-            src={bot.image1}
-            layout='fill'
-            objectFit='contain'
-            alt="avatar"
-          /> */}
+        <div className="w-12 h-12 rounded-full bg-center bg-cover bg-no-repeat" style={{ backgroundImage: `url(${bot.image1})` }}>
         </div>
         <div className="ml-4 text-xl">
           {bot.name}
@@ -46,32 +83,52 @@ export default function ChatMiddle({ fold, setFold, activeId, userBotArray }: Pr
         className="px-6 py-4 pb-20 overflow-auto"
         style={{ height: 'calc(100% - 80px)' }}
       >
-        <div className="flex justify-start text-white bg-transparent">
-          <div className="w-2/5 space-y-2">
-            <div className="bg-[#F36C9C] px-3 py-2 rounded-lg">
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quas
-              veniam maiores repudiandae quo perferendis necessitatibus,
-              molestiae magni quibusdam animi velit! Qui, excepturi. Corrupti
-              quaerat ducimus, iste nulla saepe sequi modi.
+        {/* 一组对话的结构 */}
+        {
+          chatArray.map(item => (
+            <div key={item.timestamp} className='w-full'>
+              <div className="flex justify-end text-white">
+                <div className="max-w-[450px] space-y-2">
+                  <div className="bg-[rgba(255,255,255,0.16)] px-3 py-2 rounded-lg">
+                    {item.dialog.userStr}
+                  </div>
+                  <div className="text-xs text-right">{formatUnixTimestamp(item.timestamp)}</div>
+                </div>
+              </div>
+              <div className="flex justify-start text-white bg-transparent">
+                <div className="max-w-[450px] space-y-2">
+                  <div className="bg-[#F36C9C] px-3 py-2 rounded-lg">
+                    {item.dialog.botStr}
+                  </div>
+                  {/* <div className="text-xs text-left">10:36</div> */}
+                </div>
+              </div>
             </div>
-            <div className="text-xs text-left">10:36</div>
-          </div>
-        </div>
+          ))
+        }
 
-        <div className="flex justify-end text-white">
-          <div className="w-2/5 space-y-2">
+        {result.dialog.userStr && (<div className="flex justify-end text-white">
+          <div className="max-w-[450px] space-y-2">
             <div className="bg-[rgba(255,255,255,0.16)] px-3 py-2 rounded-lg">
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quas
-              veniam maiores repudiandae quo perferendis necessitatibus,
-              molestiae magni quibusdam animi velit! Qui, excepturi. Corrupti
-              quaerat ducimus, iste nulla saepe sequi modi.
+              {result.dialog.userStr}
             </div>
-            <div className="text-xs text-right">10:36</div>
+            <div className="text-xs text-right">{formatUnixTimestamp(result.timestamp)}</div>
           </div>
-        </div>
+        </div>)}
 
-        <div className="flex justify-start text-white bg-transparent">
-          <div className="w-2/5 space-y-2">
+        {result.dialog.botStr && (<div className="flex justify-start text-white bg-transparent">
+          <div className="max-w-[450px] space-y-2">
+            <div className="bg-[#F36C9C] px-3 py-2 rounded-lg">
+              {result.dialog.botStr}
+            </div>
+            {/* <div className="text-xs text-left">10:36</div> */}
+          </div>
+        </div>)}
+
+
+        {/* 照片的结构 */}
+        {/* <div className="flex justify-start text-white bg-transparent">
+          <div className="max-w-[450px] space-y-2">
             <div className="w-full aspect-[3/4] rounded-3xl border-8 border-[#F36C9C] relative">
               <Image
                 className="rounded-2xl object-cover"
@@ -83,12 +140,14 @@ export default function ChatMiddle({ fold, setFold, activeId, userBotArray }: Pr
             </div>
             <div className="text-xs text-left">10:36</div>
           </div>
-        </div>
+        </div> */}
+
       </div>
       {/* CHAT CONTENT SEND MESSAGE INPUT */}
       <div className="absolute -bottom-[0.5px] w-full px-6 pb-4 bg-[#1F1D1F] flex items-center space-x-2">
         {/* 这里可以使用textarea设置换行 */}
         <input
+          ref={inputRef}
           type="text"
           placeholder="Type a message"
           className="grow input input-bordered whitespace-normal break-words text-wrap"
@@ -126,6 +185,7 @@ export default function ChatMiddle({ fold, setFold, activeId, userBotArray }: Pr
           </div>
         </div>
         <Image
+          onClick={() => handleSendMessage()}
           className="hover:cursor-pointer"
           width={48}
           height={48}

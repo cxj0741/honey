@@ -8,6 +8,7 @@ import {
   integer,
   boolean,
   varchar,
+  bigint,
   // date,
   // uuid,
   // index,
@@ -176,6 +177,20 @@ export const usersToBotsRelations = relations(usersToBots, ({ one }) => ({
     references: [users.id],
   }),
 }))
+
+export const chats = pgTable(
+  'chats',
+  { 
+    chatId: serial('chat_id'),
+    userId: text("user_id").notNull(),
+    botId: text("bot_id").notNull(),
+    timestamp: bigint('timestamp', { mode: 'number'}).notNull(),
+    dialog: text('dialog').notNull(),
+  },
+  (t)=>({
+    pk: primaryKey({columns:[t.userId, t.botId,t.timestamp]})
+  })
+)
 
 // 订单列表
 export const orders = pgTable("orders", {

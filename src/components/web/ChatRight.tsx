@@ -43,17 +43,17 @@ export default function ChatRight({ fold, bot }: { fold: boolean, bot: Record<st
   const [index, setIndex] = useState(0)
   return (
     <div
-      className={`flex-[1] h-full overflow-auto bg-[#121112] ${fold ? 'hidden' : 'block'
+      className={`flex-[1] h-full overflow-y-auto bg-[#121112] ${fold ? 'hidden' : 'block'
         }`}
     >
-      <div className="w-full aspect-[3/5] relative">
-        <Image
-          className='object-cover'
-          layout="fill"
-          objectFit='cover'
-          src={index == 0 ? bot.image1 : bot.image2}
-          alt="avatar"
-        />
+      <div className="w-full aspect-[3/5] relative bg-center bg-cover bg-no-repeat" style={{ backgroundImage: `url(${(index == 0 ? bot.image1 : bot.image2)})` }}>
+        {/*  <Image
+        className='object-cover'
+        layout="fill"
+        objectFit='cover'
+        src={(index == 0 ? bot.image1 : bot.image2) || ''}
+        alt="avatar"
+        /> */}
         <div
           className="absolute w-full px-4 flex justify-between"
           style={{ top: '50%', transform: 'translateY(-50)' }}

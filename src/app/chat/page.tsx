@@ -35,6 +35,7 @@ export default async function Chat({ searchParams }: { searchParams: Record<stri
       .select()
       .from(usersToBots)
       .where(sql`${usersToBots.userId} = ${userId}`)
+    // console.log('>>>>>>arr', arr)
     let userBotArray = []
     for (const item of arr) {
       const [bot] = await db

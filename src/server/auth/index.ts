@@ -18,6 +18,8 @@ export const authOptions: AuthOptions = {
     //   return true
     // },
     async session({ session, token }) {
+      // console.log('>>>>>session>>>>>',session)
+      // console.log('>>>>>token>>>>>',token)
       if (session && session.user && token && token.sub) {
         session.user.id = token.sub;
       }
