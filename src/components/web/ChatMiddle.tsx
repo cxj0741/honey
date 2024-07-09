@@ -136,7 +136,7 @@ export default function ChatMiddle({ fold, setFold, activeBot, setActiveBot }: P
             (<div className="flex justify-start text-white bg-transparent">
               <div className="max-w-[450px] space-y-2">
                 <div className="bg-[rgba(255,255,255,0.16)] px-3 py-2 rounded-lg flex items-center">
-                  {new Array(12).fill(0).map((item, index) => (
+                  {new Array(1).fill(0).map((item, index) => (
                     <span key={index} className="loading loading-dots loading-sm text-white"></span>
                   ))}
                 </div>

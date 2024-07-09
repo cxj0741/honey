@@ -1,5 +1,4 @@
 'use client'
-import Image from 'next/image'
 import { useState, useEffect } from 'react'
 import { useRouter, usePathname } from 'next/navigation'
 import LoginDialog from './LoginDialog'
@@ -153,8 +152,6 @@ export default function LeftNav() {
                 )}
             </div>
           </div>
-
-
         </div>
       </div >
       <LoginDialog type={type} setType={setType} dialogShow={dialogShow} setDialogShow={setDialogShow} />
