@@ -60,10 +60,10 @@ export default function ChatMiddle({ fold, setFold, activeBot, setActiveBot }: P
   }
 
   return (
-    <div className="flex-1 bg-[#1F1D1F] relative">
+    <div className="flex-[3] bg-[#1F1D1F] relative">
       {/* CHAT CONTENT HEADER */}
       <div className="px-6 py-4 border-b border-[rgba(255,255,255,0.16)] text-white flex items-center">
-        <div className="w-12 h-12 rounded-full bg-center bg-cover bg-no-repeat" style={{ backgroundImage: `url(${activeBot.image1})` }}>
+        <div className="w-12 h-12 rounded-full bg-top bg-cover bg-no-repeat" style={{ backgroundImage: `url(${activeBot.image1})` }}>
         </div>
         <div className="ml-4 text-xl">
           {activeBot.name}
