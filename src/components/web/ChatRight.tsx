@@ -2,15 +2,15 @@ import Image from 'next/image'
 import { useState } from 'react'
 
 const info1 = [
-  { name: 'personality', img: 'personality', value: 'Kawai and Extrovert' },
-  { name: 'occupation', img: 'occupation', value: 'Kpop Singer' },
-  { name: 'hobbies', img: 'label', value: 'working women' },
-  { name: 'relationship', img: 'chatStyle', value: 'humorous' },
+  { name: 'personality', img: 'personality' },
+  { name: 'occupation', img: 'occupation' },
+  { name: 'hobbies', img: 'label' },
+  { name: 'relationship', img: 'chatStyle' },
 ]
 const info2 = [
-  { name: 'body', img: 'body', value: 'Kawai and Extrovert' },
-  { name: 'age', img: 'age', value: 'Kpop Singer' },
-  { name: 'ethnicity', img: 'ethnicity', value: 'working women' },
+  { name: 'body', img: 'body' },
+  { name: 'age', img: 'age' },
+  { name: 'ethnicity', img: 'ethnicity' },
 ]
 function Item({
   img,
@@ -39,21 +39,14 @@ function Item({
   )
 }
 
-export default function ChatRight({ fold, bot }: { fold: boolean, bot: Record<string, any> }) {
+export default function ChatRight({ fold, activeBot }: { fold: boolean, activeBot: Record<string, any> }) {
   const [index, setIndex] = useState(0)
   return (
     <div
-      className={`flex-[1] h-full overflow-y-auto bg-[#121112] ${fold ? 'hidden' : 'block'
+      className={`w-[380px] h-full overflow-y-scroll bg-[#121112] ${fold ? 'hidden' : 'block'
         }`}
     >
-      <div className="w-full aspect-[3/5] relative bg-center bg-cover bg-no-repeat" style={{ backgroundImage: `url(${(index == 0 ? bot.image1 : bot.image2)})` }}>
-        {/*  <Image
-        className='object-cover'
-        layout="fill"
-        objectFit='cover'
-        src={(index == 0 ? bot.image1 : bot.image2) || ''}
-        alt="avatar"
-        /> */}
+      <div className="w-full aspect-[3/5] relative bg-center bg-cover bg-no-repeat" style={{ backgroundImage: `url(${(index == 0 ? activeBot.image1 : activeBot.image2)})` }}>
         <div
           className="absolute w-full px-4 flex justify-between"
           style={{ top: '50%', transform: 'translateY(-50)' }}
@@ -77,9 +70,9 @@ export default function ChatRight({ fold, bot }: { fold: boolean, bot: Record<st
         </div>
       </div>
       <div className="text-white p-4 space-y-4">
-        <div className="text-2xl font-bold">{bot.name}</div>
+        <div className="text-2xl font-bold">{activeBot.name}</div>
         <div className="text-base">
-          {bot.description}
+          {activeBot.description}
         </div>
         <div className="pt-4 border-t border-[rgba(255,255,255,0.16)]">
           <div className="font-base text-[rgba(255,255,255,0.64)]">
@@ -88,7 +81,7 @@ export default function ChatRight({ fold, bot }: { fold: boolean, bot: Record<st
           <div className="w-full flex flex-wrap">
             {info1.map((item) => (
               <div className="w-1/2 mt-4" key={item.name}>
-                <Item img={item.img} name={item.name} value={bot[item.name]}></Item>
+                <Item img={item.img} name={item.name} value={activeBot[item.name]}></Item>
               </div>
             ))}
           </div>
@@ -100,7 +93,7 @@ export default function ChatRight({ fold, bot }: { fold: boolean, bot: Record<st
           <div className="w-full flex flex-wrap">
             {info2.map((item) => (
               <div className="w-1/2 mt-4" key={item.name}>
-                <Item img={item.img} name={item.name} value={bot[item.name]}></Item>
+                <Item img={item.img} name={item.name} value={activeBot[item.name]}></Item>
               </div>
             ))}
           </div>

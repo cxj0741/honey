@@ -6,7 +6,7 @@ import { bots } from '@/server/db/schema'
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url)
   const id = searchParams.get('id')
-  console.log('id>>>', id)
+  // console.log('id>>>', id)
   const bot = await db
     .select()
     .from(bots)

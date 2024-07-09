@@ -145,7 +145,7 @@ export const bots = pgTable('bots',{
   endType: varchar("end_type", {
     enum: ["web", "app", "both"],
   }).notNull(),
-  delete: boolean('delete').default(false)
+  isDeleted: boolean('is_deleted').default(false)
 })
 
 export const usersToBots = pgTable(
@@ -153,6 +153,7 @@ export const usersToBots = pgTable(
   {
     userId: text("user_id").notNull().references(() => users.id),
     botId: text("bot_id").notNull().references(() => bots.id),
+    timestamp: bigint('timestamp', { mode: 'number'}).notNull(),
   },
   (t)=>({
     pk: primaryKey({columns:[t.userId, t.botId]})
@@ -186,6 +187,7 @@ export const chats = pgTable(
     botId: text("bot_id").notNull(),
     timestamp: bigint('timestamp', { mode: 'number'}).notNull(),
     dialog: text('dialog').notNull(),
+    // isDeleted: boolean('is_deleted').default(false)
   },
   (t)=>({
     pk: primaryKey({columns:[t.userId, t.botId,t.timestamp]})

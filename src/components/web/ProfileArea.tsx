@@ -9,16 +9,17 @@ export default function ProfileArea({ botList }: { botList: any[] }) {
   return (
     botList.length &&
     <div className="border-8 border-transparent flex flex-wrap">
-      {botList.map((item) => (
+      {/* {new Array(10).fill(botList[0]).map((item, index) => ( */}
+      {botList.map((item, index) => (
         <div
-          key={item.id}
+          key={item.id + '' + index}
           className="w-1/2 md:w-1/3 lg:w-1/4 aspect-[3/4] border-8 border-transparent relative"
         >
           <Image
             onMouseEnter={() => setActiveId(item.id)}
             onMouseOut={() => setActiveId(0)}
             onClick={() => { router.push(`/chat?botId=${item.id}`) }}
-            className="rounded-lg object-cover"
+            className="rounded-lg object-cover hover:cursor-pointer"
             layout="fill"
             objectFit="cover"
             src={activeId === item.id ? item.image2 : item.image1}

@@ -3,11 +3,6 @@ import { sql } from 'drizzle-orm'
 import { db } from '@/server/db'
 import { bots } from '@/server/db/schema'
 
-// const sleep = (time: number) =>
-//   new Promise((res, rej) => {
-//     setTimeout(res, time)
-//   })
-
 export async function GET(request: NextRequest) {
   // console.log('----------', request, '----------')
   const { searchParams } = new URL(request.url)
@@ -19,8 +14,6 @@ export async function GET(request: NextRequest) {
     .select()
     .from(bots)
     .where(sql`${bots.type} = ${type}`)
-
   // console.log('botsList', botsList)
-  // await sleep(5000)
   return NextResponse.json(botsList)
 }

@@ -1,5 +1,7 @@
 export default function Loading() {
   return (
-    <h1 className="text-3xl text-white flex items-center justify-center">LOADING DATA</h1>
+    <div className="w-full h-full flex items-center justify-center">
+      <span className="loading loading-bars loading-lg text-white"></span>
+    </div>
   )
 }

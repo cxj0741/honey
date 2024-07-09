@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { db } from '@/server/db'
-import { chats } from '@/server/db/schema'
+import { usersToBots } from '@/server/db/schema'
 import { sql } from 'drizzle-orm/sql'
 import { getUserId } from '@/utils/getUserId'
 
@@ -11,12 +11,9 @@ export async function GET(request: NextRequest) {
   // console.log('id>>>', id)
   let chatArray = await db
     .select()
-    .from(chats)
-    .where(sql`${chats.botId} = ${id} AND ${chats.userId} = ${userId}`)
-    .orderBy(sql`${chats.timestamp} asc`)
-  chatArray = chatArray.map((item) => ({
-    ...item,
-    dialog: JSON.parse(item.dialog),
-  }))
-  return NextResponse.json(chatArray)
+    .from(usersToBots)
+    .where(
+      sql`${usersToBots.botId} = ${id} AND ${usersToBots.userId} = ${userId}`
+    )
+  return NextResponse.json(chatArray[0])
 }

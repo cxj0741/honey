@@ -5,13 +5,25 @@ import { redirect } from 'next/navigation'
 import { db } from '@/server/db'
 import { bots, usersToBots } from '@/server/db/schema'
 import { sql } from 'drizzle-orm/sql'
-import { getServerSession } from 'next-auth/next'
-import { authOptions } from '@/server/auth'
+import { getUserId } from '@/utils/getUserId'
 
 export default async function Chat({ searchParams }: { searchParams: Record<string, any> }) {
   console.log('searchParams', searchParams)
-  const id = searchParams?.botId
-  if (!id) { redirect('/') }
+  let id = searchParams?.botId?.trim()
+  const userId = await getUserId()
+  console.log('userId', userId, id)
+  if (!id) {
+    let usersToBotsArray = await db
+      .select()
+      .from(usersToBots)
+      .where(sql`${usersToBots.userId} = ${userId}`)
+    // console.log('usersToBotsArray', usersToBotsArray)
+    if (usersToBotsArray.length) {
+      id = usersToBotsArray[0].botId
+    } else {
+      redirect('/')
+    }
+  }
   const botArray = await db
     .select()
     .from(bots)
@@ -20,14 +32,12 @@ export default async function Chat({ searchParams }: { searchParams: Record<stri
 
   if (botArray.length) {
     // 保存之前没有出现的bot
-    const data = await getServerSession(authOptions)
-    const userId = data?.user?.id || ''
     const relation = await db
       .select()
       .from(usersToBots)
       .where(sql`${usersToBots.userId} = ${userId} and ${usersToBots.botId} = ${id}`)
     if (!relation.length) {
-      await db.insert(usersToBots).values({ userId, botId: id })
+      await db.insert(usersToBots).values({ userId, botId: id, timestamp: Date.now() })
     }
 
     // 获取user所有bot的基本信息

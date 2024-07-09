@@ -1,22 +1,16 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { sql } from 'drizzle-orm'
 import { db } from '@/server/db'
 import { chats } from '@/server/db/schema'
-import { sql } from 'drizzle-orm/sql'
 import { getUserId } from '@/utils/getUserId'
 
 export async function GET(request: NextRequest) {
-  const userId = await getUserId()
   const { searchParams } = new URL(request.url)
   const id = searchParams.get('id')
+  const userId = await getUserId()
   // console.log('id>>>', id)
-  let chatArray = await db
-    .select()
-    .from(chats)
+  await db
+    .delete(chats)
     .where(sql`${chats.botId} = ${id} AND ${chats.userId} = ${userId}`)
-    .orderBy(sql`${chats.timestamp} asc`)
-  chatArray = chatArray.map((item) => ({
-    ...item,
-    dialog: JSON.parse(item.dialog),
-  }))
-  return NextResponse.json(chatArray)
+  return NextResponse.json({ message: 'delete dialog success!' })
 }

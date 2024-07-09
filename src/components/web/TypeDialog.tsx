@@ -1,13 +1,10 @@
 import Image from 'next/image'
-// import { useState } from 'react'
 export const TYPE = {
   MALE: "MALE",
   FEMALE: 'FEMALE',
   ANIME: 'ANIME'
 }
-
 type SetType = (type: typeof TYPE.MALE | typeof TYPE.FEMALE | typeof TYPE.ANIME) => void
-
 interface Props {
   open: boolean
   setType: SetType

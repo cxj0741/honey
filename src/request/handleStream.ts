@@ -35,7 +35,7 @@ export async function sendMessage(userStr: string, timestamp: number, setResult:
     } else {
       let resultString =''
       const chunk = decoder.decode(value, { stream: true })
-      // console.log('chunk', chunk)
+      console.log('chunk', chunk)
       const dataList = chunk.trim().split('\n\n').map(item => {
         return JSON.parse(item.slice(5))
       })
