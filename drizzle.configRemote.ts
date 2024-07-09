@@ -23,3 +23,5 @@ export default defineConfig({
 
 // 启动可视化界面
 // npx drizzle-kit studio
+// npx drizzle-kit push --config=drizzle.configLocal.ts
+// npx drizzle-kit push --config=drizzle.configRemote.ts

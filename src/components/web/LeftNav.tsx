@@ -69,7 +69,7 @@ export default function LeftNav() {
   return (
     <>
       <div className={` ${fold ? 'w-[90px]' : 'w-[220px]'}`}>
-        <div className="w-full h-full pt-3 border-r border-[#363636] flex flex-col">
+        <div className="w-full h-full py-3 border-r border-[#363636] flex flex-col">
           <div className="px-3 flex-1 flex flex-col">
             <div className="h-16 flex items-center justify-center">
               <div className="h-8 bg-center bg-no-repeat bg-contain" style={{ width: fold ? 0 : '150px', backgroundImage: `url(assets/${fold ? '' : 'Honeybun'}.png)` }}></div>

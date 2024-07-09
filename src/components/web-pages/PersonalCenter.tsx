@@ -1,3 +1,6 @@
+'use client'
+import { deleteUser } from '@/request'
+import { signOut } from 'next-auth/react'
 function Item({ name, value }: { name: string, value: string }) {
   return (
     <>
@@ -5,19 +8,26 @@ function Item({ name, value }: { name: string, value: string }) {
         <div className='text-[rgba(255,255,255,0.64)]'>{name}</div>
         <div className="w-3 h-3 rounded-full bg-center bg-no-repeat bg-contain" style={{ backgroundImage: 'url(/assets/edit.png)' }}></div>
       </div>
-      <div className="mt-1">{value}</div>
+      <div className="mt-1 text-sm">{value}</div>
     </>
   )
 }
 
 const info = [
-  { name: 'Nickname', value: 'Nickname' },
-  { name: 'Gender', value: 'Gender' },
-  { name: 'E-mail', value: 'E-mail' },
-  { name: 'Password', value: 'Password' },
+  { name: 'Name', value: 'name' },
+  { name: 'Email', value: 'email' },
+  { name: 'Password', value: 'password' },
+  { name: 'Tokens', value: 'tokens' },
 ]
 
-export default function PersonalCenter() {
+export default function PersonalCenter({ user }: { user: Record<string, any> }) {
+  const handleDeleteUser = async () => {
+    const res = confirm('Are you sure you want to proceed?')
+    if (res) {
+      await deleteUser()
+      signOut()
+    }
+  }
   return (
     <div className="p-4 flex-1">
       <div className="w-full h-full bg-[#1F1D1F] text-white flex items-center justify-center">
@@ -27,14 +37,14 @@ export default function PersonalCenter() {
               <div className="text-xl text-[rgba(255,255,255,0.64)]">Basic Information</div>
               <div className="flex mt-10">
                 <div className="w-[96px] h-[96px] relative">
-                  <div className="w-24 h-24 rounded-full bg-center bg-no-repeat bg-contain" style={{ backgroundImage: 'url(/assets/avatar.png)' }}></div>
+                  <div className="w-24 h-24 rounded-full bg-center bg-no-repeat bg-contain" style={{ backgroundImage: `url(${user.image})` }}></div>
                   <div className="absolute right-0 bottom-0 rounded-full w-3 h-3 bg-center bg-no-repeat bg-contain" style={{ backgroundImage: 'url(/assets/edit.png)' }}></div>
                 </div>
                 <div className='ml-10 flex-1'>
                   <div className="w-full flex flex-wrap -mt-4">
                     {info.map((item) => (
                       <div className="w-1/2 mt-4" key={item.name}>
-                        <Item name={item.name} value={item.value}></Item>
+                        <Item name={item.name} value={user[item.name.toLowerCase()] || '******'}></Item>
                       </div>
                     ))}
                   </div>
@@ -60,7 +70,8 @@ export default function PersonalCenter() {
             </div>
             <div className="px-8 py-6 border-t">
               <div className="pb-4 text-xl font-medium text-[rgba(255,255,255,0.64)]">Account Management</div>
-              <div className="w-[10.625rem] h-8 rounded-lg border border-[rgba(255,255,255,0.32)] flex items-center justify-center space-x-2 hover:cursor-pointer">
+              <div onClick={() => { handleDeleteUser(user.id) }}
+                className="w-[10.625rem] h-8 rounded-lg border border-[rgba(255,255,255,0.32)] flex items-center justify-center space-x-2 hover:cursor-pointer">
                 <div className="w-6 h-5 bg-center bg-no-repeat bg-contain" style={{ backgroundImage: 'url(/assets/card.png)' }}></div>
                 <div className='text-[rgba(255,255,255,0.64)]'>
                   Delete Account

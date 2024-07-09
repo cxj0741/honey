@@ -35,6 +35,7 @@ export const users = pgTable("user", {
   userId: serial('user_id'),
   hashPassword: text('hash_password').notNull().default(''),
   isVIP: boolean('is_vip').default(false),
+  tokens: integer('tokens').default(0),
   createdAt: timestamp('created_at', { mode: 'date' }).defaultNow(),
   updatedAt: timestamp('updated_at', { mode: 'date' }).defaultNow(),
 })
@@ -151,7 +152,7 @@ export const bots = pgTable('bots',{
 export const usersToBots = pgTable(
   'users_to_bots',
   {
-    userId: text("user_id").notNull().references(() => users.id),
+    userId: text("user_id").notNull().references(() => users.id,{ onDelete: "cascade" } ),
     botId: text("bot_id").notNull().references(() => bots.id),
     timestamp: bigint('timestamp', { mode: 'number'}).notNull(),
   },
@@ -183,7 +184,7 @@ export const chats = pgTable(
   'chats',
   { 
     chatId: serial('chat_id'),
-    userId: text("user_id").notNull(),
+    userId: text("user_id").notNull().references(() => users.id,{ onDelete: "cascade" } ),
     botId: text("bot_id").notNull(),
     timestamp: bigint('timestamp', { mode: 'number'}).notNull(),
     dialog: text('dialog').notNull(),
@@ -207,7 +208,7 @@ export const orders = pgTable("orders", {
   status: varchar("status", {
     enum: ["success", "failure"],
   }).notNull(),
-  userId: text('user_id')
+  userId: text('user_id').references(() => users.id,{ onDelete: "cascade" } ),
 })
 
 export const userRelations2 = relations(users, ({ many }) => ({
