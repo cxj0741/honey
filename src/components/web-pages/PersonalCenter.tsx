@@ -20,7 +20,7 @@ const info = [
   { name: 'Tokens', value: 'tokens' },
 ]
 
-export default function PersonalCenter({ user }: { user: Record<string, any> }) {
+export default function PersonalCenter({ user, orderArray }: { user: Record<string, any>, orderArray: Record<string, any> }) {
   const handleDeleteUser = async () => {
     const res = confirm('Are you sure you want to proceed?')
     if (res) {
@@ -85,13 +85,13 @@ export default function PersonalCenter({ user }: { user: Record<string, any> }) 
           <div className="w-1/2 px-8 py-6 border-l">
             <div className="pb-4 text-xl font-medium text-[rgba(255,255,255,0.64)]">Billing Records</div>
             <div className="py-6 border-t border-[rgba(255,255,255,0.32)]">
-              {new Array(5).fill(0).map((item, index) => (
-                <div key={index} className="h-12 flex items-center justify-center text-white">
+              {orderArray.map((item: { id: string, createdAt: string, type: string }) => (
+                <div key={item.id} className="h-12 flex items-center justify-center text-white">
                   <div className="w-1/5">
-                    12/22
+                    {item.createdAt}
                   </div>
                   <div className="w-1/5">
-                    $11.99
+                    {item.type}
                   </div>
                   <div className="w-1/5">
                     Bill
