@@ -1,18 +1,19 @@
 import { defineConfig } from 'drizzle-kit'
 
-// psql "postgres://default:irIh2csCg9Qe@ep-round-king-a6u1v4c7.us-west-2.aws.neon.tech:5432/verceldb?sslmode=require"
 export default defineConfig({
   // 创建数据table的schema配置内容，和SQL完全可以映射
   schema: './src/server/db/schema.ts',
   dialect: 'postgresql', //不同的数据库有不同的dialect
   dbCredentials: {
     //数据库连接的各种配置
-    host: 'ep-round-king-a6u1v4c7.us-west-2.aws.neon.tech',
+    host: 'localhost',
     port: 5432,
-    user: 'default',
-    password: 'irIh2csCg9Qe',
-    database: 'verceldb',
-    ssl: true,
+    user: 'postgres',
+    password: '123456',
+    // 选择一个数据库，或者自己提前创建好一个数据库 honeydemo honeytest
+    database: 'honeytest',
+    // 不使用ssl安全校验模式
+    ssl: false,
   },
   verbose: true,
   strict: true,
@@ -23,3 +24,6 @@ export default defineConfig({
 
 // 启动可视化界面
 // npx drizzle-kit studio
+
+// psql "postgres://postgres:123456@localhost:5432/honeytest?sslmode=require"
+// psql "postgres://postgres:123456@localhost:5432/honeytest"
