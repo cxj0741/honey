@@ -25,14 +25,12 @@ export default function Home() {
               onClick={() => { handler(TYPE.FEMALE) }}
               className="text-base text-white flex flex-col items-center relative">
               <div className={`font-bold hover:text-pink-500 hover:cursor-pointer ${type === TYPE.FEMALE ? 'text-pink-500' : 'text-white'}`}>Girls</div>
-              {/* <Image width={24} height={24} src="/assets/arc.png" alt={'arc'} /> */}
               <div className={`absolute left-0 -bottom-5 w-full h-1 rounded ${type === TYPE.FEMALE ? 'bg-pink-500' : 'bg-transparent'}`}></div>
             </div>
             <div
               onClick={() => { handler(TYPE.MALE) }}
               className="ml-4 lg:ml-8 text-base text-white flex flex-col items-center relative">
               <div className={`font-bold hover:text-pink-500 hover:cursor-pointer ${type === TYPE.MALE ? 'text-pink-500' : 'text-white'}`}>Guys</div>
-              {/* <Image width={24} height={24} src="/assets/arc.png" alt={'arc'} /> */}
               <div className={`absolute left-0 -bottom-5 w-full h-1 rounded ${type === TYPE.MALE ? 'bg-pink-500' : 'bg-transparent'}`}></div>
             </div>
             <div className="ml-8 lg:ml-16 text-base text-white">

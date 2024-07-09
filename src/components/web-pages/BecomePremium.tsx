@@ -4,7 +4,8 @@ import Image from 'next/image'
 export default function BecomePremium() {
   return (
     <div className="m-4 flex-1 bg-center bg-cover flex items-center justify-center"
-      style={{ backgroundImage: 'url(../assets/becomePremiumDialogBg.png)' }}>
+      style={{ backgroundImage: 'url(../assets/becomePremiumDialogBg.png)' }}
+    >
       <div className="flex">
         <div className='w-[380px] space-y-7'>
           <div className='w-full h-[84px] px-6 py-4 rounded-lg text-white bg-[#ED5088] flex space-x-3 hover:cursor-pointer'>

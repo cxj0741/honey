@@ -8,8 +8,6 @@ import Nav from '@/components/h5/Nav'
 import FooterNav from '@/components/h5/FooterNav'
 import LoginDialog from '@/components/h5/LoginDialog'
 import LeftNav from '@/components/web/LeftNav'
-
-
 import AuthProvider from '@/app/auth/Provider'
 
 const inter = Inter({ subsets: ['latin'] })
@@ -36,7 +34,6 @@ export default function RootLayout({
             <LoginDialog type="Sign In" setType={() => { }} />
             <StyleLoad />
           </AuthProvider>
-
         </body>
       </html>
     )
@@ -52,5 +49,4 @@ export default function RootLayout({
       </html>
     )
   }
-
 }

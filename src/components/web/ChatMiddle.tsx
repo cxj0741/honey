@@ -1,7 +1,7 @@
 import Image from 'next/image'
 import { useEffect, useState, useRef } from 'react'
 import { sendMessage } from '@/request/handleStream'
-import { deleteBotDialogs, getDialogs } from '@/request'
+import { deleteBotDialogs, getDialogs, saveDialog } from '@/request'
 import { formatUnixTimestamp } from '@/utils/formatUnixTimestamp'
 
 interface Props {
@@ -41,8 +41,21 @@ export default function ChatMiddle({ fold, setFold, activeBot, setActiveBot }: P
     const userStr = (inputRef?.current as any)?.value.trim() || '';
     (inputRef!.current as any).value = ''
     const timestamp = Date.now()
-    await sendMessage(userStr, timestamp, setResult, activeBot.id)
-    await changeArray()
+    try {
+      const botStr = await sendMessage(userStr, timestamp, setResult)
+      console.log('succeed send message>>>>>', botStr)
+      if (botStr) {
+        await saveDialog({ botId: activeBot.id, timestamp, dialog: { userStr, botStr } })
+      }
+    } catch (error) {
+      console.log('fail send message>>>>>', error)
+      await saveDialog({ botId: activeBot.id, timestamp, dialog: { userStr, botStr: '' } })
+    }
+    try {
+      await changeArray()
+    } catch (error) {
+      setTimeout(async () => { await changeArray() }, 3000)
+    }
     setResult({
       timestamp: 0,
       dialog: { userStr: '', botStr: '' }
@@ -94,7 +107,7 @@ export default function ChatMiddle({ fold, setFold, activeBot, setActiveBot }: P
         {/* 一组对话的结构 */}
         {chatArray.map(item => (
           <div key={item.timestamp} className='w-full'>
-            <div className="flex justify-end text-white">
+            <div className="py-4 flex justify-end text-white">
               <div className="max-w-[450px] space-y-2">
                 <div className="bg-[rgba(255,255,255,0.16)] px-3 py-2 rounded-lg">
                   {item.dialog.userStr}
@@ -102,14 +115,27 @@ export default function ChatMiddle({ fold, setFold, activeBot, setActiveBot }: P
                 <div className="text-xs text-right">{formatUnixTimestamp(item.timestamp)}</div>
               </div>
             </div>
-            <div className="flex justify-start text-white bg-transparent">
-              <div className="max-w-[450px] space-y-2">
-                <div className="bg-[#F36C9C] px-3 py-2 rounded-lg">
-                  {item.dialog.botStr}
+            {item.dialog.botStr &&
+              <div className="py-4 flex justify-start text-white bg-transparent">
+                <div className="max-w-[450px] space-y-2">
+                  <div className="bg-[#F36C9C] px-3 py-2 rounded-lg">
+                    {item.dialog.botStr}
+                  </div>
+                  {/* <div className="text-xs text-left">10:36</div> */}
                 </div>
-                {/* <div className="text-xs text-left">10:36</div> */}
               </div>
-            </div>
+            }
+            {item.dialog?.image &&
+              <div className="py-4 flex justify-start text-white bg-transparent">
+                <div
+                  onClick={() => {
+                  }}
+                  className={`w-[300px] h-[400px] aspect-[3/4] rounded-3xl border-8 border-[#F36C9C] bg-center bg-cover bg-no-repeat`} style={{
+                    backgroundImage: `url(${item.dialog.image})`
+                  }}>
+                </div>
+              </div>
+            }
           </div>
         ))}
 
@@ -129,7 +155,6 @@ export default function ChatMiddle({ fold, setFold, activeBot, setActiveBot }: P
                 <div className="bg-[#F36C9C] px-3 py-2 rounded-lg">
                   {result.dialog.botStr}
                 </div>
-                {/* <div className="text-xs text-left">10:36</div> */}
               </div>
             </div>)
             :
@@ -140,7 +165,6 @@ export default function ChatMiddle({ fold, setFold, activeBot, setActiveBot }: P
                     <span key={index} className="loading loading-dots loading-sm text-white"></span>
                   ))}
                 </div>
-                {/* <div className="text-xs text-left">10:36</div> */}
               </div>
             </div>)
           )
@@ -148,81 +172,65 @@ export default function ChatMiddle({ fold, setFold, activeBot, setActiveBot }: P
           null}
 
 
-        {/* 照片的结构 */}
-        {/* <div className="flex justify-start text-white bg-transparent">
-          <div className="max-w-[450px] space-y-2">
-            <div className="w-full aspect-[3/4] rounded-3xl border-8 border-[#F36C9C] relative">
-              <Image
-                className="rounded-2xl object-cover"
-                layout="fill"
-                objectFit='cover'
-                src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg"
-                alt="avatar"
-              />
-            </div>
-            <div className="text-xs text-left">10:36</div>
-          </div>
-        </div> */}
+
 
       </div>
       {/* CHAT CONTENT SEND MESSAGE INPUT */}
       <div className="absolute -bottom-[0.5px] w-full px-6 pb-4 bg-[#1F1D1F] flex items-center space-x-2">
         {/* 这里可以使用textarea设置换行 */}
-        {
-          inputShow ?
-            <>
-              <input
-                ref={inputRef}
-                onKeyDown={(event) => handleKeyDown(event.key)}
-                type="text"
-                placeholder="Type a message"
-                className="grow input input-bordered whitespace-normal break-words text-wrap"
-              />
-              <div className="w-[82px] h-12 rounded-lg bg-[rgba(255,255,255,0.16)] flex items-center justify-center hover:cursor-pointer">
-                <div className="w-full px-2 dropdown dropdown-top dropdown-end">
-                  <div
-                    tabIndex={0}
-                    className="text-white flex items-center justify-between"
-                  >
-                    <Image
-                      width={16}
-                      height={18}
-                      src="/assets/ask.png"
-                      alt="avatar"
-                    />
-                    <span>Ask</span>
-                    <Image
-                      width={12}
-                      height={12}
-                      src="/assets/arrowDown.png"
-                      alt="avatar"
-                    />
-                  </div>
-                  <ul
-                    tabIndex={0}
-                    className="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow"
-                  >
-                    {['Show me...', 'Send me...', 'Can I see...'].map((item) => (
-                      <li key={item}>
-                        <a>{item}</a>
-                      </li>
-                    ))}
-                  </ul>
+        {inputShow ?
+          <>
+            <input
+              ref={inputRef}
+              onKeyDown={(event) => handleKeyDown(event.key)}
+              type="text"
+              placeholder="Type a message"
+              className="grow input input-bordered whitespace-normal break-words text-wrap"
+            />
+            <div className="w-[82px] h-12 rounded-lg bg-[rgba(255,255,255,0.16)] flex items-center justify-center hover:cursor-pointer">
+              <div className="w-full px-2 dropdown dropdown-top dropdown-end">
+                <div
+                  tabIndex={0}
+                  className="text-white flex items-center justify-between"
+                >
+                  <Image
+                    width={16}
+                    height={18}
+                    src="/assets/ask.png"
+                    alt="avatar"
+                  />
+                  <span>Ask</span>
+                  <Image
+                    width={12}
+                    height={12}
+                    src="/assets/arrowDown.png"
+                    alt="avatar"
+                  />
                 </div>
+                <ul
+                  tabIndex={0}
+                  className="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow"
+                >
+                  {['Show me...', 'Send me...', 'Can I see...'].map((item) => (
+                    <li key={item}>
+                      <a>{item}</a>
+                    </li>
+                  ))}
+                </ul>
               </div>
-              <Image
-                onClick={() => handleSendMessage()}
-                className="hover:cursor-pointer"
-                width={48}
-                height={48}
-                src="/assets/send.png"
-                alt={'arc'}
-              />
-            </>
-            :
-            <div className='w-full text-white text-center'>......please wait for a moment......</div>
+            </div>
+            <Image
+              onClick={() => handleSendMessage()}
+              className="hover:cursor-pointer"
+              width={48}
+              height={48}
+              src="/assets/send.png"
+              alt={'arc'}
+            />
+          </>
+          :
+          <div className='w-full py-2 rounded-xl bg-white text-base text-center'>Please wait! {activeBot.name} is writing...</div>
         }
-
       </div>
     </div>
   )

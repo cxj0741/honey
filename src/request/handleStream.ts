@@ -1,10 +1,9 @@
-import { saveDialog } from '@/request'
-
-const API_KEY = 'app-OlSUp08Ko1vxlaN50F010Mys'
+const API_KEY = 'app-z8egrB8DY8hRfoVxda1BPwMH'
 const AGENT_MESSAGE = 'agent_message'
 const AGENT_THOUGHT = 'agent_thought'
+const ERROR_FORMAT = 'ERROR_FORMAT'
 
-export async function sendMessage(userStr: string, timestamp: number, setResult: Function, botId: string) {
+export async function sendMessage(userStr: string, timestamp: number, setResult: Function) {
   setResult({timestamp, dialog:{ userStr, botStr: '' }})
   const data = {
     "inputs": {},
@@ -26,6 +25,7 @@ export async function sendMessage(userStr: string, timestamp: number, setResult:
   const reader = (res.body as ReadableStream).getReader();
   const decoder = new TextDecoder('utf-8');
   let botStr = ''
+  let image = ''
   async function handleStream() {
     const result = await reader.read()
     const { done, value } = result as { done: boolean, value: Uint8Array | undefined }
@@ -37,8 +37,14 @@ export async function sendMessage(userStr: string, timestamp: number, setResult:
       const chunk = decoder.decode(value, { stream: true })
       console.log('chunk', chunk)
       const dataList = chunk.trim().split('\n\n').map(item => {
-        return JSON.parse(item.slice(5))
-      })
+        try {
+          const obj = JSON.parse(item.slice(5))
+          return obj
+        } catch (error) {
+          return ERROR_FORMAT
+        }
+      }).filter(item => item !== ERROR_FORMAT)
+      console.log('dataList>>>>>', dataList)
       for (const item of dataList) {
         if(item.event === AGENT_MESSAGE){
           resultString += item.answer
@@ -48,7 +54,15 @@ export async function sendMessage(userStr: string, timestamp: number, setResult:
         }
         if(item.event === AGENT_THOUGHT && !item.thought){
           resultString = item.thought
-          setResult({timestamp, dialog:{ userStr, botStr: resultString }})
+          if(item.observation){
+            try {
+              const obj = JSON.parse(item.observation)
+              image =  JSON.parse(obj?.create_image_chat)?.image_url?.signedUrl
+            } catch (error) {
+              console.log('JSON parse error', error)
+            }
+          }
+          setResult({timestamp, dialog:{ userStr, botStr: resultString, image }})
           // console.log('AGENT THOUGHT>>>>> resultString', resultString)
           botStr = resultString
         }
@@ -58,5 +72,5 @@ export async function sendMessage(userStr: string, timestamp: number, setResult:
   }
   await handleStream()
   // console.log('generate botStr>>>>>>>>>>', botStr)
-  await saveDialog({ botId, timestamp, dialog:{ userStr, botStr }})
+  return botStr
 }
