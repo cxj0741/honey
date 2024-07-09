@@ -70,7 +70,7 @@ export default function PersonalCenter({ user }: { user: Record<string, any> }) 
             </div>
             <div className="px-8 py-6 border-t">
               <div className="pb-4 text-xl font-medium text-[rgba(255,255,255,0.64)]">Account Management</div>
-              <div onClick={() => { handleDeleteUser(user.id) }}
+              <div onClick={() => { handleDeleteUser() }}
                 className="w-[10.625rem] h-8 rounded-lg border border-[rgba(255,255,255,0.32)] flex items-center justify-center space-x-2 hover:cursor-pointer">
                 <div className="w-6 h-5 bg-center bg-no-repeat bg-contain" style={{ backgroundImage: 'url(/assets/card.png)' }}></div>
                 <div className='text-[rgba(255,255,255,0.64)]'>

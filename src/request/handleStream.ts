@@ -72,5 +72,5 @@ export async function sendMessage(userStr: string, timestamp: number, setResult:
   }
   await handleStream()
   // console.log('generate botStr>>>>>>>>>>', botStr)
-  return botStr
+  return [botStr, image]
 }

@@ -14,11 +14,11 @@ interface Props {
 export default function ChatMiddle({ fold, setFold, activeBot, setActiveBot }: Props) {
   const [chatArray, setChatArray] = useState([] as ({
     timestamp: number,
-    dialog: { userStr: string, botStr: string }
+    dialog: { userStr: string, botStr: string, image: string }
   })[])
   const [result, setResult] = useState({
     timestamp: 0,
-    dialog: { userStr: '', botStr: '' }
+    dialog: { userStr: '', botStr: '', image: '' }
   })
   const chatContainer = useRef(null)
   const changeArray = async () => {
@@ -42,14 +42,14 @@ export default function ChatMiddle({ fold, setFold, activeBot, setActiveBot }: P
     (inputRef!.current as any).value = ''
     const timestamp = Date.now()
     try {
-      const botStr = await sendMessage(userStr, timestamp, setResult)
-      console.log('succeed send message>>>>>', botStr)
+      const [botStr, image] = await sendMessage(userStr, timestamp, setResult)
+      console.log('succeed send message>>>>>', botStr, image)
       if (botStr) {
-        await saveDialog({ botId: activeBot.id, timestamp, dialog: { userStr, botStr } })
+        await saveDialog({ botId: activeBot.id, timestamp, dialog: { userStr, botStr, image } })
       }
     } catch (error) {
       console.log('fail send message>>>>>', error)
-      await saveDialog({ botId: activeBot.id, timestamp, dialog: { userStr, botStr: '' } })
+      await saveDialog({ botId: activeBot.id, timestamp, dialog: { userStr, botStr: '', image: '' } })
     }
     try {
       await changeArray()
@@ -58,7 +58,7 @@ export default function ChatMiddle({ fold, setFold, activeBot, setActiveBot }: P
     }
     setResult({
       timestamp: 0,
-      dialog: { userStr: '', botStr: '' }
+      dialog: { userStr: '', botStr: '', image: '' }
     })
     setInputShow(true)
   }
@@ -125,7 +125,7 @@ export default function ChatMiddle({ fold, setFold, activeBot, setActiveBot }: P
                 </div>
               </div>
             }
-            {item.dialog?.image &&
+            {item.dialog.image &&
               <div className="py-4 flex justify-start text-white bg-transparent">
                 <div
                   onClick={() => {
