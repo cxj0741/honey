@@ -1,23 +1,19 @@
-import Image from 'next/image'
+import { useRouter } from 'next/navigation'
 
 interface Props {
   dialogShow: boolean
   setDialogShow: Function
 }
 
-export default function SubscribeDialog({dialogShow,setDialogShow}:Props) {
+export default function SubscribeDialog({ dialogShow, setDialogShow }: Props) {
+  const router = useRouter()
   return (
     <dialog open={dialogShow} className="modal px-6 bg-[#1F1D1F]">
       <div className="modal-box w-full h-full p-4 rounded-3xl border-2 border-[rgba(255,255,255,0.16)] bg-right-top bg-cover relative flex flex-col justify-end"
         style={{ backgroundImage: 'url(../assets/becomePremiumDialogBg.png)', height: 'calc(100vh - 40vw)' }}>
-        <Image
-          onClick={() => setDialogShow(false)}
-          className='absolute top-0 right-0 hover:cursor-pointer'
-          width={56}
-          height={56}
-          src="/assets/close.png"
-          alt="avatar"
-        />
+        <div onClick={() => setDialogShow(false)} className="w-14 h-14 bg-center bg-contain bg-no-repeat absolute top-0 right-0 hover:cursor-pointer"
+          style={{ backgroundImage: "url(/assets/close.png)" }}
+        ></div>
         <div className='text-white'>
           <div className="text-2xl text-white">Upgrade To Unlock</div>
           <div className="mt-1 text-2xl text-[#ED5088]">Unlimited Messages</div>
@@ -28,13 +24,11 @@ export default function SubscribeDialog({dialogShow,setDialogShow}:Props) {
             <li className="text-sm flex items-center space-x-2"><span className='w-3 h-3 rounded-full bg-[#ED5088]'></span><span>Fast response time</span></li>
             <li className="text-sm flex items-center space-x-2"><span className='w-3 h-3 rounded-full bg-[#ED5088]'></span><span>More benefits coming soon</span></li>
           </ul>
-          <div className="mt-4 h-12 bg-[#ED5088] text-white rounded-lg flex items-center justify-center space-x-4 hover:cursor-pointer">
-            <Image
-              width={24}
-              height={24}
-              src="/assets/subscribe.png"
-              alt="avatar"
-            />
+          <div
+            onClick={() => router.push('/become-premium')} className="mt-4 h-12 bg-[#ED5088] text-white rounded-lg flex items-center justify-center space-x-4 hover:cursor-pointer">
+            <div className="w-6 h-6 bg-center bg-contain bg-no-repeat"
+              style={{ backgroundImage: "url(/assets/subscribe.png)" }}
+            ></div>
             <span>Become Premium</span>
           </div>
         </div>

@@ -4,9 +4,6 @@ import { useState } from 'react'
 
 export default function ProfileArea({ botList }: { botList: any[] }) {
   const router = useRouter()
-  // if (botList.length) {
-  //   botList = new Array(30).fill({ ...botList[0], active: false })
-  // }
   const [activeId, setActiveId] = useState(0)
   return (
     botList.length &&
@@ -19,7 +16,7 @@ export default function ProfileArea({ botList }: { botList: any[] }) {
           <Image
             onMouseEnter={() => setActiveId(item.id)}
             onMouseOut={() => setActiveId(0)}
-            onClick={() => { router.push(`/chat/${item.id}`) }}
+            onClick={() => { router.push(`/chat?botId=${item.id}`) }}
             className="rounded-[0.5rem] object-cover"
             layout="fill"
             objectFit='cover'

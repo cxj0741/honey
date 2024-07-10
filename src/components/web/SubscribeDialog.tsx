@@ -1,4 +1,4 @@
-import Image from 'next/image'
+import { useRouter } from 'next/navigation'
 
 interface Props {
   dialogShow: boolean
@@ -6,29 +6,18 @@ interface Props {
 }
 
 export default function SubscribeDialog({ dialogShow, setDialogShow }: Props) {
+  const router = useRouter()
   return (
-    <dialog open={dialogShow} className="modal bg-[#1F1D1F]">
-      <div className="modal-box w-[784px] h-[512px] max-w-[784px] p-8 rounded-3xl border-2 border-[rgba(255,255,255,0.16)] bg-center bg-cover relative"
+    <dialog open={dialogShow} className="modal bg-transparent">
+      <div className="modal-box w-[784px] max-w-[784px] p-8 rounded-3xl border-2 border-[rgba(255,255,255,0.16)] bg-center bg-cover relative"
         style={{ backgroundImage: 'url(../assets/becomePremiumDialogBg.png)' }}>
-        <Image
-          onClick={() => setDialogShow(false)}
-          className='absolute top-0 right-0 hover:cursor-pointer'
-          width={56}
-          height={56}
-          src="/assets/close.png"
-          alt="avatar"
-        />
+        <div onClick={() => setDialogShow(false)} className="w-14 h-14 bg-center bg-contain bg-no-repeat absolute top-0 right-0 hover:cursor-pointer"
+          style={{ backgroundImage: "url(/assets/close.png)" }}
+        ></div>
         <div className="text-white flex items-center">
-          {/* <div className="w-[300px] aspect-[3/4] rounded-lg"> */}
-          <Image
-            className="rounded-lg object-contain"
-            width={336}
-            height={448}
-            objectFit="contain"
-            src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg"
-            alt="avatar"
-          />
-          {/* </div> */}
+          <div className="w-[336px] h-[448px] bg-center bg-contain bg-no-repeat"
+            style={{ backgroundImage: "url(https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg)" }}
+          ></div>
           <div className="ml-8">
             <div className="text-3xl text-white">Upgrade To Unlock</div>
             <div className="mt-2 text-3xl text-[#ED5088]">Unlimited Messages</div>
@@ -39,13 +28,12 @@ export default function SubscribeDialog({ dialogShow, setDialogShow }: Props) {
               <li className="text-lg flex items-center space-x-2"><span className='w-3 h-3 rounded-full bg-[#ED5088]'></span><span>Fast response time</span></li>
               <li className="text-lg flex items-center space-x-2"><span className='w-3 h-3 rounded-full bg-[#ED5088]'></span><span>More benefits coming soon</span></li>
             </ul>
-            <div className="mt-[50px] w-[300px] h-[50px] bg-[#ED5088] text-white rounded-lg flex items-center justify-center space-x-4 hover:cursor-pointer">
-              <Image
-                width={24}
-                height={24}
-                src="/assets/subscribe.png"
-                alt="avatar"
-              />
+            <div
+              onClick={() => router.push('/become-premium')}
+              className="mt-[50px] w-[300px] h-[50px] bg-[#ED5088] text-white rounded-lg flex items-center justify-center space-x-4 hover:cursor-pointer">
+              <div className="w-6 h-6 bg-center bg-contain bg-no-repeat"
+                style={{ backgroundImage: "url(/assets/subscribe.png)" }}
+              ></div>
               <span>Become Premium</span>
             </div>
           </div>

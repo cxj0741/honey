@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { db } from '@/server/db'
-import { chats } from '@/server/db/schema'
+import { chats, users } from '@/server/db/schema'
 import { getUserId } from '@/utils/getUserId'
+import { sql } from 'drizzle-orm/sql'
 
 async function streamToArrayBuffer(stream: ReadableStream) {
   const reader = stream.getReader()
@@ -30,37 +31,16 @@ export async function POST(request: NextRequest) {
   const text = new TextDecoder('utf-8').decode(arrayBuffer)
   const body: {botId:string, timestamp:number, dialog:Record<string,any>} = JSON.parse(text)
   const { botId, timestamp, dialog } = body
-
   await db
     .insert(chats)
     .values({ userId, botId, timestamp, dialog: JSON.stringify(dialog) })
-  return NextResponse.json({ message: 'save dialog success!' })
-}
 
-/**
-export async function POST(request: NextRequest) {
-  const userId = await getUserId()
-  // console.log(
-  //   '------saveDialog request------',
-  //   request.body instanceof ReadableStream
-  // )
-  if(!request.body){
-    return NextResponse.json({message: 'empty!'})
+  const [user] = await db.select().from(users).where(sql`${users.id} = ${userId}`)
+  if((user.messages as number) > 0){
+    await db.update(users).set({messages: (user.messages as number) - 1}).where(sql`${users.id} = ${userId}`)
   }
-  const arrayBuffer = await streamToArrayBuffer(request.body as ReadableStream);
-  const text = new TextDecoder('utf-8').decode(arrayBuffer);
-  const body = JSON.parse(text);
-  const { botId, timestamp, dialog } = body
-  // console.log(
-  //   '------body------',
-  //   userId,
-  //   botId,
-  //   timestamp,
-  //   JSON.stringify(dialog)
-  // )
-  await db
-    .insert(chats)
-    .values({ userId, botId, timestamp, dialog: JSON.stringify(dialog) })
+  if(dialog.image && (user.tokens as number) > 0){
+    await db.update(users).set({messages: (user.tokens as number) - 2}).where(sql`${users.id} = ${userId}`)
+  }
   return NextResponse.json({ message: 'save dialog success!' })
 }
- */

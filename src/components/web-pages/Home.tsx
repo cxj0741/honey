@@ -1,9 +1,7 @@
 'use client'
-// import Image from 'next/image'
 import ProfileArea from '@/components/web/ProfileArea'
 import { useEffect, useState } from 'react'
 import { TYPE, getBots } from '@/request'
-
 export default function Home() {
   const [type, setType] = useState(TYPE.FEMALE)
   const [botList, setbotList] = useState([])
@@ -39,7 +37,6 @@ export default function Home() {
             </div>
           </div>
         </div>
-
         <div
           className="flex justify-center overflow-auto"
           style={{ maxHeight: 'calc(100vh - 76px)' }}

@@ -70,9 +70,9 @@ export async function saveDialog(postData: Record<string, any>) {
 
 export async function deleteUser() {
   const res = await fetch(`${baseURL}/api/deleteUser`)
-  console.log('res>>>>>', res)
+  // console.log('res>>>>>', res)
   const data = await res.json()
-  console.log('data>>>>>', data)
+  // console.log('data>>>>>', data)
   return data
 }
 
@@ -80,8 +80,24 @@ export async function setConversationId(id: string, conversationId: string) {
   const res = await fetch(
     `${baseURL}/api/setConversationId?id=${id}&conversationId=${conversationId}`
   )
-  console.log('res>>>>>', res)
+  // console.log('res>>>>>', res)
   const data = await res.json()
-  console.log('data>>>>>', data)
+  // console.log('data>>>>>', data)
+  return data
+}
+
+export async function getUserInfo() {
+  const res = await fetch(`${baseURL}/api/getUserInfo`)
+  const data = await res.json()
+  console.log('data>>>>> userData', data)
+  return data
+}
+
+export async function changeUserInfo(name: string, str: string) {
+  const res = await fetch(
+    `${baseURL}/api/changeUserInfo?name=${name}&str=${str}`
+  )
+  const data = await res.json()
+  // console.log('data>>>>> userData', data)
   return data
 }

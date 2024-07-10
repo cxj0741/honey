@@ -1,8 +1,9 @@
 import { useEffect, useState, useRef } from 'react'
 import { sendMessage } from '@/request/handleStream'
-import { deleteBotDialogs, getDialogs, saveDialog, setConversationId } from '@/request'
+import { deleteBotDialogs, getDialogs, getUserInfo, saveDialog, setConversationId } from '@/request'
 import { formatUnixTimestamp } from '@/utils/formatUnixTimestamp'
-import ConfirmDialog from './ConfirmDialog'
+import SubscribeDialog from '@/components/web/SubscribeDialog'
+import ConfirmDialog from '@/components/web/ConfirmDialog'
 import { useSession } from 'next-auth/react'
 
 interface Props {
@@ -38,12 +39,25 @@ export default function ChatMiddle({ fold, setFold, activeBot, setActiveBot }: P
   const inputRef = useRef(null)
   const [inputShow, setInputShow] = useState(true)
   const session = useSession()
+  const [dialogShow, setDialogShow] = useState(false)
   const handleSendMessage = async () => {
     const userStr = (inputRef?.current as any)?.value.trim() || ''
     if (!userStr) { return }
+
+    const { messages, tokens } = await getUserInfo()
+    console.log('messages, tokens', messages, tokens)
+    if (messages <= 0) {
+      setDialogShow(true)
+      return
+    }
+    if (tokens <= 0) {
+      console.log('tokens', tokens)
+    }
+
     setInputShow(false);
     (inputRef!.current as any).value = ''
     const timestamp = Date.now()
+
     try {
       const [botStr, image, conversationId] = await sendMessage({ user: (session.data?.user as any)?.id, userStr, conversationId: localStorage.getItem(activeBot.id) || '' }, timestamp, setResult)
       console.log('succeed send message>>>>> set', botStr, image, conversationId)
@@ -59,11 +73,13 @@ export default function ChatMiddle({ fold, setFold, activeBot, setActiveBot }: P
       console.log('fail send message>>>>>', error)
       await saveDialog({ botId: activeBot.id, timestamp, dialog: { userStr, botStr: '', image: '' } })
     }
+
     try {
       await changeArray()
     } catch (error) {
       setTimeout(async () => { await changeArray() }, 3000)
     }
+
     setResult({
       timestamp: 0,
       dialog: { userStr: '', botStr: '', image: '' }
@@ -75,7 +91,6 @@ export default function ChatMiddle({ fold, setFold, activeBot, setActiveBot }: P
       handleSendMessage()
     }
   }
-
 
   const [open, setOpen] = useState(false)
   const deleteDialogs = async () => {
@@ -92,10 +107,8 @@ export default function ChatMiddle({ fold, setFold, activeBot, setActiveBot }: P
     } catch (error) {
       console.error('handleConfirm error', error)
     }
-    // finally {
-    //   setOpen(false)
-    // }
   }
+
   return (
     <>
       <div className="flex-[3] bg-[#1F1D1F] relative">
@@ -149,11 +162,10 @@ export default function ChatMiddle({ fold, setFold, activeBot, setActiveBot }: P
               {item.dialog.image &&
                 <div className="py-4 flex justify-start text-white bg-transparent">
                   <div
-                    onClick={() => {
-                    }}
-                    className={`w-[300px] h-[400px] aspect-[3/4] rounded-3xl border-8 border-[#F36C9C] bg-center bg-cover bg-no-repeat`} style={{
-                      backgroundImage: `url(${item.dialog.image})`
-                    }}>
+                    onClick={() => window.open(`${item.dialog.image}`, '_blank')}
+                    // className={`w-[300px] h-[400px] aspect-[3/4] rounded-2xl border-8 border-[#F36C9C] bg-center bg-cover bg-no-repeat`} 
+                    className={`w-[300px] h-[400px] aspect-[3/4] rounded-xl bg-top bg-cover bg-no-repeat`}
+                    style={{ backgroundImage: `url(${item.dialog.image})` }}>
                   </div>
                 </div>
               }
@@ -244,6 +256,7 @@ export default function ChatMiddle({ fold, setFold, activeBot, setActiveBot }: P
           }
         </div>
       </div>
+      <SubscribeDialog dialogShow={dialogShow} setDialogShow={setDialogShow} />
       <ConfirmDialog title={'Are you sure you want to refresh dialogs?'} open={open} setOpen={setOpen} handleConfirm={() => handleConfirm()} />
     </>
   )

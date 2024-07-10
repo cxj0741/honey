@@ -55,8 +55,7 @@ export default async function Chat({ searchParams }: { searchParams: Record<stri
       userBotArray.push(bot)
     }
 
-    return isMobile() ? <H5Chat /> : <WebChat userBotArray={userBotArray} botId={id} />
-    // return isMobile() ? <H5Chat {...(bot[0])} /> : <WebChat {...(bot[0])} />
+    return isMobile() ? <H5Chat userBotArray={userBotArray} botId={id}  /> : <WebChat userBotArray={userBotArray} botId={id} />
   } else {
     redirect('/')
   }

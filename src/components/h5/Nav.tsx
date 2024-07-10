@@ -1,4 +1,5 @@
 'use client'
+import { signIn } from 'next-auth/react'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
@@ -81,7 +82,9 @@ export default function Nav() {
             :
 
             <div className="flex items-center space-x-2 text-sm">
-              <div className="w-[5rem] h-[1.75rem] px-6 py-2 border border-[#ED5088] rounded-lg text-[#ED5088] flex items-center justify-center">
+              <div
+                onClick={() => signIn('google')}
+                className="w-[5rem] h-[1.75rem] px-6 py-2 border border-[#ED5088] rounded-lg text-[#ED5088] flex items-center justify-center">
                 Login
               </div>
               <div className="w-[5rem] h-[1.75rem] px-6 py-2 border border-[#ED5088] bg-[#ED5088] rounded-lg text-white flex items-center justify-center">

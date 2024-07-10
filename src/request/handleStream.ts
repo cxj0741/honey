@@ -1,5 +1,5 @@
 const API_KEY = 'app-z8egrB8DY8hRfoVxda1BPwMH'
-const AGENT_MESSAGE = 'agent_message'
+// const AGENT_MESSAGE = 'agent_message'
 const AGENT_THOUGHT = 'agent_thought'
 const ERROR_FORMAT = 'ERROR_FORMAT'
 
@@ -35,7 +35,6 @@ export async function sendMessage(userInfo: {userStr:string, conversationId:stri
       // console.log('----------stream finished----------')
       return
     } else {
-      let resultString =''
       const chunk = decoder.decode(value, { stream: true })
       console.log('chunk', chunk)
       const dataList = chunk.trim().split('\n\n').map(item => {
@@ -45,20 +44,13 @@ export async function sendMessage(userInfo: {userStr:string, conversationId:stri
         } catch (error) {
           return ERROR_FORMAT
         }
-      }).filter(item => item !== ERROR_FORMAT)
+      }).filter(item => item.event === AGENT_THOUGHT)
       console.log('dataList>>>>>', dataList)
       for (const item of dataList) {
         if(!conversationId && item.conversation_id){
           conversationId = item.conversation_id
         }
-        if(item.event === AGENT_MESSAGE){
-          resultString += item.answer
-          setResult({timestamp, dialog:{ userStr, botStr: resultString }})
-          // console.log('AGENT MESSAGE>>>>> resultString', resultString)
-          botStr = resultString
-        }
-        if(item.event === AGENT_THOUGHT && !item.thought){
-          resultString = item.thought
+        if(item.thought){
           if(item.observation){
             try {
               const obj = JSON.parse(item.observation)
@@ -67,15 +59,13 @@ export async function sendMessage(userInfo: {userStr:string, conversationId:stri
               console.log('JSON parse error', error)
             }
           }
-          setResult({timestamp, dialog:{ userStr, botStr: resultString, image }})
-          // console.log('AGENT THOUGHT>>>>> resultString', resultString)
-          botStr = resultString
+          setResult({timestamp, dialog:{ userStr, botStr: item.thought, image }})
+          botStr = item.thought
         }
       }
       await handleStream()
     }
   }
   await handleStream()
-  // console.log('generate botStr>>>>>>>>>>', botStr)
   return [botStr, image, conversationId]
 }

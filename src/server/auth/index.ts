@@ -4,7 +4,7 @@ import { Adapter } from 'next-auth/adapters'
 import NextAuth, { AuthOptions } from 'next-auth'
 
 import { DrizzleAdapter } from "@auth/drizzle-adapter"
-import { db } from "@/server/db";
+import { db } from "@/server/db"
 import sha256 from 'crypto-js/sha256'
 
 export const authOptions: AuthOptions = {
@@ -13,13 +13,13 @@ export const authOptions: AuthOptions = {
   },
   adapter: DrizzleAdapter(db)  as (Adapter | undefined),
   callbacks: {
-    // async signIn(...args) {
-    //   console.log('sign in args', args)
-    //   return true
-    // },
+    async signIn(...args) {
+      console.log('sign in args', args)
+      return true
+    },
     async session({ session, token }) {
-      // console.log('>>>>>session>>>>>',session)
-      // console.log('>>>>>token>>>>>',token)
+      console.log('>>>>>session>>>>>',session)
+      console.log('>>>>>token>>>>>',token)
       if (session && session.user && token && token.sub) {
         (session.user as any).id = token.sub;
       }
