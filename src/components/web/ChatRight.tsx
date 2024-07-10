@@ -1,4 +1,3 @@
-import Image from 'next/image'
 import { useState } from 'react'
 
 const info1 = [
@@ -24,12 +23,10 @@ function Item({
   return (
     <>
       <div className="flex items-center">
-        <Image
-          width={24}
-          height={24}
-          src={`/assets/attributes/${img}.png`}
-          alt={'avatar'}
-        />
+        <div
+          className="w-6 h-6 bg-center bg-contain bg-no-repeat"
+          style={{ backgroundImage: `url(/assets/attributes/${img}.png)` }}
+        ></div>
         <span className="ml-1 text-xs text-[rgba(255,255,255,0.64)]">
           {name.toUpperCase()}
         </span>
@@ -43,30 +40,23 @@ export default function ChatRight({ fold, activeBot }: { fold: boolean, activeBo
   const [index, setIndex] = useState(0)
   return (
     <div
-      className={`flex-1 max-w-[340px] min-w-[270px] h-full overflow-y-scroll bg-[#121112] ${fold ? 'hidden' : 'block'
-        }`}
+      className={`flex-1 max-w-[340px] min-w-[270px] h-full overflow-y-scroll bg-[#121112] ${fold ? 'hidden' : 'block'}`}
     >
       <div className="w-full aspect-[3/5] relative bg-center bg-cover bg-no-repeat" style={{ backgroundImage: `url(${(index == 0 ? activeBot.image1 : activeBot.image2)})` }}>
         <div
           className="absolute w-full px-4 flex justify-between"
           style={{ top: '50%', transform: 'translateY(-50)' }}
         >
-          <Image
+          <div
             onClick={() => setIndex(Math.abs((index - 1) % 2))}
-            className='hover:cursor-pointer'
-            width={32}
-            height={32}
-            src="/assets/attributes/arrowLeft.png"
-            alt={'arrowLeft'}
-          />
-          <Image
+            className="w-8 h-8 bg-center bg-contain bg-no-repeat hover:cursor-pointer"
+            style={{ backgroundImage: "url(/assets/attributes/arrowLeft.png)" }}
+          ></div>
+          <div
             onClick={() => setIndex(Math.abs((index + 1) % 2))}
-            className='hover:cursor-pointer'
-            width={32}
-            height={32}
-            src="/assets/attributes/arrowRight.png"
-            alt={'arrowRight'}
-          />
+            className="w-8 h-8 bg-center bg-contain bg-no-repeat hover:cursor-pointer"
+            style={{ backgroundImage: "url(/assets/attributes/arrowRight.png)" }}
+          ></div>
         </div>
       </div>
       <div className="text-white p-4 space-y-4">

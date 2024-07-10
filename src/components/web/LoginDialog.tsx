@@ -18,14 +18,19 @@ export default function LoginDialog({ type, setType, dialogShow, setDialogShow }
     <dialog open={dialogShow} className="modal bg-[#121112]">
       <div className="modal-box w-[810px] max-w-[810px] bg-slate-900 rounded-lg p-0 flex relative">
         <div className="absolute top-4 right-4 text-white font-bold hover:cursor-pointer" onClick={() => { setDialogShow(false) }}>X</div>
-        <div className="w-1/2 aspect-[3/4] rounded-lg relative">
-          <Image
+        {/* <div className="w-1/2 aspect-[3/4] rounded-lg relative bg-cover bg-center bg-no-repeat"
+          style={{ backgroundImage: 'url(https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg)' }}
+        > */}
+        <div className="w-300px] h-[400px] rounded-lg relative bg-cover bg-center bg-no-repeat"
+          style={{ backgroundImage: 'url(https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg)' }}
+        >
+          {/* <Image
             className='object-cover'
             layout="fill"
             objectFit="cover"
             src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg"
             alt={'avatar'}
-          />
+          /> */}
           <div className="absolute bottom-10 w-full flex flex-col items-center">
             <div className="flex items-center space-x-2 p-2 bg-slate-400 rounded-lg">
               <div className="text-red-500">ICON</div>

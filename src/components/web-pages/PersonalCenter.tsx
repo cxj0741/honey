@@ -29,6 +29,7 @@ export default function PersonalCenter({ user, orderArray }: { user: Record<stri
   const handleDeleteUser = async () => {
     await deleteUser()
     await signOut()
+    // 为什么这里跳转失败
     router.push('/')
   }
   const [open, setOpen] = useState(false)
