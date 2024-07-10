@@ -4,7 +4,7 @@ import { useRouter, usePathname } from 'next/navigation'
 import LoginDialog from './LoginDialog'
 import { ACCOUNT } from '@/utils'
 // 获取jwt信息
-import { useSession } from 'next-auth/react'
+import { signIn, useSession } from 'next-auth/react'
 import Link from 'next/link'
 
 function formatURL(title: string) {
@@ -68,7 +68,7 @@ export default function LeftNav() {
 
   return (
     <>
-      <div className={` ${fold ? 'w-[90px]' : 'w-[220px]'}`}>
+      <div className={` ${fold ? 'w-[90px]' : 'w-[240px]'}`}>
         <div className="w-full h-full py-3 border-r border-[#363636] flex flex-col">
           <div className="px-3 flex-1 flex flex-col">
             <div className="h-16 flex items-center justify-center">
@@ -140,14 +140,13 @@ export default function LeftNav() {
                       className="w-full h-10 border border-[#ED5088] rounded-lg text-[#ED5088] flex items-center justify-center hover:cursor-pointer">
                       Login
                     </Link>
-                    {/* <div
-                    onClick={() => {
-                      setType(ACCOUNT.SIGN_UP)
-                      setDialogShow(true)
-                    }}
-                    className="w-full h-10 border border-[#ED5088] bg-[#ED5088] rounded-lg text-white flex items-center justify-center hover:cursor-pointer">
-                    Register
-                  </div> */}
+                    <div
+                      onClick={() => {
+                        signIn('google')
+                      }}
+                      className="w-full h-10 border border-[#ED5088] bg-[#ED5088] rounded-lg text-white flex items-center justify-center hover:cursor-pointer">
+                      Register
+                    </div>
                   </>
                 )}
             </div>
