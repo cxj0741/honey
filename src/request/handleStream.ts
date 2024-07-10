@@ -3,13 +3,15 @@ const AGENT_MESSAGE = 'agent_message'
 const AGENT_THOUGHT = 'agent_thought'
 const ERROR_FORMAT = 'ERROR_FORMAT'
 
-export async function sendMessage(userStr: string, timestamp: number, setResult: Function) {
-  setResult({timestamp, dialog:{ userStr, botStr: '' }})
+export async function sendMessage(userInfo: {userStr:string, conversationId:string, user:string}, timestamp: number, setResult: Function) {
+  let {userStr, conversationId, user}= userInfo
+  setResult({timestamp, dialog: { userStr, botStr: '' }})
   const data = {
-    "inputs": {},
-    "query": userStr,
-    "response_mode": "streaming",
-    "user": "abc-123",
+    query: userStr,
+    conversation_id:conversationId,
+    user,
+    inputs: {},
+    response_mode: "streaming",
   }
   const res = await fetch('https://aiagent.marsyoo.com/v1/chat-messages', {
     method: 'POST',
@@ -46,6 +48,9 @@ export async function sendMessage(userStr: string, timestamp: number, setResult:
       }).filter(item => item !== ERROR_FORMAT)
       console.log('dataList>>>>>', dataList)
       for (const item of dataList) {
+        if(!conversationId && item.conversation_id){
+          conversationId = item.conversation_id
+        }
         if(item.event === AGENT_MESSAGE){
           resultString += item.answer
           setResult({timestamp, dialog:{ userStr, botStr: resultString }})
@@ -72,5 +77,5 @@ export async function sendMessage(userStr: string, timestamp: number, setResult:
   }
   await handleStream()
   // console.log('generate botStr>>>>>>>>>>', botStr)
-  return [botStr, image]
+  return [botStr, image, conversationId]
 }

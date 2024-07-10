@@ -35,7 +35,8 @@ export const users = pgTable("user", {
   userId: serial('user_id'),
   hashPassword: text('hash_password').notNull().default(''),
   isVIP: boolean('is_vip').default(false),
-  tokens: integer('tokens').default(0),
+  messages: integer('messages').default(10),
+  tokens: integer('tokens').default(5),
   createdAt: timestamp('created_at', { mode: 'date' }).defaultNow(),
   updatedAt: timestamp('updated_at', { mode: 'date' }).defaultNow(),
 })
@@ -155,6 +156,7 @@ export const usersToBots = pgTable(
     userId: text("user_id").notNull().references(() => users.id,{ onDelete: "cascade" } ),
     botId: text("bot_id").notNull().references(() => bots.id),
     timestamp: bigint('timestamp', { mode: 'number'}).notNull(),
+    conversationId: text('conversation_id').default(''),
   },
   (t)=>({
     pk: primaryKey({columns:[t.userId, t.botId]})

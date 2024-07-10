@@ -1,30 +1,16 @@
-import { deleteBotDialogs, deleteUserBot, getUserToBotDetail } from '@/request'
-import { formatUnixTimestamp } from '@/utils/formatUnixTimestamp'
+import { deleteBotDialogs, deleteUserBot } from '@/request'
 import { useRouter } from 'next/navigation'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import ConfirmDialog from './ConfirmDialog'
 interface Props {
   activeBot: Record<string, any>
   setActiveBot: Function
   currentArray: Record<string, any>[]
   setCurrentArray: Function
+  time: string
 }
-export default function ChatLeft({ activeBot, setActiveBot, currentArray, setCurrentArray }: Props) {
+export default function ChatLeft({ activeBot, setActiveBot, currentArray, setCurrentArray, time }: Props) {
   const router = useRouter()
-  // 获取对话起始时间
-  const [time, setTime] = useState('00:00')
-  const getDetail = async () => {
-    try {
-      const { timestamp } = await getUserToBotDetail(activeBot.id)
-      setTime(formatUnixTimestamp(timestamp))
-    } catch (error) {
-      console.error('getDetail error', error)
-    }
-  }
-  useEffect(() => {
-    getDetail()
-  })
-
   const [open, setOpen] = useState(false)
   const [action, setAction] = useState('')
   const [title, setTitle] = useState('')

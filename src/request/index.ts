@@ -75,3 +75,13 @@ export async function deleteUser() {
   console.log('data>>>>>', data)
   return data
 }
+
+export async function setConversationId(id: string, conversationId: string) {
+  const res = await fetch(
+    `${baseURL}/api/setConversationId?id=${id}&conversationId=${conversationId}`
+  )
+  console.log('res>>>>>', res)
+  const data = await res.json()
+  console.log('data>>>>>', data)
+  return data
+}

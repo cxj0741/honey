@@ -1,8 +1,9 @@
 import { useEffect, useState, useRef } from 'react'
 import { sendMessage } from '@/request/handleStream'
-import { deleteBotDialogs, getDialogs, saveDialog } from '@/request'
+import { deleteBotDialogs, getDialogs, saveDialog, setConversationId } from '@/request'
 import { formatUnixTimestamp } from '@/utils/formatUnixTimestamp'
 import ConfirmDialog from './ConfirmDialog'
+import { useSession } from 'next-auth/react'
 
 interface Props {
   fold: boolean
@@ -36,6 +37,7 @@ export default function ChatMiddle({ fold, setFold, activeBot, setActiveBot }: P
   }, [activeBot])
   const inputRef = useRef(null)
   const [inputShow, setInputShow] = useState(true)
+  const session = useSession()
   const handleSendMessage = async () => {
     const userStr = (inputRef?.current as any)?.value.trim() || ''
     if (!userStr) { return }
@@ -43,10 +45,14 @@ export default function ChatMiddle({ fold, setFold, activeBot, setActiveBot }: P
     (inputRef!.current as any).value = ''
     const timestamp = Date.now()
     try {
-      const [botStr, image] = await sendMessage(userStr, timestamp, setResult)
-      console.log('succeed send message>>>>>', botStr, image)
+      const [botStr, image, conversationId] = await sendMessage({ user: (session.data?.user as any)?.id, userStr, conversationId: localStorage.getItem('conversationId') || '' }, timestamp, setResult)
+      console.log('succeed send message>>>>>', botStr, image, conversationId)
+      if (!localStorage.getItem('conversationId')) {
+        localStorage.setItem('conversationId', conversationId)
+        await setConversationId(activeBot.id, conversationId)
+      }
       if (botStr) {
-        await saveDialog({ botId: activeBot.id, timestamp, dialog: { userStr, botStr, image } })
+        await saveDialog({ botId: activeBot.id, timestamp, dialog: { userStr, botStr, image }, })
       }
     } catch (error) {
       console.log('fail send message>>>>>', error)
