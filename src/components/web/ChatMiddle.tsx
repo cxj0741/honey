@@ -45,10 +45,11 @@ export default function ChatMiddle({ fold, setFold, activeBot, setActiveBot }: P
     (inputRef!.current as any).value = ''
     const timestamp = Date.now()
     try {
-      const [botStr, image, conversationId] = await sendMessage({ user: (session.data?.user as any)?.id, userStr, conversationId: localStorage.getItem('conversationId') || '' }, timestamp, setResult)
-      console.log('succeed send message>>>>>', botStr, image, conversationId)
-      if (!localStorage.getItem('conversationId')) {
-        localStorage.setItem('conversationId', conversationId)
+      const [botStr, image, conversationId] = await sendMessage({ user: (session.data?.user as any)?.id, userStr, conversationId: localStorage.getItem(activeBot.id) || '' }, timestamp, setResult)
+      console.log('succeed send message>>>>> set', botStr, image, conversationId)
+      console.log('conversationId>>>>> set', activeBot.id, conversationId)
+      if (!localStorage.getItem(activeBot.id)) {
+        localStorage.setItem(activeBot.id, conversationId)
         await setConversationId(activeBot.id, conversationId)
       }
       if (botStr) {

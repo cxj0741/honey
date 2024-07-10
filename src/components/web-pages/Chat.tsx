@@ -19,8 +19,9 @@ export default function Chat({ userBotArray, botId }: { userBotArray: Record<str
     try {
       const { timestamp, conservationId } = await getUserToBotDetail(activeBot.id)
       setTime(formatUnixTimestamp(timestamp))
+      console.log('conservationId>>>>>>get', activeBot.id, conservationId)
       if (conservationId) {
-        localStorage.setItem('conservationId', conservationId)
+        localStorage.setItem(activeBot.id, conservationId)
       }
     } catch (error) {
       console.error('getDetail error', error)
@@ -28,7 +29,8 @@ export default function Chat({ userBotArray, botId }: { userBotArray: Record<str
   }
   useEffect(() => {
     getDetail()
-  })
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [activeBot])
 
   return (
     <>
