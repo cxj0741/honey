@@ -2,10 +2,11 @@ import CredentialsProvider from "next-auth/providers/credentials"
 import GoogleProvider from "next-auth/providers/google"
 import { Adapter } from 'next-auth/adapters'
 import NextAuth, { AuthOptions } from 'next-auth'
-
 import { DrizzleAdapter } from "@auth/drizzle-adapter"
 import { db } from "@/server/db"
 import sha256 from 'crypto-js/sha256'
+import { users } from '@/server/db/schema'
+import { sql } from 'drizzle-orm/sql'
 
 export const authOptions: AuthOptions = {
   session: {
@@ -13,15 +14,13 @@ export const authOptions: AuthOptions = {
   },
   adapter: DrizzleAdapter(db)  as (Adapter | undefined),
   callbacks: {
-    async signIn(...args) {
-      console.log('sign in args', args)
-      return true
-    },
     async session({ session, token }) {
-      console.log('>>>>>session>>>>>',session)
-      console.log('>>>>>token>>>>>',token)
-      if (session && session.user && token && token.sub) {
-        (session.user as any).id = token.sub;
+      const [user] = await db.select().from(users).where(sql`${users.id} = ${token.sub}`)
+      if (session && session.user) {
+        (session.user as any).id = user.id;
+        (session.user as any).name = user.name;
+        (session.user as any).image = user.image;
+        (session.user as any).email = user.email;
       }
       return session;
     },
@@ -40,26 +39,30 @@ export const authOptions: AuthOptions = {
       },
       async authorize(credentials, req) {
         if (!credentials) return null
-
         let {email, password} = credentials
         if(!email || !password) return null
 
-        const user = await db.query.users.findFirst({
-          // where: ((users, { eq, and }) => and(eq(users.email, email), eq(users.hashPassword, sha256(password).toString()))),
-          where: ((users, { eq }) => eq(users.email, email)),
-        })
+        const [user] = await db
+        .select()
+        .from(users)
+        .where(sql`${users.email} = ${email}`)
 
-        if(user?.hashPassword === sha256(password).toString()){
-          return user
+        if(!user) {return null} //没有用户
+        const hashPassword = sha256(password).toString()
+        if(user.hashPassword === ''){
+          await db.update(users).set({hashPassword}).where(sql`${users.email} = ${email}`)
+          return {...user, hashPassword}
         }
-
-        return null
+        // if(user.hashPassword === password){
+        //   return user
+        // }
+        if(user.hashPassword !== hashPassword){
+          return null
+        }
+        return user
       },
     }),
   ],
-  // pages:{
-  //   signIn: '/src/app/auth/signin'
-  // }
 }
 
 export const handler = NextAuth(authOptions)

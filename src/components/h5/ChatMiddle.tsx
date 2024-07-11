@@ -208,26 +208,22 @@ export default function ChatMiddle({ setPart, activeBot }: Props) {
                     tabIndex={0}
                     className="text-white flex items-center justify-between"
                   >
-                    <div
-                      className="w-4 h-5 bg-center bg-contain bg-no-repeat"
+                    <div className="w-4 h-5 bg-center bg-contain bg-no-repeat"
                       style={{ backgroundImage: "url(/assets/ask.png)" }}
                     ></div>
                     <span>Ask</span>
-                    <div
-                      className="w-3 h-3 bg-center bg-contain bg-no-repeat"
+                    <div className="w-3 h-3 bg-center bg-contain bg-no-repeat"
                       // className="w-3 h-3 bg-center bg-contain bg-no-repeat hover:cursor-pointer"
                       style={{ backgroundImage: "url(/assets/arrowDown.png)" }}
                     ></div>
                   </div>
-                  <ul
-                    tabIndex={0}
+                  <ul tabIndex={0}
                     className="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow"
-                  >
-                    {['Show me...', 'Send me...', 'Can I see...'].map((item) => (
-                      <li key={item}>
-                        <a>{item}</a>
-                      </li>
-                    ))}
+                  >{['Show me...', 'Send me...', 'Can I see...'].map((item) => (
+                    <li key={item}>
+                      <a>{item}</a>
+                    </li>
+                  ))}
                   </ul>
                 </div>
               </div>

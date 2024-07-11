@@ -3,9 +3,8 @@ import { useState, useEffect } from 'react'
 import { useRouter, usePathname } from 'next/navigation'
 import LoginDialog from './LoginDialog'
 import { ACCOUNT } from '@/utils'
-// 获取jwt信息
-import { signIn, useSession } from 'next-auth/react'
-import Link from 'next/link'
+// 获取session信息
+import { signOut, useSession } from 'next-auth/react'
 
 function formatURL(title: string) {
   const url = `/${title.toLocaleLowerCase().split(' ').join('-')}`
@@ -106,12 +105,10 @@ export default function LeftNav() {
                 // 获取到有限的session信息
                 session.status === 'authenticated' ? (
                   <>
-                    <div
-                      onClick={() => router.push('/personal-center')}
-                      className={`flex items-center space-x-4 text-white hover:cursor-pointer ${fold ? 'justify-center' : 'justify-start'
-                        }`}
+                    <div onClick={() => router.push('/personal-center')}
+                      className={`flex items-center space-x-4 text-white hover:cursor-pointer ${fold ? 'justify-center' : 'justify-start'}`}
                     >
-                      <div className="w-10 h-10 rounded-full bg-center bg-contain bg-no-repeat" style={{ backgroundImage: `url(${session?.data?.user?.image})` }}></div>
+                      <div className="w-10 h-10 rounded-full bg-center bg-contain bg-no-repeat bg-sky-800" style={{ backgroundImage: `url(${session?.data?.user?.image})` }}></div>
                       <div className={`flex-1 ${fold ? 'hidden' : 'block'}`}>{session?.data?.user?.name}</div>
                     </div>
                     <div
@@ -123,26 +120,26 @@ export default function LeftNav() {
                       <div className="text-white text-center">999</div>
                       <div className="w-6 h-6 bg-center bg-contain bg-no-repeat" style={{ backgroundImage: 'url(/assets/plus.png)' }}></div>
                     </div>
-                    <Link
-                      href='/api/auth/signout'
-                      className="w-full h-10 border border-black rounded-lg text-[#ED5088] flex items-center justify-center hover:cursor-pointer">
+                    <div
+                      onClick={() => signOut({ callbackUrl: '/' })}
+                      className="w-full h-10 border border-transparent rounded-lg text-[#ED5088] flex items-center justify-center hover:cursor-pointer">
                       Logout
-                    </Link>
+                    </div>
                   </>
                 ) : (
                   <>
-                    <Link
-                      // onClick={() => {
-                      //   setType(ACCOUNT.SIGN_IN)
-                      //   setDialogShow(true)
-                      // }}
-                      href="/api/auth/signin"
-                      className="w-full h-10 border border-[#ED5088] rounded-lg text-[#ED5088] flex items-center justify-center hover:cursor-pointer">
-                      Login
-                    </Link>
                     <div
                       onClick={() => {
-                        signIn('google')
+                        setType(ACCOUNT.SIGN_IN)
+                        setDialogShow(true)
+                      }}
+                      className="w-full h-10 border border-[#ED5088] rounded-lg text-[#ED5088] flex items-center justify-center hover:cursor-pointer">
+                      Login
+                    </div>
+                    <div
+                      onClick={() => {
+                        setType(ACCOUNT.SIGN_UP)
+                        setDialogShow(true)
                       }}
                       className="w-full h-10 border border-[#ED5088] bg-[#ED5088] rounded-lg text-white flex items-center justify-center hover:cursor-pointer">
                       Register

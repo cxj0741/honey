@@ -1,6 +1,6 @@
 'use client'
 import { changeUserInfo, deleteUser } from '@/request'
-import { signOut } from 'next-auth/react'
+import { signOut, useSession, getSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import { useRef, useState } from 'react'
 import ConfirmDialog from '@/components/web/ConfirmDialog'
@@ -24,47 +24,16 @@ const info = [
   // { name: 'Tokens', value: 'tokens' },
 ]
 
-interface Props {
-  dialogShow: boolean
-  setDialogShow: Function
-  name: string
-}
-
-function InfoDialog({ dialogShow, setDialogShow, name }: Props) {
-  const inputRef = useRef(null)
-  const handleConfirm = async () => {
-    const str = (inputRef?.current as any)?.value.trim() || ''
-    if (!str) { return }
-    setDialogShow(false);
-    (inputRef!.current as any).value = ''
-    await changeUserInfo(name.toLocaleLowerCase(), str)
-  }
-  return (
-    <dialog open={dialogShow} className="modal bg-transparent">
-      <div className="modal-box w-[360px] p-8 rounded-3xl border-2 border-[rgba(255,255,255,0.16)] bg-[#1F1D1F] relative">
-        <div onClick={() => setDialogShow(false)} className="w-14 h-14 bg-center bg-contain bg-no-repeat absolute top-0 right-0 hover:cursor-pointer"
-          style={{ backgroundImage: "url(/assets/close.png)" }}
-        ></div>
-        <h3 className="font-bold text-white text-lg">Edit {name}</h3>
-        <div className="mt-8 flex flex-col space-y-4">
-          <input ref={inputRef} type="text" placeholder={name} className="input input-bordered w-full text-black" />
-          <button
-            onClick={() => handleConfirm()}
-            className="btn btn-outline  text-white">Confirm</button>
-        </div>
-      </div>
-    </dialog>
-  )
-}
-
 export default function PersonalCenter({ user, orderArray }: { user: Record<string, any>, orderArray: Record<string, any> }) {
-  console.log('user info', user)
-  const router = useRouter()
+  // console.log('user info', user)
   const handleDeleteUser = async () => {
-    await deleteUser()
-    await signOut()
-    // 为什么这里跳转失败
-    router.push('/')
+    try {
+      await deleteUser()
+      await signOut({ callbackUrl: '/' })
+    } catch (error) {
+      // await
+      console.log('error', error)
+    }
   }
   const [open, setOpen] = useState(false)
   const [dialogShow, setDialogShow] = useState(false)
@@ -72,6 +41,41 @@ export default function PersonalCenter({ user, orderArray }: { user: Record<stri
   const handleOpenDialog = () => {
     setOpen(true)
   }
+
+  function InfoDialog() {
+    const session = useSession()
+    // console.log('session>>>>', session)
+    const router = useRouter()
+    const inputRef = useRef(null)
+    const handleConfirm = async () => {
+      const str = (inputRef?.current as any)?.value.trim() || ''
+      if (!str) { return }
+      setDialogShow(false);
+      (inputRef!.current as any).value = ''
+      await changeUserInfo(name.toLocaleLowerCase(), str)
+      const newSession = await getSession();
+      // console.log('new session', newSession)
+      session.update(newSession)
+      router.push('/personal-center')
+    }
+    return (
+      <dialog open={dialogShow} className="modal bg-transparent">
+        <div className="modal-box w-[360px] p-8 rounded-3xl border-2 border-[rgba(255,255,255,0.16)] bg-[#1F1D1F] relative">
+          <div onClick={() => setDialogShow(false)} className="w-14 h-14 bg-center bg-contain bg-no-repeat absolute top-0 right-0 hover:cursor-pointer"
+            style={{ backgroundImage: "url(/assets/close.png)" }}
+          ></div>
+          <h3 className="font-bold text-white text-lg">Edit {name}</h3>
+          <div className="mt-8 flex flex-col space-y-4">
+            <input ref={inputRef} type="text" placeholder={name} className="input input-bordered w-full text-black" />
+            <button
+              onClick={() => handleConfirm()}
+              className="btn btn-outline  text-white">Confirm</button>
+          </div>
+        </div>
+      </dialog>
+    )
+  }
+
   return (
     <>
       <div className="p-4 flex-1">
@@ -87,7 +91,7 @@ export default function PersonalCenter({ user, orderArray }: { user: Record<stri
                       setDialogShow(true)
                     }}
                     className="w-[96px] h-[96px] relative hover:cursor-pointer">
-                    <div className="w-24 h-24 rounded-full bg-center bg-no-repeat bg-contain" style={{ backgroundImage: `url(${user.image})` }}></div>
+                    <div className="w-24 h-24 rounded-full bg-center bg-no-repeat bg-contain bg-sky-800" style={{ backgroundImage: `url(${user.image})` }}></div>
                     <div className="absolute right-0 bottom-0 rounded-full w-3 h-3 bg-center bg-no-repeat bg-contain" style={{ backgroundImage: 'url(/assets/edit.png)' }}></div>
                   </div>
                   <div className='ml-10 flex-1'>
@@ -163,7 +167,7 @@ export default function PersonalCenter({ user, orderArray }: { user: Record<stri
           </div>
         </div>
       </div>
-      <InfoDialog dialogShow={dialogShow} setDialogShow={setDialogShow} name={name} />
+      <InfoDialog />
       <ConfirmDialog title={'Are you sure you want to delete account?'} open={open} setOpen={setOpen} handleConfirm={async () => await handleDeleteUser()} />
     </>
   )

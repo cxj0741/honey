@@ -5,11 +5,11 @@ import { sql } from 'drizzle-orm/sql'
 import { getUserId } from '@/utils/getUserId'
 import sha256 from 'crypto-js/sha256'
 
-export async function GET(request: NextRequest) {
-  const { searchParams } = new URL(request.url)
-  const name = searchParams.get('name') as string
-  let str = searchParams.get('str') as string
-  if(name === 'password'){
+export async function POST(request: NextRequest) {
+  let { name, str } = await request.json()
+  // console.log('body', name, str)
+  if (name === 'password') {
+    name = 'hashPassword'
     str = sha256(str).toString()
   }
   const userId = await getUserId()
@@ -18,5 +18,5 @@ export async function GET(request: NextRequest) {
     .update(users)
     .set({ [name]: str })
     .where(sql`${users.id} = ${userId}`)
-  return NextResponse.json({message:'change info success'})
+  return NextResponse.json({ message: `change ${name} success!` })
 }

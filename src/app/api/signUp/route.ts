@@ -19,6 +19,7 @@ export async function POST(request: NextRequest) {
   const user = await db.query.users.findFirst({
     where: (users, { eq }) => eq(users.email, body.email),
   })
+
   if (user) {
     return NextResponse.json({ error: 'User already exists!' }, { status: 400 })
   }
@@ -26,11 +27,11 @@ export async function POST(request: NextRequest) {
   const hashPassword = sha256(body.password).toString()
   const [newUser] = await db
     .insert(users)
-    .values({ email: body.email, hashPassword })
+    .values({ email: body.email, hashPassword, name: body.email })
     .returning()
 
   return NextResponse.json({
+    ok: true,
     email: newUser.email,
-    // password: body.password,
   })
 }

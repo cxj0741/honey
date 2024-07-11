@@ -14,9 +14,21 @@ export const TYPE = {
 
 export async function getBots(type: string) {
   const res = await fetch(`${baseURL}/api/bots?type=${type}`)
-  // console.log('res>>>>>', res)
   const data = await res.json()
-  // console.log('data>>>', data)
+  return data
+}
+
+export async function signUp(postData: Record<string, any>) {
+  // console.log('saveDialog>>>>> postData', postData)
+  const res = await fetch(`${baseURL}/api/signUp`, {
+    method: 'POST',
+    mode: 'cors',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(postData),
+  })
+  const data = await res.json()
   return data
 }
 
@@ -33,14 +45,14 @@ export async function getUserToBotDetail(id: string) {
 }
 
 export async function deleteUserBot(id: string) {
-  console.log('deleteUserBot', id)
+  // console.log('deleteUserBot', id)
   const res = await fetch(`${baseURL}/api/deleteUserBot?id=${id}`)
   const data = await res.json()
   return data
 }
 
 export async function deleteBotDialogs(id: string) {
-  console.log('deleteDialogs', id)
+  // console.log('deleteDialogs', id)
   const res = await fetch(`${baseURL}/api/deleteBotDialogs?id=${id}`)
   const data = await res.json()
   return data
@@ -63,16 +75,13 @@ export async function saveDialog(postData: Record<string, any>) {
     },
     body: JSON.stringify(postData),
   })
-
   const data = await res.json()
   return data
 }
 
 export async function deleteUser() {
   const res = await fetch(`${baseURL}/api/deleteUser`)
-  // console.log('res>>>>>', res)
   const data = await res.json()
-  // console.log('data>>>>>', data)
   return data
 }
 
@@ -80,23 +89,27 @@ export async function setConversationId(id: string, conversationId: string) {
   const res = await fetch(
     `${baseURL}/api/setConversationId?id=${id}&conversationId=${conversationId}`
   )
-  // console.log('res>>>>>', res)
   const data = await res.json()
-  // console.log('data>>>>>', data)
   return data
 }
 
 export async function getUserInfo() {
   const res = await fetch(`${baseURL}/api/getUserInfo`)
   const data = await res.json()
-  console.log('data>>>>> userData', data)
+  // console.log('data>>>>> userData', data)
   return data
 }
 
 export async function changeUserInfo(name: string, str: string) {
-  const res = await fetch(
-    `${baseURL}/api/changeUserInfo?name=${name}&str=${str}`
-  )
+  const res = await fetch(`${baseURL}/api/changeUserInfo`, {
+    method: 'POST',
+    mode: 'cors',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ name, str }),
+  })
+  // console.log('res', res)
   const data = await res.json()
   // console.log('data>>>>> userData', data)
   return data
