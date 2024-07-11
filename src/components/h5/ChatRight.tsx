@@ -1,5 +1,6 @@
 import Image from 'next/image'
 import { CHAT_PART } from '@/components/h5-pages/Chat'
+import { useState } from 'react'
 
 const info1 = [
   { name: 'personality', img: 'personality', value: 'Kawai and Extrovert' },
@@ -39,47 +40,37 @@ function Item({
   )
 }
 
-export default function ChatRight({ setPart }: { setPart: Function }) {
+export default function ChatRight({ setPart, activeBot }: { setPart: Function, activeBot: Record<string, any> }) {
+  const [index, setIndex] = useState(0)
   return (
     <div
       className="w-[100vw] overflow-auto bg-[#1F1D1F]"
     >
-      <div className="w-full aspect-[3/4] relative">
-        <Image
-          className='object-cover'
-          layout="fill"
-          objectFit='cover'
-          src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg"
-          alt="avatar"
-        />
+      <div className="w-full aspect-[3/4] relative bg-center bg-cover bg-no-repeat" style={{ backgroundImage: `url(${(index == 0 ? activeBot.image1 : activeBot.image2)})` }}>
         <div
           onClick={() => setPart(CHAT_PART.MIDDLE)}
           className="absolute left-4 top-3 px-2 rounded-lg flex items-center space-x-1 bg-[rgba(255,255,255,0.32)]"
         >
-          <Image
-            width={14}
-            height={14}
-            src="/assets/attributes/arrowLeft.png"
-            alt={'arc'}
-          />
+          <div
+            className="w-2.5 h-2.5 bg-center bg-contain bg-no-repeat hover:cursor-pointer"
+            style={{ backgroundImage: "url(/assets/arrowLeft.png)" }}
+          ></div>
           <div className="text-white text-sm">Back</div>
         </div>
         <div
           className="absolute w-full px-4 flex justify-between"
           style={{ top: '50%', transform: 'translateY(-50)' }}
         >
-          <Image
-            width={32}
-            height={32}
-            src="/assets/attributes/arrowLeft.png"
-            alt={'arc'}
-          />
-          <Image
-            width={32}
-            height={32}
-            src="/assets/attributes/arrowRight.png"
-            alt={'arc'}
-          />
+          <div
+            onClick={() => setIndex(Math.abs((index - 1) % 2))}
+            className="w-8 h-8 bg-center bg-contain bg-no-repeat hover:cursor-pointer"
+            style={{ backgroundImage: "url(/assets/attributes/arrowLeft.png)" }}
+          ></div>
+          <div
+            onClick={() => setIndex(Math.abs((index + 1) % 2))}
+            className="w-8 h-8 bg-center bg-contain bg-no-repeat hover:cursor-pointer"
+            style={{ backgroundImage: "url(/assets/attributes/arrowRight.png)" }}
+          ></div>
         </div>
       </div>
       <div className="text-white p-4 space-y-4">

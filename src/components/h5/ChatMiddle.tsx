@@ -90,18 +90,21 @@ export default function ChatMiddle({ setPart, activeBot }: Props) {
       handleSendMessage()
     }
   }
+  const handleInputPrompt = (str: string) => {
+    (inputRef!.current as any).value = str
+  }
 
   return (
     <>
-      <div className="w-[100vw] bg-[#1F1D1F] relative">
-        <div className="h-12 px-4 border-t border-b border-[rgba(255,255,255,0.16)] text-white flex items-center justify-between">
+      <div className="w-[100vw] bg-[#1F1D1F]">
+        <div className="fixed top-16 left-0 w-full h-12 px-4 border-t border-b border-[rgba(255,255,255,0.16)] bg-[#1F1D1F] text-white flex items-center justify-between">
           <div
             onClick={() => {
               emitter.emit(FOOTER_NAV_EVENT, true)
               setPart(CHAT_PART.LEFT)
             }}
             className="w-6 h-6 bg-center bg-contain bg-no-repeat hover:cursor-pointer"
-            style={{ backgroundImage: 'url(/assets/arrowIn.png)' }}
+            style={{ backgroundImage: 'url(/assets/arrowLeft.png)' }}
           ></div>
           <div className="flex items-center">
             <div
@@ -122,7 +125,7 @@ export default function ChatMiddle({ setPart, activeBot }: Props) {
           ></div>
         </div>
         <div
-          className="p-2 space-y-4 pb-20 overflow-auto"
+          className="mt-12 p-2 space-y-4 pb-20 overflow-auto"
           style={{ height: 'calc(100% - 3rem)' }}
         >
           {/* 一组对话的结构 */}
@@ -218,10 +221,10 @@ export default function ChatMiddle({ setPart, activeBot }: Props) {
                     ></div>
                   </div>
                   <ul tabIndex={0}
-                    className="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow"
-                  >{['Show me...', 'Send me...', 'Can I see...'].map((item) => (
-                    <li key={item}>
-                      <a>{item}</a>
+                    className="dropdown-content menu bg-base-100 rounded-lg z-[1] w-52 p-2 shadow"
+                  >{['Show me', 'Send me', 'Can I see'].map((item) => (
+                    <li key={item} onClick={() => handleInputPrompt(item)}>
+                      <span>{item}...</span>
                     </li>
                   ))}
                   </ul>

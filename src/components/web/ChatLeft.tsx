@@ -7,9 +7,9 @@ interface Props {
   setActiveBot: Function
   currentArray: Record<string, any>[]
   setCurrentArray: Function
-  time: string
 }
-export default function ChatLeft({ activeBot, setActiveBot, currentArray, setCurrentArray, time }: Props) {
+export default function ChatLeft({ activeBot, setActiveBot, currentArray, setCurrentArray }: Props) {
+  // console.log('currentArray', currentArray)
   const router = useRouter()
   const [open, setOpen] = useState(false)
   const [action, setAction] = useState('')
@@ -48,6 +48,17 @@ export default function ChatLeft({ activeBot, setActiveBot, currentArray, setCur
       setTitle('')
     }
   }
+  const handleSearch = (str: string) => {
+    const arr = currentArray.map(item => {
+      if (item.name.toLowerCase().includes(str.toLowerCase())) {
+        item.show = true
+      } else {
+        item.show = false
+      }
+      return item
+    })
+    setCurrentArray(arr)
+  }
   return (
     <>
       <div
@@ -69,13 +80,14 @@ export default function ChatLeft({ activeBot, setActiveBot, currentArray, setCur
             />
           </svg>
           <input
+            onChange={(event) => handleSearch(event.target.value.trim())}
             type="text"
             className="grow"
             placeholder="Search for a profile..."
           />
         </label>
         <div className="grow space-y-4 overflow-auto">
-          {currentArray.map((item) => (
+          {currentArray.filter(item => item.show).map((item) => (
             <div
               onClick={() => setActiveBot({ ...item })}
               key={item.id}
@@ -91,7 +103,7 @@ export default function ChatLeft({ activeBot, setActiveBot, currentArray, setCur
               </div>
               <div className="space-y-1">
                 <div className="text-xs text-right text-[rgba(255,255,255,0.32)]">
-                  {time}
+                  {item.time || '00:00'}
                 </div>
                 <div className="flex space-x-1 invisible group-hover:visible">
                   <div

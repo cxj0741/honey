@@ -108,6 +108,9 @@ export default function ChatMiddle({ fold, setFold, activeBot, setActiveBot }: P
       console.error('handleConfirm error', error)
     }
   }
+  const handleInputPrompt = (str: string) => {
+    (inputRef!.current as any).value = str
+  }
 
   return (
     <>
@@ -235,11 +238,11 @@ export default function ChatMiddle({ fold, setFold, activeBot, setActiveBot }: P
                   </div>
                   <ul
                     tabIndex={0}
-                    className="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow"
+                    className="dropdown-content menu bg-base-100 rounded-lg z-[1] w-52 p-2 shadow"
                   >
-                    {['Show me...', 'Send me...', 'Can I see...'].map((item) => (
-                      <li key={item}>
-                        <a>{item}</a>
+                    {['Show me', 'Send me', 'Can I see'].map((item) => (
+                      <li key={item} onClick={() => handleInputPrompt(item)}>
+                        <span>{item}...</span>
                       </li>
                     ))}
                   </ul>

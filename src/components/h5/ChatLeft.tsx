@@ -11,9 +11,8 @@ interface Props {
   setActiveBot: Function
   currentArray: Record<string, any>[]
   setCurrentArray: Function
-  time: string
 }
-export default function ChatLeft({ setPart, activeBot, setActiveBot, currentArray, setCurrentArray, time }: Props) {
+export default function ChatLeft({ setPart, activeBot, setActiveBot, currentArray, setCurrentArray }: Props) {
   const router = useRouter()
   const [open, setOpen] = useState(false)
   const [action, setAction] = useState('')
@@ -52,6 +51,17 @@ export default function ChatLeft({ setPart, activeBot, setActiveBot, currentArra
       setTitle('')
     }
   }
+  const handleSearch = (str: string) => {
+    const arr = currentArray.map(item => {
+      if (item.name.toLowerCase().includes(str.toLowerCase())) {
+        item.show = true
+      } else {
+        item.show = false
+      }
+      return item
+    })
+    setCurrentArray(arr)
+  }
 
   return (
     <>
@@ -75,6 +85,7 @@ export default function ChatLeft({ setPart, activeBot, setActiveBot, currentArra
               />
             </svg>
             <input
+              onChange={(event) => handleSearch(event.target.value.trim())}
               type="text"
               className="grow"
               placeholder="Search for a profile..."
@@ -82,7 +93,7 @@ export default function ChatLeft({ setPart, activeBot, setActiveBot, currentArra
           </label>
         </div>
         <div className="grow space-y-4 overflow-auto">
-          {currentArray.map((item) => (
+          {currentArray.filter(item => item.show).map((item) => (
             <div key={item.id} className='mt-2 pb-2 overflow-x-auto'>
               <div className='flex items-center'>
                 <div
@@ -103,10 +114,10 @@ export default function ChatLeft({ setPart, activeBot, setActiveBot, currentArra
                   </div>
                   <div className="space-y-3 flex flex-col items-end">
                     <div className="text-xs text-[rgba(255,255,255,0.64)]">
-                      {time}
+                      {item.time}
                     </div>
                     <div
-                      className="w-4 h-4 bg-center bg-contain bg-no-repeat"
+                      className="w-3 h-3 bg-center bg-contain bg-no-repeat"
                       style={{ backgroundImage: "url(/assets/arrowIn.png)" }}
                     ></div>
                   </div>
