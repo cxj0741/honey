@@ -159,7 +159,7 @@ export default function LoginDialog({ type, setType, dialogShow, setDialogShow }
                 ></div>
                 <div className="font-normal text-[#344054]">Google</div>
               </div>
-              <div className="text-xxs font-medium text-white text-center" style={{ visibility: type === ACCOUNT.SIGN_UP ? "visible" : 'hidden' }}>
+              <div className="text-base font-medium text-white text-center" style={{ visibility: type === ACCOUNT.SIGN_UP ? "visible" : 'hidden' }}>
                 By signing up, you agree to{' '}
                 <a className="underline" href="/legal-information">
                   Terms of Service

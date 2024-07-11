@@ -18,5 +18,5 @@ export default async function PersonalCenter() {
     .select()
     .from(orders)
     .where(sql`${orders.userId} = ${userId}`)
-  return isMobile() ? <H5PersonalCenter /> : <WebPersonalCenter user={userList[0]} orderArray={orderArray} />
+  return isMobile() ? <H5PersonalCenter user={userList[0]} orderArray={orderArray} /> : <WebPersonalCenter user={userList[0]} orderArray={orderArray} />
 }

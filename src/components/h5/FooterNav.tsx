@@ -1,6 +1,6 @@
 'use client'
 import Image from 'next/image'
-import { useRouter } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import { emitter, FOOTER_NAV_EVENT } from '@/utils'
 import { useEffect, useState } from 'react'
 
@@ -44,7 +44,7 @@ function Item({
 
 export default function FooterNav() {
   const [footerNavShow, setFooterNavShow] = useState(true)
-
+  const path = usePathname()
   useEffect(() => {
     console.log('emitter on first')
     emitter.on(FOOTER_NAV_EVENT, (show: any) => {
@@ -52,25 +52,25 @@ export default function FooterNav() {
       setFooterNavShow(show)
     });
   }, [])
-  
+
   return (
     <div className='z-50 fixed left-0 -bottom-[1px] w-[100vw] h-14 border-t border-[rgba(255,255,255,0.16)] bg-[#121112] text-[rgba(255,255,255,0.64)] text-xs flex items-center justify-around'
       style={{ visibility: footerNavShow ? 'visible' : 'hidden' }}
     >
       <Item
-        src="/h5Assets/explore.png"
+        src={path === '/' ? '/assets/exploreSelected.png' : '/assets/explore.png'}
         title="Explore"
       />
       <Item
-        src="/h5Assets/chat.png"
+        src={path === '/chat' ? '/assets/chatSelected.png' : '/assets/chat.png'}
         title="Chat"
       />
       <Item
-        src="/h5Assets/becomePremium.png"
+        src={path === '/become-premium' ? '/assets/becomePremiumSelected.png' : '/assets/becomePremium.png'}
         title="Premium"
       />
       <Item
-        src="/h5Assets/account.png"
+        src={path === '/personal-center' ? '/assets/accountSelected.png' : '/assets/account.png'}
         title="Account"
       />
     </div>

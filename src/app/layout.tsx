@@ -6,7 +6,6 @@ import { isMobile } from './detectDevice';
 import StyleLoad from '@/components/h5/StyleLoad'
 import Nav from '@/components/h5/Nav'
 import FooterNav from '@/components/h5/FooterNav'
-import LoginDialog from '@/components/h5/LoginDialog'
 import LeftNav from '@/components/web/LeftNav'
 import AuthProvider from '@/app/auth/Provider'
 
@@ -31,7 +30,6 @@ export default function RootLayout({
             <div className="relative z-0 pt-16 pb-14 min-h-[100vh]">
               {children}
             </div>
-            <LoginDialog type="Sign In" setType={() => { }} />
             <StyleLoad />
           </AuthProvider>
         </body>

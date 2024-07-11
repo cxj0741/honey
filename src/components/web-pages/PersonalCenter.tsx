@@ -42,7 +42,7 @@ export default function PersonalCenter({ user, orderArray }: { user: Record<stri
     setOpen(true)
   }
 
-  function InfoDialog() {
+  function EditDialog() {
     const session = useSession()
     // console.log('session>>>>', session)
     const router = useRouter()
@@ -130,7 +130,7 @@ export default function PersonalCenter({ user, orderArray }: { user: Record<stri
                 <div className="pb-4 text-xl font-medium text-[rgba(255,255,255,0.64)]">Account Management</div>
                 <div onClick={() => { handleOpenDialog() }}
                   className="w-[10.625rem] h-8 rounded-lg border border-[rgba(255,255,255,0.32)] flex items-center justify-center space-x-2 hover:cursor-pointer">
-                  <div className="w-6 h-5 bg-center bg-no-repeat bg-contain" style={{ backgroundImage: 'url(/assets/card.png)' }}></div>
+                  <div className="w-6 h-5 bg-center bg-no-repeat bg-contain" style={{ backgroundImage: 'url(/assets/delete.png)' }}></div>
                   <div className='text-[rgba(255,255,255,0.64)]'>
                     Delete Account
                   </div>
@@ -167,7 +167,7 @@ export default function PersonalCenter({ user, orderArray }: { user: Record<stri
           </div>
         </div>
       </div>
-      <InfoDialog />
+      <EditDialog />
       <ConfirmDialog title={'Are you sure you want to delete account?'} open={open} setOpen={setOpen} handleConfirm={async () => await handleDeleteUser()} />
     </>
   )

@@ -41,9 +41,6 @@ export default function LeftNav() {
           if (title === 'Chat') {
             setFold(true)
           }
-          // else {
-          //   setFold(false)
-          // }
           let url = '/'
           if (title.toLocaleLowerCase() !== 'explore') {
             url = formatURL(title)
