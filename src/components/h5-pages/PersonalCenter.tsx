@@ -4,6 +4,8 @@ import { signOut, useSession, getSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import { useRef, useState } from 'react'
 import ConfirmDialog from '@/components/web/ConfirmDialog'
+import { z } from 'zod'
+import Toast, { TOAST_TYPE, toastInfo } from '@/components/web/Toast'
 
 function Item({ name, value }: { name: string, value: string }) {
   return (
@@ -46,9 +48,34 @@ export default function PersonalCenter({ user, orderArray }: { user: Record<stri
     // console.log('session>>>>', session)
     const router = useRouter()
     const inputRef = useRef(null)
+    const [toast, setToast] = useState({ ...toastInfo })
+    const handleToast = (type: string, message: string) => {
+      setToast({
+        show: true,
+        type,
+        message
+      })
+      setTimeout(() => {
+        setToast({ ...toastInfo })
+      }, 2000)
+    }
     const handleConfirm = async () => {
       const str = (inputRef?.current as any)?.value.trim() || ''
       if (!str) { return }
+      if (name.toLocaleLowerCase() === 'email') {
+        const emailCheck = z.string().email().safeParse(str)
+        if (!emailCheck.success) {
+          handleToast(TOAST_TYPE.ERROR, 'Email error!')
+          return
+        }
+      }
+      if (name.toLocaleLowerCase() === 'password') {
+        const passwordCheck = z.string().min(6).safeParse(str)
+        if (!passwordCheck.success) {
+          handleToast(TOAST_TYPE.ERROR, 'Password error, minimum 6 characters!')
+          return
+        }
+      }
       setDialogShow(false);
       (inputRef!.current as any).value = ''
       await changeUserInfo(name.toLocaleLowerCase(), str)
@@ -57,20 +84,23 @@ export default function PersonalCenter({ user, orderArray }: { user: Record<stri
       router.push('/personal-center')
     }
     return (
-      <dialog open={dialogShow} className="modal bg-transparent">
-        <div className="modal-box w-[360px] p-8 rounded-3xl border-2 border-[rgba(255,255,255,0.16)] bg-[#1F1D1F] relative">
-          <div onClick={() => setDialogShow(false)} className="w-14 h-14 bg-center bg-contain bg-no-repeat absolute top-0 right-0 hover:cursor-pointer"
-            style={{ backgroundImage: "url(/assets/close.png)" }}
-          ></div>
-          <h3 className="font-bold text-white text-lg">Edit {name}</h3>
-          <div className="mt-8 flex flex-col space-y-4">
-            <input ref={inputRef} type="text" placeholder={name} className="input input-bordered w-full text-black" />
-            <button
-              onClick={() => handleConfirm()}
-              className="btn btn-outline  text-white">Confirm</button>
+      <>
+        <dialog open={dialogShow} className="modal bg-transparent">
+          <div className="modal-box w-[360px] p-8 rounded-3xl border-2 border-[rgba(255,255,255,0.16)] bg-[#1F1D1F] relative">
+            <div onClick={() => setDialogShow(false)} className="w-14 h-14 bg-center bg-contain bg-no-repeat absolute top-0 right-0 hover:cursor-pointer"
+              style={{ backgroundImage: "url(/assets/close.png)" }}
+            ></div>
+            <h3 className="font-bold text-white text-lg">Edit {name}</h3>
+            <div className="mt-8 flex flex-col space-y-4">
+              <input ref={inputRef} type="text" placeholder={name} className="input input-bordered w-full text-black" />
+              <button
+                onClick={() => handleConfirm()}
+                className="btn btn-outline  text-white">Confirm</button>
+            </div>
           </div>
-        </div>
-      </dialog>
+        </dialog>
+        {toast.show && <Toast type={toast.type} message={toast.message} />}
+      </>
     )
   }
 

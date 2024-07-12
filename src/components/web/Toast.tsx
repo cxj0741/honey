@@ -1,3 +1,8 @@
+interface Props {
+  type: typeof TOAST_TYPE.INFO | typeof TOAST_TYPE.SUCCESS | typeof TOAST_TYPE.WARNING | typeof TOAST_TYPE.ERROR
+  message: string
+}
+
 export const TOAST_TYPE = {
   INFO: 'alert-info',
   SUCCESS: 'alert-success',
@@ -5,10 +10,12 @@ export const TOAST_TYPE = {
   ERROR: 'alert-error'
 }
 
-interface Props {
-  type: typeof TOAST_TYPE.INFO | typeof TOAST_TYPE.SUCCESS | typeof TOAST_TYPE.WARNING | typeof TOAST_TYPE.ERROR
-  message: string
+export const toastInfo = {
+  show: false,
+  type: TOAST_TYPE.INFO,
+  message: '',
 }
+
 export default function Toast({ type, message }: Props) {
   return (
     <div className="z-50 toast toast-center toast-top">

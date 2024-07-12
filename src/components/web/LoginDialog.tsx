@@ -1,6 +1,8 @@
 import { signUp } from '@/request'
 import { signIn } from 'next-auth/react'
 import { useRef, useState } from 'react'
+import { z } from 'zod'
+import Toast, { TOAST_TYPE, toastInfo } from './Toast'
 
 const ACCOUNT = {
   SIGN_IN: 'Sign In',
@@ -13,13 +15,7 @@ interface Props {
   dialogShow: boolean
   setDialogShow: Function
 }
-import { z } from 'zod'
-import Toast, { TOAST_TYPE } from './Toast'
-const toastInfo = {
-  show: false,
-  type: TOAST_TYPE.INFO,
-  message: '',
-}
+
 export default function LoginDialog({ type, setType, dialogShow, setDialogShow }: Props) {
   const [toast, setToast] = useState({ ...toastInfo })
   const handleToast = (type: string, message: string) => {
