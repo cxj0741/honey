@@ -63,7 +63,7 @@ export default function LoginDialog({ type, setType, dialogShow, setDialogShow }
         const res = await signUp({ email, password })
         console.log('sign up>>>>>', res)
         if (res.ok) {
-          handleToast(TOAST_TYPE.SUCCESS, 'Sign up success!')
+          // handleToast(TOAST_TYPE.SUCCESS, 'Sign up success!')
           setDialogShow(false)
           await signIn('credentials', { email, password })
         } else {
@@ -79,7 +79,7 @@ export default function LoginDialog({ type, setType, dialogShow, setDialogShow }
       // const res = await signIn('google')
       // console.log('sign in result', res)
       await signIn('google')
-      handleToast(TOAST_TYPE.SUCCESS, 'Sign in success!')
+      // handleToast(TOAST_TYPE.SUCCESS, 'Sign in success!')
       setDialogShow(false)
     } catch (error) {
       handleToast(TOAST_TYPE.ERROR, 'Google account sign in error!')
