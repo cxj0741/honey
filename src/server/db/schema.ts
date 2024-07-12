@@ -122,13 +122,13 @@ export const authenticators = pgTable(
   上面的表格是next-auth与drizzle-orm结合需要的table信息，直接从网站获取的
  --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 */
-
 // 机器人列表
 export const bots = pgTable('bots',{
   id: text("id")
     .primaryKey()
     .$defaultFn(() => crypto.randomUUID()),
   botId: serial('bot_id'),
+  key: varchar("key", { length: 50 }).notNull().default('app-z8egrB8DY8hRfoVxda1BPwMH'), //api-key不超过50位
   type: varchar("type", {
     enum: ["girls", "guys","anime"],
   }).notNull(),

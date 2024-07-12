@@ -38,7 +38,7 @@ export default function Home() {
           style={{ maxHeight: 'calc(100vh - 76px)' }}
         >
           <div className="w-full">
-            <div className="pt-4 px-4 w-full max-sm:hidden">
+            <div className="pt-4 px-2 w-full max-sm:hidden">
               <div className="carousel w-full aspect-[4/1] rounded-xl">
                 <div id="slide1" className="carousel-item relative w-full">
                   <Image

@@ -8,11 +8,12 @@ export default function ProfileArea({ botList }: { botList: any[] }) {
 
   return (
     botList.length &&
-    <div className="border-8 border-transparent flex flex-wrap">
+    // <div className="border-8 border-transparent flex flex-wrap">
+    <div className="flex flex-wrap">
       {botList.map((item) => (
         <div
           key={item.id}
-          className="w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/5 2xl:w-1/6 aspect-[3/4] border-8 border-transparent relative"
+          className="w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/5 aspect-[3/4] border-8 border-transparent relative"
         >
           <Image
             onMouseEnter={() => setActiveId(item.id)}

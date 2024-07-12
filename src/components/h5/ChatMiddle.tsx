@@ -58,7 +58,7 @@ export default function ChatMiddle({ setPart, activeBot }: Props) {
     const timestamp = Date.now()
 
     try {
-      const [botStr, image, conversationId] = await sendMessage({ user: (session.data?.user as any)?.id, userStr, conversationId: localStorage.getItem(activeBot.id) || '' }, timestamp, setResult)
+      const [botStr, image, conversationId] = await sendMessage(activeBot.apiKey, { user: (session.data?.user as any)?.id, userStr, conversationId: localStorage.getItem(activeBot.id) || '' }, timestamp, setResult)
       console.log('succeed send message>>>>> set', botStr, image, conversationId)
       console.log('conversationId>>>>> set', activeBot.id, conversationId)
       if (!localStorage.getItem(activeBot.id)) {

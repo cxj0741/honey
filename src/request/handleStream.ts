@@ -1,9 +1,7 @@
-const API_KEY = 'app-z8egrB8DY8hRfoVxda1BPwMH'
-// const AGENT_MESSAGE = 'agent_message'
 const AGENT_THOUGHT = 'agent_thought'
 const ERROR_FORMAT = 'ERROR_FORMAT'
 
-export async function sendMessage(userInfo: {userStr:string, conversationId:string, user:string}, timestamp: number, setResult: Function) {
+export async function sendMessage(apiKey: string, userInfo: {userStr:string, conversationId:string, user:string}, timestamp: number, setResult: Function) {
   let {userStr, conversationId, user}= userInfo
   setResult({timestamp, dialog: { userStr, botStr: '' }})
   const data = {
@@ -17,7 +15,7 @@ export async function sendMessage(userInfo: {userStr:string, conversationId:stri
     method: 'POST',
     mode: 'cors',
     headers: {
-      Authorization: `Bearer ${API_KEY}`,
+      Authorization: `Bearer ${apiKey}`,
       'Content-Type': 'application/json',
     },
     body: JSON.stringify(data)
