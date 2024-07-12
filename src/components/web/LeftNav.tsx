@@ -90,10 +90,22 @@ export default function LeftNav() {
               />
             </div>
             <div className="mt-10 text-white">
-              <Item
-                src="/assets/contactUs.png"
-                title="Contact Us"
-              />
+              <div onClick={() => {
+                console.log('Tawk_API CHAT>>>>>')
+                // eslint-disable-next-line no-undef
+                if (typeof Tawk_API === 'undefined') {
+                  return
+                }
+                // eslint-disable-next-line no-undef
+                Tawk_API.toggle();
+              }}
+                className={`flex ${fold ? 'justify-center' : 'justify-start'}`}
+              >
+                <div className={`px-2 py-2 rounded-lg flex items-center space-x-4 hover:bg-[rgba(255,255,255,0.08)] hover:cursor-pointer ${fold ? '' : 'flex-1'}`}>
+                  <div className="w-7 h-7 bg-center bg-no-repeat bg-contain" style={{ backgroundImage: 'url(/assets/contactUs.png)' }}></div>
+                  <div className={`font-medium ${fold ? 'hidden' : 'block'}`}>Contact Us</div>
+                </div>
+              </div>
             </div>
           </div>
           <div className="pt-6 border-t border-[rgba(255,255,255,0.16)]">

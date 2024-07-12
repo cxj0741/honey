@@ -39,7 +39,7 @@ export default function Home() {
         >
           <div className="w-full">
             <div className="pt-4 px-2 w-full max-sm:hidden">
-              <div className="carousel w-full aspect-[4/1] rounded-xl">
+              <div className="carousel w-full aspect-[5/1] rounded-xl">
                 <div id="slide1" className="carousel-item relative w-full">
                   <Image
                     layout="fill"

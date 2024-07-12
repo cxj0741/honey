@@ -120,10 +120,25 @@ export default function Nav() {
               title="Account"
             />
             <div className="h-[1px] bg-[rgba(255,255,255,0.16)]"></div>
-            <Item
+            {/* <Item
               src="/assets/contactUs.png"
               title="Contact Us"
-            />
+            /> */}
+            <div
+              onClick={() => {
+                console.log('Tawk_API CHAT>>>>>')
+                // eslint-disable-next-line no-undef
+                if (typeof Tawk_API === 'undefined') {
+                  return
+                }
+                // eslint-disable-next-line no-undef
+                Tawk_API.toggle();
+              }}
+              className={`px-5 py-3 flex items-center space-x-4 hover:bg-[rgba(255,255,255,0.08)] hover:cursor-pointer`}
+            >
+              <div className="w-5 h-5 bg-center bg-no-repeat bg-contain" style={{ backgroundImage: 'url(/assets/contactUs.png)' }}></div>
+              <div>Contact Us</div>
+            </div>
             {
               session.status === 'authenticated' &&
               <div
