@@ -16,7 +16,7 @@ export default function SubscribeDialog({ dialogShow, setDialogShow }: Props) {
         ></div>
         <div className="text-white flex items-center">
           <div className="w-[336px] h-[448px] bg-center bg-contain bg-no-repeat"
-            style={{ backgroundImage: "url(https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg)" }}
+            style={{ backgroundImage: 'url(https://cdn.candy.ai/12-908d871b-57da-4c96-a4f5-c05341873b42)' }}
           ></div>
           <div className="ml-8">
             <div className="text-3xl text-white">Upgrade To Unlock</div>
