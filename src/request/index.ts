@@ -3,7 +3,7 @@ if (process.env.NODE_ENV === 'development') {
   baseURL = 'http://localhost:3000'
   // baseURL = 'http://192.168.10.76:3000'
 } else {
-  baseURL = 'https://honeybun.vercel.app'
+  baseURL = 'https://www.honeybun.ai'
 }
 
 export const TYPE = {
