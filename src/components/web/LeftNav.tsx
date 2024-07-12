@@ -114,7 +114,7 @@ export default function LeftNav() {
                         }`}
                     >
                       <div className="w-6 h-6 bg-center bg-contain bg-no-repeat" style={{ backgroundImage: 'url(/assets/token.png)' }}></div>
-                      <div className="text-white text-center">999</div>
+                      <div className="text-white text-center">{(session?.data?.user as any)?.tokens || 0}</div>
                       <div className="w-6 h-6 bg-center bg-contain bg-no-repeat" style={{ backgroundImage: 'url(/assets/plus.png)' }}></div>
                     </div>
                     <div

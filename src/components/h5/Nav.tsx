@@ -69,7 +69,7 @@ export default function Nav() {
             >
 
               <div className="w-6 h-6 bg-center bg-contain bg-no-repeat" style={{ backgroundImage: 'url(/assets/token.png)' }}></div>
-              <div className="text-white text-center">999</div>
+              <div className="text-white text-center">{(session?.data?.user as any)?.tokens || 0}</div>
               <div className="w-6 h-6 bg-center bg-contain bg-no-repeat" style={{ backgroundImage: 'url(/assets/plus.png)' }}></div>
             </div>
             :
@@ -92,15 +92,17 @@ export default function Nav() {
       {/* LEFT NAV */}
       {!fold &&
         <div onClick={() => setFold(true)} className='z-50 fixed left-0 top-[4rem] w-[100vw] bg-[rgba(255,255,255,0.16)]'>
-          <div className="pt-2 w-[12.5rem] bg-[#121112] text-white text-sm" style={{ height: 'calc(100vh - 4rem)' }}>
-            <div
-              onClick={() => router.push('/personal-center')}
-              className={`px-4 py-3 flex items-center space-x-4 hover:bg-[rgba(255,255,255,0.08)] hover:cursor-pointer`}
-            >
-              <div className="w-6 h-6 rounded-full bg-center bg-contain bg-no-repeat bg-sky-800" style={{ backgroundImage: `url(${session?.data?.user?.image})` }}></div>
-              <div >{session?.data?.user?.name}</div>
-            </div>
-            <div className="h-[1px] bg-[rgba(255,255,255,0.16)]"></div>
+          <div className="w-[12.5rem] bg-[#121112] text-white text-sm" style={{ height: 'calc(100vh - 4rem)' }}>
+            {
+              session.status === 'authenticated' &&
+              <div
+                onClick={() => router.push('/personal-center')}
+                className={`h-14 border-b border-[rgba(255,255,255,0.16)] px-4 py-3 flex items-center space-x-4 hover:bg-[rgba(255,255,255,0.08)] hover:cursor-pointer`}
+              >
+                <div className="w-6 h-6 rounded-full bg-center bg-contain bg-no-repeat bg-sky-800" style={{ backgroundImage: `url(${session?.data?.user?.image})` }}></div>
+                <div >{session?.data?.user?.name}</div>
+              </div>
+            }
             <Item
               src={path === '/' ? '/assets/exploreSelected.png' : '/assets/explore.png'}
               title="Explore"
@@ -122,13 +124,16 @@ export default function Nav() {
               src="/assets/contactUs.png"
               title="Contact Us"
             />
-            <div
-              onClick={() => signOut({ callbackUrl: '/' })}
-              className={`px-5 py-3 flex items-center space-x-4 hover:bg-[rgba(255,255,255,0.08)] hover:cursor-pointer`}
-            >
-              <div className="w-5 h-5 bg-center bg-no-repeat bg-contain" style={{ backgroundImage: 'url(/h5Assets/logout.png)' }}></div>
-              <div>Logout</div>
-            </div>
+            {
+              session.status === 'authenticated' &&
+              <div
+                onClick={() => signOut({ callbackUrl: '/' })}
+                className={`px-5 py-3 flex items-center space-x-4 hover:bg-[rgba(255,255,255,0.08)] hover:cursor-pointer`}
+              >
+                <div className="w-5 h-5 bg-center bg-no-repeat bg-contain" style={{ backgroundImage: 'url(/h5Assets/logout.png)' }}></div>
+                <div>Logout</div>
+              </div>
+            }
           </div>
         </div>
       }

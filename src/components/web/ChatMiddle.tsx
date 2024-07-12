@@ -4,7 +4,7 @@ import { deleteBotDialogs, getDialogs, getUserInfo, saveDialog, setConversationI
 import { formatUnixTimestamp } from '@/utils/formatUnixTimestamp'
 import SubscribeDialog from '@/components/web/SubscribeDialog'
 import ConfirmDialog from '@/components/web/ConfirmDialog'
-import { useSession } from 'next-auth/react'
+import { getSession, useSession } from 'next-auth/react'
 
 interface Props {
   fold: boolean
@@ -68,6 +68,10 @@ export default function ChatMiddle({ fold, setFold, activeBot, setActiveBot }: P
       }
       if (botStr) {
         await saveDialog({ botId: activeBot.id, timestamp, dialog: { userStr, botStr, image }, })
+        if (image) {
+          const newSession = await getSession();
+          session.update(newSession)
+        }
       }
     } catch (error) {
       console.log('fail send message>>>>>', error)

@@ -78,6 +78,17 @@ export default function LoginDialog({ type, setType, dialogShow, setDialogShow }
       }
     }
   }
+  const handleProviderSignIn = async () => {
+    try {
+      // const res = await signIn('google')
+      // console.log('sign in result', res)
+      await signIn('google')
+      handleToast(TOAST_TYPE.SUCCESS, 'Sign in success!')
+      setDialogShow(false)
+    } catch (error) {
+      handleToast(TOAST_TYPE.ERROR, 'Google account sign in error!')
+    }
+  }
   return (
     <>
       <dialog open={dialogShow} className="modal bg-transparent">
@@ -86,7 +97,7 @@ export default function LoginDialog({ type, setType, dialogShow, setDialogShow }
             style={{ backgroundImage: "url(/assets/close.png)" }}
           ></div>
           <div className="w-1/2 aspect-[3/4] bg-cover bg-center bg-no-repeat relative"
-            style={{ backgroundImage: 'url(https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg)' }}
+            style={{ backgroundImage: 'url(https://cdn.candy.ai/12-908d871b-57da-4c96-a4f5-c05341873b42)' }}
           >
             <div className="absolute bottom-10 w-full flex justify-center">
               <div className="w-40 h-8 bg-center bg-no-repeat bg-contain" style={{ backgroundImage: 'url(assets/Honeybun.png)' }}></div>
@@ -151,7 +162,7 @@ export default function LoginDialog({ type, setType, dialogShow, setDialogShow }
                   }}
                 ></div>
               </div>
-              <div onClick={() => signIn('google')}
+              <div onClick={() => handleProviderSignIn()}
                 className="inline-flex items-center justify-center w-full rounded-[10px] px-4 py-2.5 mb-2.5 bg-white hover:cursor-pointer"
               >
                 <div className="w-6 h-6 bg-center bg-contain bg-no-repeat"

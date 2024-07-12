@@ -79,6 +79,17 @@ export default function LoginDialog({ type, setType, dialogShow, setDialogShow }
       }
     }
   }
+  const handleProviderSignIn = async () => {
+    try {
+      // const res = await signIn('google')
+      // console.log('sign in result', res)
+      await signIn('google')
+      handleToast(TOAST_TYPE.SUCCESS, 'Sign in success!')
+      setDialogShow(false)
+    } catch (error) {
+      handleToast(TOAST_TYPE.ERROR, 'Google account sign in error!')
+    }
+  }
   return (
     <>
       <dialog open={dialogShow} className="modal bg-transparent">
@@ -147,7 +158,7 @@ export default function LoginDialog({ type, setType, dialogShow, setDialogShow }
                 }}
               ></div>
             </div>
-            <div onClick={() => signIn('google')}
+            <div onClick={() => handleProviderSignIn()}
               className="inline-flex items-center justify-center w-full rounded-[10px] px-4 py-2.5 mb-2.5 bg-white hover:cursor-pointer"
             >
               <div className="w-6 h-6 bg-center bg-contain bg-no-repeat"

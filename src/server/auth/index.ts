@@ -21,6 +21,7 @@ export const authOptions: AuthOptions = {
         (session.user as any).name = user.name;
         (session.user as any).image = user.image;
         (session.user as any).email = user.email;
+        (session.user as any).tokens = user.tokens;
       }
       return session;
     },

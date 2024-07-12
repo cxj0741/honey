@@ -12,7 +12,7 @@ function Item({ name, value }: { name: string, value: string }) {
         <div className='text-[rgba(255,255,255,0.64)]'>{name}</div>
         <div className="w-3 h-3 rounded-full bg-center bg-no-repeat bg-contain" style={{ backgroundImage: 'url(/assets/edit.png)' }}></div>
       </div>
-      <div className="mt-3 text-white text-sm">{value}</div>
+      <div className="mt-3 text-white text-sm break-words">{value}</div>
     </>
   )
 }
@@ -97,7 +97,7 @@ export default function PersonalCenter({ user, orderArray }: { user: Record<stri
                   setName(item.name)
                   setDialogShow(true)
                 }}
-                  className="w-2/5 mt-6 hover:cursor-pointer" key={item.name}>
+                  className="w-1/2 mt-6 hover:cursor-pointer" key={item.name}>
                   <Item name={item.name} value={item.name === 'Password' ? '*********' : user[item.name.toLowerCase()]}></Item>
                 </div>
               ))}

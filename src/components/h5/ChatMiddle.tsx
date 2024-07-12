@@ -5,7 +5,7 @@ import { sendMessage } from '@/request/handleStream'
 import { getDialogs, getUserInfo, saveDialog, setConversationId } from '@/request'
 import { formatUnixTimestamp } from '@/utils/formatUnixTimestamp'
 import SubscribeDialog from '@/components/h5/SubscribeDialog'
-import { useSession } from 'next-auth/react'
+import { getSession, useSession } from 'next-auth/react'
 
 interface Props {
   setPart: Function
@@ -67,6 +67,10 @@ export default function ChatMiddle({ setPart, activeBot }: Props) {
       }
       if (botStr) {
         await saveDialog({ botId: activeBot.id, timestamp, dialog: { userStr, botStr, image }, })
+        if (image) {
+          const newSession = await getSession();
+          session.update(newSession)
+        }
       }
     } catch (error) {
       console.log('fail send message>>>>>', error)
