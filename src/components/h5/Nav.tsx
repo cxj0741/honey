@@ -127,12 +127,10 @@ export default function Nav() {
             <div
               onClick={() => {
                 console.log('Tawk_API CHAT>>>>>')
-                // eslint-disable-next-line no-undef
-                if (typeof Tawk_API === 'undefined') {
+                if (typeof window.Tawk_API === 'undefined') {
                   return
                 }
-                // eslint-disable-next-line no-undef
-                Tawk_API.toggle();
+                window.Tawk_API.toggle();
               }}
               className={`px-5 py-3 flex items-center space-x-4 hover:bg-[rgba(255,255,255,0.08)] hover:cursor-pointer`}
             >
