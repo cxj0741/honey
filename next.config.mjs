@@ -27,6 +27,13 @@ const nextConfig = {
         port: '',
         pathname: '/**',
       },
+      
+      {
+        protocol: 'https',
+        hostname: 'aitexttovideo.obs.cn-north-4.myhuaweicloud.com',
+        port: '',
+        pathname: '/**',
+      },
     ],
   },
 }

@@ -100,7 +100,7 @@ export default function Nav() {
                 className={`h-14 border-b border-[rgba(255,255,255,0.16)] px-4 py-3 flex items-center space-x-4 hover:bg-[rgba(255,255,255,0.08)] hover:cursor-pointer`}
               >
                 <div className="w-6 h-6 rounded-full bg-center bg-contain bg-no-repeat bg-sky-800" style={{ backgroundImage: `url(${session?.data?.user?.image})` }}></div>
-                <div >{session?.data?.user?.name}</div>
+                <div className='break-words'>{session?.data?.user?.name}</div>
               </div>
             }
             <Item

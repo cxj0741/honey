@@ -14,7 +14,7 @@ function Item({ name, value }: { name: string, value: string }) {
         <div className='text-[rgba(255,255,255,0.64)]'>{name}</div>
         <div className="w-3 h-3 rounded-full bg-center bg-no-repeat bg-contain" style={{ backgroundImage: 'url(/assets/edit.png)' }}></div>
       </div>
-      <div className="mt-1 text-sm">{value}</div>
+      <div className="mt-1 text-sm break-words">{value}</div>
     </>
   )
 }

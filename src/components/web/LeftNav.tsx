@@ -116,7 +116,7 @@ export default function LeftNav() {
                       className={`flex items-center space-x-4 text-white hover:cursor-pointer ${fold ? 'justify-center' : 'justify-start'}`}
                     >
                       <div className="w-10 h-10 rounded-full bg-center bg-contain bg-no-repeat bg-sky-800" style={{ backgroundImage: `url(${session?.data?.user?.image})` }}></div>
-                      <div className={`flex-1 ${fold ? 'hidden' : 'block'}`}>{session?.data?.user?.name}</div>
+                      <div className={`flex-1 max-w-[150px] break-words ${fold ? 'hidden' : 'block'}`}>{session?.data?.user?.name}</div>
                     </div>
                     <div
                       onClick={() => router.push('/become-premium')}

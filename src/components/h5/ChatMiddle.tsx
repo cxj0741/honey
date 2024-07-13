@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import { CHAT_PART } from '@/components/h5-pages/Chat'
 import { emitter, FOOTER_NAV_EVENT } from '@/utils'
 import { useEffect, useState, useRef } from 'react'
@@ -6,6 +7,7 @@ import { getDialogs, getUserInfo, saveDialog, setConversationId } from '@/reques
 import { formatUnixTimestamp } from '@/utils/formatUnixTimestamp'
 import SubscribeDialog from '@/components/h5/SubscribeDialog'
 import { getSession, useSession } from 'next-auth/react'
+import { findUrlInString } from '@/utils/findUrlInString'
 
 interface Props {
   setPart: Function
@@ -56,9 +58,18 @@ export default function ChatMiddle({ setPart, activeBot }: Props) {
     setInputShow(false);
     (inputRef!.current as any).value = ''
     const timestamp = Date.now()
-
+    setResult({ timestamp, dialog: { userStr, botStr: '', image: '' } })
     try {
-      const [botStr, image, conversationId] = await sendMessage(activeBot.key, { user: (session.data?.user as any)?.id, userStr, conversationId: localStorage.getItem(activeBot.id) || '' }, timestamp, setResult)
+      const [botStr, images, conversationId] = (await sendMessage(activeBot.key, { user: (session.data?.user as any)?.id, userStr, conversationId: localStorage.getItem(activeBot.id) || '' })) as [string, string[], string]
+      let image: string = ''
+      if (images.length) {
+        image = images[0]
+        console.log('>>>>>images', images)
+      } else {
+        image = findUrlInString(botStr)
+        console.log('image', image)
+      }
+      setResult({ timestamp, dialog: { userStr, botStr, image } })
       console.log('succeed send message>>>>> set', botStr, image, conversationId)
       console.log('conversationId>>>>> set', activeBot.id, conversationId)
       if (!localStorage.getItem(activeBot.id)) {
@@ -97,7 +108,8 @@ export default function ChatMiddle({ setPart, activeBot }: Props) {
   const handleInputPrompt = (str: string) => {
     (inputRef!.current as any).value = str
   }
-
+  const [activeImage, setActiveImage] = useState('')
+  const [imageShow, setImageShow] = useState(false)
   return (
     <>
       <div className="w-[100vw] bg-[#1F1D1F]">
@@ -137,7 +149,7 @@ export default function ChatMiddle({ setPart, activeBot }: Props) {
             <div key={item.timestamp} className='w-full'>
               <div className="flex justify-end text-white">
                 <div className="max-w-[80vw] space-y-1">
-                  <div className="text-sm bg-[rgba(255,255,255,0.16)] px-3 py-2 rounded-lg">
+                  <div className="text-sm bg-[rgba(255,255,255,0.16)] px-3 py-2 rounded-lg break-words">
                     {item.dialog.userStr}
                   </div>
                   <div className="text-xs text-right text-[rgba(255,255,255,0.64)]">{formatUnixTimestamp(item.timestamp)}</div>
@@ -147,7 +159,7 @@ export default function ChatMiddle({ setPart, activeBot }: Props) {
               {item.dialog.botStr &&
                 <div className="flex justify-start text-white bg-transparent">
                   <div className="max-w-[80vw] space-y-1">
-                    <div className="text-sm bg-[#F36C9C] px-3 py-2 rounded-lg">
+                    <div className="text-sm bg-[#F36C9C] px-3 py-2 rounded-lg break-words">
                       {item.dialog.botStr}
                     </div>
                   </div>
@@ -157,7 +169,12 @@ export default function ChatMiddle({ setPart, activeBot }: Props) {
               {item.dialog.image &&
                 <div className="py-4 flex justify-start text-white bg-transparent">
                   {/* <div className={`w-[300px] h-[400px] aspect-[3/4] rounded-2xl border-8 border-[#F36C9C] bg-center bg-cover bg-no-repeat`} */}
-                  <div className={`w-[300px] h-[400px] aspect-[3/4] rounded-xl bg-top bg-cover bg-no-repeat`}
+                  <div
+                    onClick={() => {
+                      setActiveImage(item.dialog.image)
+                      setImageShow(true)
+                    }}
+                    className={`w-[300px] h-[400px] aspect-[3/4] rounded-xl bg-top bg-cover bg-no-repeat`}
                     style={{ backgroundImage: `url(${item.dialog.image})` }}>
                   </div>
                 </div>
@@ -168,7 +185,7 @@ export default function ChatMiddle({ setPart, activeBot }: Props) {
           {result.dialog.userStr && (
             <div className="flex justify-end text-white">
               <div className="max-w-[80vw] space-y-1">
-                <div className="text-sm bg-[rgba(255,255,255,0.16)] px-3 py-2 rounded-lg">
+                <div className="text-sm bg-[rgba(255,255,255,0.16)] px-3 py-2 rounded-lg break-words">
                   {result.dialog.userStr}
                 </div>
                 <div className="text-xs text-right text-[rgba(255,255,255,0.64)]">{formatUnixTimestamp(result.timestamp)}</div>
@@ -179,7 +196,7 @@ export default function ChatMiddle({ setPart, activeBot }: Props) {
             (result.dialog.botStr ?
               (<div className="flex justify-start text-white bg-transparent">
                 <div className="max-w-[80vw] space-y-1">
-                  <div className="text-sm bg-[#F36C9C] px-3 py-2 rounded-lg">
+                  <div className="text-sm bg-[#F36C9C] px-3 py-2 rounded-lg break-words">
                     {result.dialog.botStr}
                   </div>
                 </div>
@@ -187,7 +204,7 @@ export default function ChatMiddle({ setPart, activeBot }: Props) {
               :
               (<div className="flex justify-start text-white bg-transparent">
                 <div className="max-w-[12rem] space-y-1">
-                  <div className="bg-[rgba(255,255,255,0.16)] px-3 py-2 rounded-lg flex items-center">
+                  <div className="bg-[rgba(255,255,255,0.16)] px-3 py-2 rounded-lg break-words flex items-center">
                     {new Array(1).fill(0).map((item, index) => (
                       <span key={index} className="loading loading-dots loading-sm text-white"></span>
                     ))}
@@ -246,6 +263,16 @@ export default function ChatMiddle({ setPart, activeBot }: Props) {
         </div>
       </div>
       <SubscribeDialog dialogShow={dialogShow} setDialogShow={setDialogShow} />
+      <dialog onClick={() => setImageShow(false)} open={imageShow} className="modal bg-[rgba(0,0,0,0.8)]">
+        <div className="modal-box aspect-[3/4] p-0 rounded-none bg-transparent">
+          <Image
+            layout="fill"
+            objectFit="contain"
+            src={activeImage}
+            alt={'bot'}
+          />
+        </div>
+      </dialog>
     </>
   )
 }
