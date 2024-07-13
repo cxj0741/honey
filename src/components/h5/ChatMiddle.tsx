@@ -145,6 +145,13 @@ export default function ChatMiddle({ setPart, activeBot }: Props) {
           className="mt-12 p-2 space-y-4 pb-20 overflow-auto"
           style={{ height: 'calc(100vh - 10rem)' }}
         >
+          <div className="flex justify-start text-white bg-transparent">
+            <div className="max-w-[80vw] space-y-1">
+              <div className="text-sm bg-[#F36C9C] px-3 py-2 rounded-lg break-words">
+                {activeBot.start}
+              </div>
+            </div>
+          </div>
           {/* 一组对话的结构 */}
           {chatArray.map(item => (
             <div key={item.timestamp} className='w-full'>

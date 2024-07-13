@@ -15,6 +15,7 @@ export default function ProfileArea({ botList }: { botList: any[] }) {
           key={item.id}
           className="w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/5 aspect-[3/4] border-8 border-transparent relative"
         >
+          {/* <div className="w-full h-full"> */}
           <Image
             onMouseEnter={() => setActiveId(item.id)}
             onMouseOut={() => setActiveId(0)}
@@ -22,9 +23,11 @@ export default function ProfileArea({ botList }: { botList: any[] }) {
             className="rounded-lg object-cover hover:cursor-pointer"
             layout="fill"
             objectFit="cover"
+            objectPosition='top'
             src={activeId === item.id ? item.image2 : item.image1}
             alt={'avatar'}
           />
+          {/* </div> */}
           <div className="absolute bottom-0 w-full p-2 text-white">
             <div className="text-xl font-semibold">{item.name}</div>
             <div className="mt-2 text-xs">{item.age}</div>

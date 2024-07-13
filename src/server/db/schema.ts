@@ -128,7 +128,7 @@ export const bots = pgTable('bots',{
     .primaryKey()
     .$defaultFn(() => crypto.randomUUID()),
   botId: serial('bot_id'),
-  key: varchar("key", { length: 50 }).notNull().default('app-z8egrB8DY8hRfoVxda1BPwMH'), //api-key不超过50位
+  key: varchar("key", { length: 50 }).notNull().default(''), //api-key不超过50位
   type: varchar("type", {
     enum: ["girls", "guys","anime"],
   }).notNull(),
@@ -147,7 +147,8 @@ export const bots = pgTable('bots',{
   endType: varchar("end_type", {
     enum: ["web", "app", "both"],
   }).notNull(),
-  isDeleted: boolean('is_deleted').default(false)
+  isDeleted: boolean('is_deleted').default(false),
+  start: text("start"),
 })
 
 export const usersToBots = pgTable(

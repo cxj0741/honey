@@ -158,6 +158,14 @@ export default function ChatMiddle({ fold, setFold, activeBot, setActiveBot }: P
           className="pl-6 pr-2 py-4 pb-60 overflow-scroll"
           style={{ height: 'calc(100% - 80px)' }}
         >
+          <div className="py-4 flex justify-start text-white bg-transparent">
+            <div className="max-w-[450px] space-y-2">
+              <div className="bg-[#F36C9C] px-3 py-2 rounded-lg break-words">
+                {activeBot.start}
+              </div>
+              {/* <div className="text-xs text-left">10:36</div> */}
+            </div>
+          </div>
           {/* 一组对话的结构 */}
           {chatArray.map(item => (
             <div key={item.timestamp} className='w-full'>
