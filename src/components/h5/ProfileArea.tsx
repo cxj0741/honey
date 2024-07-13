@@ -20,6 +20,7 @@ export default function ProfileArea({ botList }: { botList: any[] }) {
             className="rounded-[0.5rem] object-cover"
             layout="fill"
             objectFit='cover'
+            objectPosition='top'
             src={activeId === item.id ? item.image2 : item.image1}
             alt={'avatar'}
           />

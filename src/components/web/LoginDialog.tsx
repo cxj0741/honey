@@ -3,6 +3,7 @@ import { signIn } from 'next-auth/react'
 import { useRef, useState } from 'react'
 import { z } from 'zod'
 import Toast, { TOAST_TYPE, toastInfo } from './Toast'
+import { useRouter } from 'next/navigation'
 
 const ACCOUNT = {
   SIGN_IN: 'Sign In',
@@ -85,11 +86,15 @@ export default function LoginDialog({ type, setType, dialogShow, setDialogShow }
       handleToast(TOAST_TYPE.ERROR, 'Google account sign in error!')
     }
   }
+  const router = useRouter()
   return (
     <>
       <dialog open={dialogShow} className="modal bg-transparent">
         <div className="modal-box w-[810px] max-w-[810px] bg-[#121212] rounded-lg p-0 flex relative">
-          <div onClick={() => setDialogShow(false)} className="w-14 h-14 bg-center bg-contain bg-no-repeat absolute top-0 right-0 hover:cursor-pointer"
+          <div onClick={() => {
+            setDialogShow(false)
+            router.push('/')
+          }} className="w-14 h-14 bg-center bg-contain bg-no-repeat absolute top-0 right-0 hover:cursor-pointer"
             style={{ backgroundImage: "url(/assets/close.png)" }}
           ></div>
           <div className="w-1/2 aspect-[3/4] bg-cover bg-center bg-no-repeat relative"
