@@ -62,7 +62,7 @@ export default function ChatMiddle({ fold, setFold, activeBot, setActiveBot }: P
 
     setResult({ timestamp, dialog: { userStr, botStr: '', image: '' } })
     try {
-      const [botStr, images, conversationId] = (await sendMessage(activeBot.key, { user: (session.data?.user as any)?.id, userStr, conversationId: localStorage.getItem(activeBot.id) || '' })) as [string, string[], string]
+      let [botStr, images, conversationId] = (await sendMessage(activeBot.key, { user: (session.data?.user as any)?.id, userStr, conversationId: localStorage.getItem(activeBot.id) || '' })) as [string, string[], string]
       let image: string = ''
       if (images.length) {
         image = images[0]
@@ -71,6 +71,7 @@ export default function ChatMiddle({ fold, setFold, activeBot, setActiveBot }: P
         image = findUrlInString(botStr)
         console.log('image', image)
       }
+      botStr = botStr.replace(image, '')
       setResult({ timestamp, dialog: { userStr, botStr, image } })
       console.log('succeed send message>>>>> set', botStr, image, conversationId)
       console.log('conversationId>>>>> set', activeBot.id, conversationId)
