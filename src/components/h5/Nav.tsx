@@ -51,15 +51,15 @@ export default function Nav() {
   return (
     <>
       {/* HEADER */}
-      <div className="z-50 fixed left-0 top-0 w-[100vw] pt-5 pr-4 h-16 bg-[#121112] flex items-center justify-between">
+      <div className="z-50 fixed left-0 top-0 w-[100vw] pt-5 px-4 h-16 bg-[#121112] flex items-center justify-between">
         <div className="flex items-center">
-          <div className="w-40 h-8 bg-center bg-no-repeat bg-contain" style={{ backgroundImage: 'url(assets/Honeybun.png)' }}></div>
           <div
             onClick={() => {
               setFold(!fold)
             }}
             className="w-6 h-6 hover:cursor-pointer bg-center bg-no-repeat bg-contain" style={{ backgroundImage: `url(/assets/${fold ? 'arrowOut' : 'arrowIn'}.png)` }}>
           </div>
+          <div className="ml-2 w-[7.5rem] h-6 bg-bottom bg-no-repeat bg-contain" style={{ backgroundImage: 'url(assets/Honeybun.png)' }}></div>
         </div>
         {
           session.status === 'authenticated' ?
@@ -97,10 +97,10 @@ export default function Nav() {
               session.status === 'authenticated' &&
               <div
                 onClick={() => router.push('/personal-center')}
-                className={`h-14 border-b border-[rgba(255,255,255,0.16)] px-4 py-3 flex items-center space-x-4 hover:bg-[rgba(255,255,255,0.08)] hover:cursor-pointer`}
+                className={`min-h-14 border-b border-[rgba(255,255,255,0.16)] px-4 py-3 flex items-center space-x-4 hover:bg-[rgba(255,255,255,0.08)] hover:cursor-pointer`}
               >
                 <div className="w-6 h-6 rounded-full bg-center bg-contain bg-no-repeat bg-sky-800" style={{ backgroundImage: `url(${session?.data?.user?.image})` }}></div>
-                <div className='break-words'>{session?.data?.user?.name}</div>
+                <div className='max-w-[33vw] break-words'>{session?.data?.user?.name}</div>
               </div>
             }
             <Item

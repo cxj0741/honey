@@ -253,7 +253,7 @@ export default function ChatMiddle({ fold, setFold, activeBot, setActiveBot }: P
                     <div
                       className="w-3 h-3 bg-center bg-contain bg-no-repeat"
                       // className="w-3 h-3 bg-center bg-contain bg-no-repeat hover:cursor-pointer"
-                      style={{ backgroundImage: "url(/assets/arrowDown.png)" }}
+                      style={{ backgroundImage: "url(/assets/arrowUp.png)" }}
                     ></div>
                   </div>
                   <ul

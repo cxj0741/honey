@@ -24,10 +24,10 @@ export default function ProfileArea({ botList }: { botList: any[] }) {
             alt={'avatar'}
           />
           <div className="absolute bottom-0 w-full p-2 text-white space-y-1">
-            <div className="text-base font-bold">NAME</div>
-            <div className="text-xs">AGE</div>
+            <div className="text-base font-bold">{item.name}</div>
+            <div className="text-xs">{item.age}</div>
             <div className="text-xs">
-              {item.description.slice(0, 80)}...
+              {item.description.slice(0, 40)}...
             </div>
           </div>
         </div>

@@ -67,11 +67,11 @@ export default function ChatLeft({ setPart, activeBot, setActiveBot, currentArra
     <>
       <div
         className="w-[100vw] px-4 py-2 bg-cover bg-center text-white space-y-6 flex flex-col"
-        style={{ backgroundImage: 'url(../../assets/chatBg.png)', height: 'calc(100vh - 4rem)' }}
+        style={{ backgroundImage: 'url(../../assets/chatBg.png)', height: 'calc(100vh - 7.5rem)' }}
       >
         <div className="flex items-center justify-between">
           <div className="text-2xl">Chat</div>
-          <label className="input input-bordered flex items-center gap-2 text-slate-900">
+          <label className="ml-4 flex-1 input input-bordered input-sm flex items-center gap-2 text-slate-900">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 16 16"
@@ -87,7 +87,7 @@ export default function ChatLeft({ setPart, activeBot, setActiveBot, currentArra
             <input
               onChange={(event) => handleSearch(event.target.value.trim())}
               type="text"
-              className="grow"
+              className="flex-1"
               placeholder="Search for a profile..."
             />
           </label>

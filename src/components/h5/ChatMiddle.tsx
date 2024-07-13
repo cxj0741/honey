@@ -141,8 +141,9 @@ export default function ChatMiddle({ setPart, activeBot }: Props) {
           ></div>
         </div>
         <div
+          ref={chatContainer}
           className="mt-12 p-2 space-y-4 pb-20 overflow-auto"
-          style={{ height: 'calc(100% - 3rem)' }}
+          style={{ height: 'calc(100vh - 10rem)' }}
         >
           {/* 一组对话的结构 */}
           {chatArray.map(item => (
@@ -216,7 +217,7 @@ export default function ChatMiddle({ setPart, activeBot }: Props) {
             null}
         </div>
         {/* CHAT CONTENT SEND MESSAGE INPUT */}
-        <div className="fixed -bottom-1 w-[100vw] h-[4.5rem] px-4 pr-0 py-3 border-t border-[rgba(255,255,255,0.16)] bg-[#1F1D1F] flex items-center space-x-1">
+        <div className="fixed -bottom-1 w-[100vw] h-[3.6rem] px-1 pb-1 border-t border-[rgba(255,255,255,0.16)] bg-[#1F1D1F] flex items-center space-x-1">
           {inputShow ?
             <>
               <input
@@ -224,9 +225,9 @@ export default function ChatMiddle({ setPart, activeBot }: Props) {
                 onKeyDown={(event) => handleKeyDown(event.key)}
                 type="text"
                 placeholder="Type a message"
-                className="w-[14rem] input input-bordered whitespace-normal break-words text-wrap"
+                className="flex-1 input input-bordered input-sm whitespace-normal break-words text-wrap"
               />
-              <div className="w-[5rem] h-12 rounded-lg bg-[rgba(255,255,255,0.16)] flex items-center justify-center hover:cursor-pointer">
+              <div className="w-[5rem] h-8 rounded-lg bg-[rgba(255,255,255,0.16)] flex items-center justify-center hover:cursor-pointer">
                 <div className="w-full px-2 dropdown dropdown-top dropdown-end">
                   <div
                     tabIndex={0}
@@ -237,8 +238,7 @@ export default function ChatMiddle({ setPart, activeBot }: Props) {
                     ></div>
                     <span>Ask</span>
                     <div className="w-3 h-3 bg-center bg-contain bg-no-repeat"
-                      // className="w-3 h-3 bg-center bg-contain bg-no-repeat hover:cursor-pointer"
-                      style={{ backgroundImage: "url(/assets/arrowDown.png)" }}
+                      style={{ backgroundImage: "url(/assets/arrowUp.png)" }}
                     ></div>
                   </div>
                   <ul tabIndex={0}
@@ -253,7 +253,7 @@ export default function ChatMiddle({ setPart, activeBot }: Props) {
               </div>
               <div
                 onClick={() => handleSendMessage()}
-                className="w-10 h-10 bg-center bg-contain bg-no-repeat hover:cursor-pointer"
+                className="w-10 h-10 bg-center bg-cover bg-no-repeat hover:cursor-pointer"
                 style={{ backgroundImage: "url(/assets/send.png)" }}
               ></div>
             </>
