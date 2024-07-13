@@ -5,6 +5,12 @@ const nextConfig = {
       // 这时google的图片
       {
         protocol: 'https',
+        hostname: 'www.honeybun.ai',
+        port: '',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
         hostname: 'lh3.googleusercontent.com',
         port: '',
         pathname: '/**',
