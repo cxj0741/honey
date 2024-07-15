@@ -126,29 +126,29 @@ export const authenticators = pgTable(
 export const bots = pgTable('bots',{
   id: text("id")
     .primaryKey()
-    .$defaultFn(() => crypto.randomUUID()),
-  botId: serial('bot_id'),
+    .$defaultFn(() => crypto.randomUUID()), //自动生成
+  botId: serial('bot_id'), //自动生成
   key: varchar("key", { length: 50 }).notNull().default(''), //api-key不超过50位
   type: varchar("type", {
-    enum: ["girls", "guys","anime"],
+    enum: ["girls", "guys","anime"], //3种类型
   }).notNull(),
-  name: varchar("name", { length: 100 }).notNull(),
-  age:integer("age"),
-  description: varchar("description", { length: 500 }).notNull(),
-  image1: varchar("image1", { length: 100 }).notNull(),
-  image2: varchar("image2", { length: 100 }).notNull(),
-  body: varchar("body", { length: 100 }).notNull(),
-  ethnicity: varchar("ethnicity", { length: 100 }).notNull(),
-  personality: varchar("personality", { length: 100 }).notNull(),
-  occupation: varchar("occupation", { length: 100 }).notNull(),
-  hobbies: varchar("hobbies", { length: 100 }).notNull(),
-  relationship: varchar("relationship", { length: 100 }).notNull(),
-  isCustom: boolean("is_custom").default(false),
+  name: varchar("name", { length: 100 }).notNull(), //姓名
+  age:integer("age"), //年龄
+  description: varchar("description", { length: 500 }).notNull(), //描述信息
+  image1: varchar("image1", { length: 100 }).notNull(), //图片1
+  image2: varchar("image2", { length: 100 }).notNull(), //图片2
+  body: varchar("body", { length: 100 }).notNull(), //体型描述
+  ethnicity: varchar("ethnicity", { length: 100 }).notNull(), //种族
+  personality: varchar("personality", { length: 100 }).notNull(), //个性
+  occupation: varchar("occupation", { length: 100 }).notNull(), //职业
+  hobbies: varchar("hobbies", { length: 100 }).notNull(), //兴趣
+  relationship: varchar("relationship", { length: 100 }).notNull(), //关系，一般是N/A
+  isCustom: boolean("is_custom").default(false), //是否是用户自定义bot，一般是false
   endType: varchar("end_type", {
-    enum: ["web", "app", "both"],
+    enum: ["web", "app", "both"], //可以这个bot的前端类似，有web，app和两个端都可以使用3种类型
   }).notNull(),
-  isDeleted: boolean('is_deleted').default(false),
-  start: text("start"),
+  isDeleted: boolean('is_deleted').default(false), //是否已经删除了，默认是false
+  start: text("start"), //开场白
 })
 
 export const usersToBots = pgTable(

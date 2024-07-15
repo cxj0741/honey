@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation'
 import { useRef, useState } from 'react'
 import ConfirmDialog from '@/components/web/ConfirmDialog'
 import { z } from 'zod'
-import Toast, { TOAST_TYPE, toastInfo } from '@/components/web/Toast'
+import Toast, { TOAST_TYPE, useToast } from '@/components/web/Toast'
 
 function Item({ name, value }: { name: string, value: string }) {
   return (
@@ -49,17 +49,7 @@ export default function PersonalCenter({ user, orderArray }: { user: Record<stri
     // console.log('session>>>>', session)
     const router = useRouter()
     const inputRef = useRef(null)
-    const [toast, setToast] = useState({ ...toastInfo })
-    const handleToast = (type: string, message: string) => {
-      setToast({
-        show: true,
-        type,
-        message
-      })
-      setTimeout(() => {
-        setToast({ ...toastInfo })
-      }, 2000)
-    }
+    const { toast, handleToast } = useToast()
     const handleConfirm = async () => {
       const str = (inputRef?.current as any)?.value.trim() || ''
       if (!str) { return }

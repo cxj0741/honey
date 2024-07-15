@@ -1,8 +1,8 @@
 import { signUp } from '@/request'
 import { signIn } from 'next-auth/react'
-import { useRef, useState } from 'react'
+import { useRef } from 'react'
 import { z } from 'zod'
-import Toast, { TOAST_TYPE, toastInfo } from './Toast'
+import Toast, { TOAST_TYPE, useToast } from './Toast'
 import { useRouter } from 'next/navigation'
 
 const ACCOUNT = {
@@ -18,17 +18,7 @@ interface Props {
 }
 
 export default function LoginDialog({ type, setType, dialogShow, setDialogShow }: Props) {
-  const [toast, setToast] = useState({ ...toastInfo })
-  const handleToast = (type: string, message: string) => {
-    setToast({
-      show: true,
-      type,
-      message
-    })
-    setTimeout(() => {
-      setToast({ ...toastInfo })
-    }, 2000)
-  }
+  const { toast, handleToast } = useToast()
   const emailRef = useRef(null)
   const passwordRef = useRef(null)
   const handleConfirm = async (type: string) => {
