@@ -27,13 +27,15 @@ const info = [
 ]
 
 export default function PersonalCenter({ user, orderArray }: { user: Record<string, any>, orderArray: Record<string, any> }) {
+  const { toast, handleToast } = useToast()
   const handleDeleteUser = async () => {
     try {
-      await deleteUser()
+      const res = await deleteUser()
+      // console.log('res', res.message)
+      handleToast(TOAST_TYPE.SUCCESS, res.message)
       await signOut({ callbackUrl: '/' })
     } catch (error) {
-      // await
-      console.log('error', error)
+      handleToast(TOAST_TYPE.ERROR, 'delete user error!')
     }
   }
   const [open, setOpen] = useState(false)
@@ -48,30 +50,34 @@ export default function PersonalCenter({ user, orderArray }: { user: Record<stri
     // console.log('session>>>>', session)
     const router = useRouter()
     const inputRef = useRef(null)
-    const { toast, handleToast } = useToast()
     const handleConfirm = async () => {
       const str = (inputRef?.current as any)?.value.trim() || ''
       if (!str) { return }
       if (name.toLocaleLowerCase() === 'email') {
         const emailCheck = z.string().email().safeParse(str)
         if (!emailCheck.success) {
-          handleToast(TOAST_TYPE.ERROR, 'Email error!')
+          handleToast(TOAST_TYPE.ERROR, 'email error!')
           return
         }
       }
       if (name.toLocaleLowerCase() === 'password') {
         const passwordCheck = z.string().min(6).safeParse(str)
         if (!passwordCheck.success) {
-          handleToast(TOAST_TYPE.ERROR, 'Password error, minimum 6 characters!')
+          handleToast(TOAST_TYPE.ERROR, 'password error, minimum 6 characters!')
           return
         }
       }
-      setDialogShow(false);
       (inputRef!.current as any).value = ''
-      await changeUserInfo(name.toLocaleLowerCase(), str)
-      const newSession = await getSession();
-      session.update(newSession)
-      router.push('/personal-center')
+      setDialogShow(false)
+      try {
+        const res = await changeUserInfo(name.toLocaleLowerCase(), str)
+        handleToast(TOAST_TYPE.SUCCESS, res.message)
+        const newSession = await getSession();
+        session.update(newSession)
+        router.push('/personal-center')
+      } catch (error) {
+        handleToast(TOAST_TYPE.ERROR, `change ${name.toLowerCase()} error!`)
+      }
     }
     return (
       <>
@@ -176,12 +182,12 @@ export default function PersonalCenter({ user, orderArray }: { user: Record<stri
             </div>
           </div>
           <div className="mt-2 text-xs text-[rgba(255,255,255,0.64)]">
-            Danger Zone：If you want to permanently delete this account and all of its data.
+            Danger Zone: If you want to permanently delete this account and all of its data.
           </div>
         </div>
       </div>
       <EditDialog />
-      <ConfirmDialog title={'Are you sure you want to delete account?'} open={open} setOpen={setOpen} handleConfirm={async () => await handleDeleteUser()} />
+      <ConfirmDialog title={'Are you sure you want to delete account?'} open={open} setOpen={setOpen} handleConfirm={() => handleDeleteUser()} />
     </>
   )
 }

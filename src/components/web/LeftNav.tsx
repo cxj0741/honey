@@ -1,5 +1,5 @@
 'use client'
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { useRouter, usePathname } from 'next/navigation'
 import LoginDialog from './LoginDialog'
 import { ACCOUNT } from '@/utils'
@@ -20,12 +20,12 @@ export default function LeftNav() {
   // 三种状态 authenticated unauthenticated loading
   const session = useSession()
   // console.log('session data>>>>>>', session)
-  useEffect(() => {
-    console.log('path>>>>>', path)
-    if (path.includes('/chat')) {
-      setFold(true)
-    }
-  }, [path])
+  // useEffect(() => {
+  //   console.log('path>>>>>', path)
+  //   if (path.includes('/chat')) {
+  //     setFold(true)
+  //   }
+  // }, [path])
 
   function Item({
     src,
@@ -38,9 +38,6 @@ export default function LeftNav() {
     return (
       <div
         onClick={() => {
-          if (title === 'Chat') {
-            setFold(true)
-          }
           let url = '/'
           if (title.toLocaleLowerCase() !== 'explore') {
             url = formatURL(title)
@@ -64,7 +61,7 @@ export default function LeftNav() {
 
   return (
     <>
-      <div className={` ${fold ? 'w-[90px]' : 'w-[240px]'}`}>
+      <div className={` ${fold ? 'w-[90px]' : 'w-[180px]'}`}>
         <div className="w-full h-full py-3 border-r border-[#363636] flex flex-col">
           <div className="px-3 flex-1 flex flex-col">
             <div className="h-16 flex items-center justify-center">
@@ -86,7 +83,7 @@ export default function LeftNav() {
               />
               <Item
                 src={path === '/become-premium' ? '/assets/becomePremiumSelected.png' : '/assets/becomePremium.png'}
-                title="Become Premium"
+                title="Premium"
               />
             </div>
             <div className="mt-10 text-white">

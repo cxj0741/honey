@@ -28,13 +28,15 @@ const info = [
 
 export default function PersonalCenter({ user, orderArray }: { user: Record<string, any>, orderArray: Record<string, any> }) {
   // console.log('user info', user)
+  const { toast, handleToast } = useToast()
   const handleDeleteUser = async () => {
     try {
-      await deleteUser()
+      const res = await deleteUser()
+      // console.log('res', res.message)
+      handleToast(TOAST_TYPE.SUCCESS, res.message)
       await signOut({ callbackUrl: '/' })
     } catch (error) {
-      // await
-      console.log('error', error)
+      handleToast(TOAST_TYPE.ERROR, 'delete user error!')
     }
   }
   const [open, setOpen] = useState(false)
@@ -46,53 +48,53 @@ export default function PersonalCenter({ user, orderArray }: { user: Record<stri
 
   function EditDialog() {
     const session = useSession()
-    // console.log('session>>>>', session)
     const router = useRouter()
     const inputRef = useRef(null)
-    const { toast, handleToast } = useToast()
     const handleConfirm = async () => {
       const str = (inputRef?.current as any)?.value.trim() || ''
       if (!str) { return }
       if (name.toLocaleLowerCase() === 'email') {
         const emailCheck = z.string().email().safeParse(str)
         if (!emailCheck.success) {
-          handleToast(TOAST_TYPE.ERROR, 'Email error!')
+          handleToast(TOAST_TYPE.ERROR, 'email error!')
           return
         }
       }
       if (name.toLocaleLowerCase() === 'password') {
         const passwordCheck = z.string().min(6).safeParse(str)
         if (!passwordCheck.success) {
-          handleToast(TOAST_TYPE.ERROR, 'Password error, minimum 6 characters!')
+          handleToast(TOAST_TYPE.ERROR, 'password error, minimum 6 characters!')
           return
         }
       }
-      setDialogShow(false);
       (inputRef!.current as any).value = ''
-      await changeUserInfo(name.toLocaleLowerCase(), str)
-      const newSession = await getSession();
-      // console.log('new session', newSession)
-      session.update(newSession)
-      router.push('/personal-center')
+      setDialogShow(false)
+      try {
+        const res = await changeUserInfo(name.toLocaleLowerCase(), str)
+        handleToast(TOAST_TYPE.SUCCESS, res.message)
+        const newSession = await getSession();
+        session.update(newSession)
+        router.push('/personal-center')
+      } catch (error) {
+        handleToast(TOAST_TYPE.ERROR, `change ${name.toLowerCase()} error!`)
+      }
     }
+
     return (
-      <>
-        <dialog open={dialogShow} className="modal bg-transparent">
-          <div className="modal-box w-[360px] p-8 rounded-3xl border-2 border-[rgba(255,255,255,0.16)] bg-[#1F1D1F] relative">
-            <div onClick={() => setDialogShow(false)} className="w-14 h-14 bg-center bg-contain bg-no-repeat absolute top-0 right-0 hover:cursor-pointer"
-              style={{ backgroundImage: "url(/assets/close.png)" }}
-            ></div>
-            <h3 className="font-bold text-white text-lg">Edit {name}</h3>
-            <div className="mt-8 flex flex-col space-y-4">
-              <input ref={inputRef} type="text" placeholder={name} className="input input-bordered w-full text-black" />
-              <button
-                onClick={() => handleConfirm()}
-                className="btn btn-outline  text-white">Confirm</button>
-            </div>
+      <dialog open={dialogShow} className="modal bg-transparent">
+        <div className="modal-box w-[360px] p-8 rounded-3xl border-2 border-[rgba(255,255,255,0.16)] bg-[#1F1D1F] relative">
+          <div onClick={() => setDialogShow(false)} className="w-14 h-14 bg-center bg-contain bg-no-repeat absolute top-0 right-0 hover:cursor-pointer"
+            style={{ backgroundImage: "url(/assets/close.png)" }}
+          ></div>
+          <h3 className="font-bold text-white text-lg">Edit {name}</h3>
+          <div className="mt-8 flex flex-col space-y-4">
+            <input ref={inputRef} type="text" placeholder={name} className="input input-bordered w-full text-black" />
+            <button
+              onClick={() => handleConfirm()}
+              className="btn btn-outline  text-white">Confirm</button>
           </div>
-        </dialog>
-        {toast.show && <Toast type={toast.type} message={toast.message} />}
-      </>
+        </div>
+      </dialog>
     )
   }
 
@@ -188,7 +190,8 @@ export default function PersonalCenter({ user, orderArray }: { user: Record<stri
         </div>
       </div>
       <EditDialog />
-      <ConfirmDialog title={'Are you sure you want to delete account?'} open={open} setOpen={setOpen} handleConfirm={async () => await handleDeleteUser()} />
+      <ConfirmDialog title={'Are you sure you want to delete account?'} open={open} setOpen={setOpen} handleConfirm={() => handleDeleteUser()} />
+      {toast.show && <Toast type={toast.type} message={toast.message} />}
     </>
   )
 }

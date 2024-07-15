@@ -113,17 +113,13 @@ export default function Nav() {
             />
             <Item
               src={path === '/become-premium' ? '/assets/becomePremiumSelected.png' : '/assets/becomePremium.png'}
-              title="Become Premium"
+              title="Premium"
             />
             <Item
               src={path === '/personal-center' ? '/assets/accountSelected.png' : '/assets/account.png'}
               title="Account"
             />
             <div className="h-[1px] bg-[rgba(255,255,255,0.16)]"></div>
-            {/* <Item
-              src="/assets/contactUs.png"
-              title="Contact Us"
-            /> */}
             <div
               onClick={() => {
                 console.log('Tawk_API CHAT>>>>>')

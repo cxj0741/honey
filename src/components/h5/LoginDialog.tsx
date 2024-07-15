@@ -25,43 +25,43 @@ export default function LoginDialog({ type, setType, dialogShow, setDialogShow }
     const email = (emailRef?.current as any)?.value?.trim() || ''
     const emailCheck = z.string().email().safeParse(email)
     if (!emailCheck.success) {
-      handleToast(TOAST_TYPE.ERROR, 'Email error!')
+      handleToast(TOAST_TYPE.ERROR, 'email error!')
       return
     }
     const password = (passwordRef?.current as any)?.value?.trim() || ''
     const passwordCheck = z.string().min(6).safeParse(password)
     if (!passwordCheck.success) {
-      handleToast(TOAST_TYPE.ERROR, 'Password error!')
+      handleToast(TOAST_TYPE.ERROR, 'password error!')
       return
     }
 
     if (type === ACCOUNT.SIGN_IN) {
       try {
         const res = await signIn('credentials', { redirect: false, email, password })
-        console.log('sign in result', res)
+        // console.log('sign in result', res)
         if (res?.ok) {
-          handleToast(TOAST_TYPE.SUCCESS, 'Sign in success!')
+          handleToast(TOAST_TYPE.SUCCESS, 'sign in success!')
           setDialogShow(false)
         } else {
-          handleToast(TOAST_TYPE.ERROR, 'Email or password error!')
+          handleToast(TOAST_TYPE.ERROR, 'email or password error!')
         }
       } catch (error) {
-        handleToast(TOAST_TYPE.ERROR, 'Email or password error!')
+        handleToast(TOAST_TYPE.ERROR, 'email or password error!')
       }
     }
     if (type === ACCOUNT.SIGN_UP) {
       try {
         const res = await signUp({ email, password })
-        console.log('sign up>>>>>', res)
+        // console.log('sign up>>>>>', res)
         if (res.ok) {
-          handleToast(TOAST_TYPE.SUCCESS, 'Sign up success!')
+          handleToast(TOAST_TYPE.SUCCESS, 'sign up success!')
           setDialogShow(false)
           await signIn('credentials', { email, password })
         } else {
           handleToast(TOAST_TYPE.ERROR, res.error)
         }
       } catch (error) {
-        handleToast(TOAST_TYPE.ERROR, 'Sign up error!')
+        handleToast(TOAST_TYPE.ERROR, 'sign up error!')
       }
     }
   }
@@ -70,10 +70,10 @@ export default function LoginDialog({ type, setType, dialogShow, setDialogShow }
       // const res = await signIn('google')
       // console.log('sign in result', res)
       await signIn('google')
-      handleToast(TOAST_TYPE.SUCCESS, 'Sign in success!')
+      handleToast(TOAST_TYPE.SUCCESS, 'sign in success!')
       setDialogShow(false)
     } catch (error) {
-      handleToast(TOAST_TYPE.ERROR, 'Google account sign in error!')
+      handleToast(TOAST_TYPE.ERROR, 'google account sign in error!')
     }
   }
   const router = useRouter()
