@@ -64,7 +64,7 @@ export default function Nav() {
         {
           session.status === 'authenticated' ?
             <div
-              onClick={() => router.push('/become-premium')}
+              onClick={() => router.push('/premium')}
               className="px-2 py-0.5 rounded-lg border border-[rgba(255,255,255,0.32)] hover:cursor-pointer flex items-center justify-between"
             >
 
@@ -112,7 +112,7 @@ export default function Nav() {
               title="Chat"
             />
             <Item
-              src={path === '/become-premium' ? '/assets/becomePremiumSelected.png' : '/assets/becomePremium.png'}
+              src={path === '/premium' ? '/assets/premiumSelected.png' : '/assets/premium.png'}
               title="Premium"
             />
             <Item

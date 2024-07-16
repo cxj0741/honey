@@ -25,7 +25,7 @@ export default function SubscribeDialog({ dialogShow, setDialogShow }: Props) {
             <li className="text-sm flex items-center space-x-2"><span className='w-3 h-3 rounded-full bg-[#ED5088]'></span><span>More benefits coming soon</span></li>
           </ul>
           <div
-            onClick={() => router.push('/become-premium')} className="mt-4 h-12 bg-[#ED5088] text-white rounded-lg flex items-center justify-center space-x-4 hover:cursor-pointer">
+            onClick={() => router.push('/premium')} className="mt-4 h-12 bg-[#ED5088] text-white rounded-lg flex items-center justify-center space-x-4 hover:cursor-pointer">
             <div className="w-6 h-6 bg-center bg-contain bg-no-repeat"
               style={{ backgroundImage: "url(/assets/subscribe.png)" }}
             ></div>

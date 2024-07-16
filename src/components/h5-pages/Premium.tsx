@@ -1,6 +1,6 @@
 'use client'
 import { useState } from 'react'
-export default function BecomePremium() {
+export default function Premium() {
   const [active, setActive] = useState(12)
   return (
     <div className="w-[100vw] px-4">

@@ -12,12 +12,12 @@ export default async function Chat({ searchParams }: { searchParams: Record<stri
   let id = searchParams?.botId?.trim()
   const userId = await getUserId()
   console.log('userId', userId, id)
+  let usersToBotsArray = await db
+    .select()
+    .from(usersToBots)
+    .where(sql`${usersToBots.userId} = ${userId}`)
+  // console.log('usersToBotsArray CHAT', usersToBotsArray)
   if (!id) {
-    let usersToBotsArray = await db
-      .select()
-      .from(usersToBots)
-      .where(sql`${usersToBots.userId} = ${userId}`)
-    // console.log('usersToBotsArray', usersToBotsArray)
     if (usersToBotsArray.length) {
       id = usersToBotsArray[0].botId
     } else {
@@ -37,7 +37,9 @@ export default async function Chat({ searchParams }: { searchParams: Record<stri
       .from(usersToBots)
       .where(sql`${usersToBots.userId} = ${userId} and ${usersToBots.botId} = ${id}`)
     if (!relation.length) {
-      await db.insert(usersToBots).values({ userId, botId: id, timestamp: Date.now() })
+      const timestamp = Date.now()
+      await db.insert(usersToBots).values({ userId, botId: id, timestamp })
+      usersToBotsArray.push({ userId, botId: id, timestamp, conversationId: '' })
     }
 
     // 获取user所有bot的基本信息
@@ -55,7 +57,7 @@ export default async function Chat({ searchParams }: { searchParams: Record<stri
       userBotArray.push(bot)
     }
 
-    return isMobile() ? <H5Chat userBotArray={userBotArray} botId={id}  /> : <WebChat userBotArray={userBotArray} botId={id} />
+    return isMobile() ? <H5Chat userBotArray={userBotArray} usersToBotsArray={usersToBotsArray} botId={id} /> : <WebChat userBotArray={userBotArray} usersToBotsArray={usersToBotsArray} botId={id} />
   } else {
     redirect('/')
   }

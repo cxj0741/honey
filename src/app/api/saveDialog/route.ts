@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { db } from '@/server/db'
-import { chats, users } from '@/server/db/schema'
+import { chats, users, usersToBots } from '@/server/db/schema'
 import { getUserId } from '@/utils/getUserId'
 import { sql } from 'drizzle-orm/sql'
 
@@ -18,6 +18,7 @@ export async function POST(request: NextRequest) {
     .insert(chats)
     .values({ userId, botId, timestamp, dialog: JSON.stringify(dialog) })
 
+  await db.update(usersToBots).set({timestamp}).where(sql`${usersToBots.userId} = ${userId} AND ${usersToBots.botId} = ${botId}`)
   const [user] = await db.select().from(users).where(sql`${users.id} = ${userId}`)
   if((user.messages as number) > 0){
     await db.update(users).set({messages: (user.messages as number) - 1}).where(sql`${users.id} = ${userId}`)

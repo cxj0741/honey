@@ -3,14 +3,12 @@ import withAuth from 'next-auth/middleware'
 export default withAuth({
   pages: {
     signIn: '/login',
+    error: '/login',
+    signOut: '/',
   },
 })
 export const config = {
-  matcher: [
-    '/chat/:path*',
-    '/become-premium/:path*',
-    '/personal-center/:path*',
-  ],
+  matcher: ['/chat/:path*', '/premium/:path*', '/personal-center/:path*'],
 }
 
 // import { NextRequest, NextResponse } from 'next/server'

@@ -80,23 +80,20 @@ export default function PersonalCenter({ user, orderArray }: { user: Record<stri
       }
     }
     return (
-      <>
-        <dialog open={dialogShow} className="modal bg-transparent">
-          <div className="modal-box w-[360px] p-8 rounded-3xl border-2 border-[rgba(255,255,255,0.16)] bg-[#1F1D1F] relative">
-            <div onClick={() => setDialogShow(false)} className="w-14 h-14 bg-center bg-contain bg-no-repeat absolute top-0 right-0 hover:cursor-pointer"
-              style={{ backgroundImage: "url(/assets/close.png)" }}
-            ></div>
-            <h3 className="font-bold text-white text-lg">Edit {name}</h3>
-            <div className="mt-8 flex flex-col space-y-4">
-              <input ref={inputRef} type="text" placeholder={name} className="input input-bordered w-full text-black" />
-              <button
-                onClick={() => handleConfirm()}
-                className="btn btn-outline  text-white">Confirm</button>
-            </div>
+      <dialog open={dialogShow} className="modal bg-transparent">
+        <div className="modal-box w-[360px] p-8 rounded-3xl border-2 border-[rgba(255,255,255,0.16)] bg-[#1F1D1F] relative">
+          <div onClick={() => setDialogShow(false)} className="w-14 h-14 bg-center bg-contain bg-no-repeat absolute top-0 right-0 hover:cursor-pointer"
+            style={{ backgroundImage: "url(/assets/close.png)" }}
+          ></div>
+          <h3 className="font-bold text-white text-lg">Edit {name}</h3>
+          <div className="mt-8 flex flex-col space-y-4">
+            <input ref={inputRef} type="text" placeholder={name} className="input input-bordered w-full text-black" />
+            <button
+              onClick={() => handleConfirm()}
+              className="btn btn-outline  text-white">Confirm</button>
           </div>
-        </dialog>
-        {toast.show && <Toast type={toast.type} message={toast.message} />}
-      </>
+        </div>
+      </dialog>
     )
   }
 
@@ -188,6 +185,7 @@ export default function PersonalCenter({ user, orderArray }: { user: Record<stri
       </div>
       <EditDialog />
       <ConfirmDialog title={'Are you sure you want to delete account?'} open={open} setOpen={setOpen} handleConfirm={() => handleDeleteUser()} />
+      {toast.show && <Toast type={toast.type} message={toast.message} />}
     </>
   )
 }

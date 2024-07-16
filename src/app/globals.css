@@ -22,9 +22,6 @@ html{
 
 body {
   color: rgb(var(--foreground-rgb));
-  background-image: url(../assets/bg.png);
-  background-size: cover;
-  background-position: center;
 }
 
 @layer utilities {

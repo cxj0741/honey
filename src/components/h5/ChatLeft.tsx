@@ -4,6 +4,8 @@ import ConfirmDialog from '@/components/web/ConfirmDialog'
 import { useState } from 'react'
 import { CHAT_PART } from '@/components/h5-pages/Chat'
 import { emitter, FOOTER_NAV_EVENT } from '@/utils'
+import { formatUnixTimestamp } from '@/utils/formatUnixTimestamp'
+import Toast, { TOAST_TYPE, useToast } from '@/components/web/Toast'
 
 interface Props {
   setPart: Function
@@ -11,8 +13,10 @@ interface Props {
   setActiveBot: Function
   currentArray: Record<string, any>[]
   setCurrentArray: Function
+  timeArray: Record<string, any>[]
 }
-export default function ChatLeft({ setPart, activeBot, setActiveBot, currentArray, setCurrentArray }: Props) {
+export default function ChatLeft({ setPart, activeBot, setActiveBot, currentArray, setCurrentArray, timeArray }: Props) {
+  const { toast, handleToast } = useToast()
   const router = useRouter()
   const [open, setOpen] = useState(false)
   const [action, setAction] = useState('')
@@ -27,29 +31,33 @@ export default function ChatLeft({ setPart, activeBot, setActiveBot, currentArra
     setAction(str)
     setOpen(true)
   }
-  const deleteBot = async () => {
-    await deleteUserBot(activeBot.id)
-    const array = currentArray.filter(item => item.id !== activeBot.id)
-    if (!array.length) {
-      router.push('/')
-    }
-    setCurrentArray(array)
-  }
-  const deleteDialogs = async () => {
-    await deleteBotDialogs(activeBot.id)
-    setActiveBot({ ...activeBot })
-  }
   const handleConfirm = async () => {
-    try {
-      setOpen(false)
-      if (action === 'REFRESH') { await deleteDialogs() }
-      if (action === 'DELETE') { await deleteBot() }
-    } catch (error) {
-      console.error('handleConfirm error', error)
-    } finally {
-      setAction('')
-      setTitle('')
+    setOpen(false)
+    if (action === 'REFRESH') {
+      try {
+        const res = await deleteBotDialogs(activeBot.id)
+        handleToast(TOAST_TYPE.SUCCESS, res.message)
+        setActiveBot({ ...activeBot })
+      } catch (error) {
+        handleToast(TOAST_TYPE.ERROR, 'delete dialogs error!')
+      }
     }
+    if (action === 'DELETE') {
+      try {
+        const res = await deleteUserBot(activeBot.id)
+        handleToast(TOAST_TYPE.SUCCESS, res.message)
+        const array = currentArray.filter(item => item.id !== activeBot.id)
+        if (!array.length) {
+          router.push('/')
+        }
+        setCurrentArray(array)
+        setActiveBot({ ...array[0] })
+      } catch (error) {
+        handleToast(TOAST_TYPE.ERROR, 'delete bot error!')
+      }
+    }
+    setAction('')
+    setTitle('')
   }
   const handleSearch = (str: string) => {
     const arr = currentArray.map(item => {
@@ -114,7 +122,7 @@ export default function ChatLeft({ setPart, activeBot, setActiveBot, currentArra
                   </div>
                   <div className="space-y-3 flex flex-col items-end">
                     <div className="text-xs text-[rgba(255,255,255,0.64)]">
-                      {item.time}
+                      {formatUnixTimestamp((timeArray.find(relation => relation.botId === item.id) as any).timestamp)}
                     </div>
                     <div
                       className="w-3 h-3 bg-center bg-contain bg-no-repeat"
@@ -141,6 +149,7 @@ export default function ChatLeft({ setPart, activeBot, setActiveBot, currentArra
         </div>
       </div>
       <ConfirmDialog title={title} open={open} setOpen={setOpen} handleConfirm={() => handleConfirm()} />
+      {toast.show && <Toast type={toast.type} message={toast.message} />}
     </>
   )
 }

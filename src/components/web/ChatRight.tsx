@@ -27,7 +27,7 @@ function Item({
           className="w-6 h-6 bg-center bg-contain bg-no-repeat"
           style={{ backgroundImage: `url(/assets/attributes/${img}.png)` }}
         ></div>
-        <span className="ml-1 text-xs text-[rgba(255,255,255,0.64)]">
+        <span className="ml-1 text-xs text-[rgba(0,0,0,0.64)]">
           {name.toUpperCase()}
         </span>
       </div>
@@ -40,7 +40,7 @@ export default function ChatRight({ fold, activeBot }: { fold: boolean, activeBo
   const [index, setIndex] = useState(0)
   return (
     <div
-      className={`flex-1 max-w-[340px] min-w-[270px] h-full overflow-y-scroll bg-[#121112] ${fold ? 'hidden' : 'block'}`}
+      className={`flex-1 max-w-[340px] min-w-[270px] h-full overflow-y-scroll ${fold ? 'hidden' : 'block'}`}
     >
       <div className="w-full aspect-[3/5] relative bg-center bg-cover bg-no-repeat" style={{ backgroundImage: `url(${(index == 0 ? activeBot.image1 : activeBot.image2)})` }}>
         <div
@@ -59,13 +59,13 @@ export default function ChatRight({ fold, activeBot }: { fold: boolean, activeBo
           ></div>
         </div>
       </div>
-      <div className="text-white p-4 space-y-4">
+      <div className="text-black p-4 space-y-4">
         <div className="text-2xl font-bold">{activeBot.name}</div>
         <div className="text-base">
           {activeBot.description}
         </div>
-        <div className="pt-4 border-t border-[rgba(255,255,255,0.16)]">
-          <div className="font-base text-[rgba(255,255,255,0.64)]">
+        <div className="pt-4 border-t border-[rgba(0,0,0,0,0.16)]">
+          <div className="font-base text-[rgba(0,0,0,0,0.64)]">
             Personality Attributes
           </div>
           <div className="w-full flex flex-wrap">
@@ -76,8 +76,8 @@ export default function ChatRight({ fold, activeBot }: { fold: boolean, activeBo
             ))}
           </div>
         </div>
-        <div className="pt-4 border-t border-[rgba(255,255,255,0.16)]">
-          <div className="font-base text-[rgba(255,255,255,0.64)]">
+        <div className="pt-4 border-t border-[rgba(0,0,0,0,0.16)]">
+          <div className="font-base text-[rgba(0,0,0,0,0.64)]">
             Physical Attributes
           </div>
           <div className="w-full flex flex-wrap">

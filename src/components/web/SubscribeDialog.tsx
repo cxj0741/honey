@@ -1,4 +1,4 @@
-import { useRouter } from 'next/navigation'
+// import { useRouter } from 'next/navigation'
 
 interface Props {
   dialogShow: boolean
@@ -6,15 +6,17 @@ interface Props {
 }
 
 export default function SubscribeDialog({ dialogShow, setDialogShow }: Props) {
-  const router = useRouter()
+  // const router = useRouter()
   return (
     <dialog open={dialogShow} className="modal bg-transparent">
-      <div className="modal-box w-[784px] max-w-[784px] p-8 rounded-3xl border-2 border-[rgba(255,255,255,0.16)] bg-center bg-cover relative"
-        style={{ backgroundImage: 'url(../assets/becomePremiumDialogBg.png)' }}>
+      {/* <div className="modal-box w-[918px] h-[602px] p-8 rounded-3xl border-2 border-[rgba(255,255,255,0.16)] bg-center bg-cover relative"
+        style={{ backgroundImage: 'url(../assets/becomePremiumDialogBg.png)' }}> */}
+         <div className="modal-box w-[918px] max-w-[918px] h-[602px] p-0 bg-center bg-contain bg-no-repeat bg-transparent relative"
+        style={{ backgroundImage: 'url(/assets/subscribeDialogBg.png)' }}>
         <div onClick={() => setDialogShow(false)} className="w-14 h-14 bg-center bg-contain bg-no-repeat absolute top-0 right-0 hover:cursor-pointer"
           style={{ backgroundImage: "url(/assets/close.png)" }}
         ></div>
-        <div className="text-white flex items-center">
+        {/* <div className="text-white flex items-center">
           <div className="w-[336px] h-[448px] bg-center bg-contain bg-no-repeat"
             style={{ backgroundImage: 'url(https://cdn.candy.ai/12-908d871b-57da-4c96-a4f5-c05341873b42)' }}
           ></div>
@@ -29,7 +31,7 @@ export default function SubscribeDialog({ dialogShow, setDialogShow }: Props) {
               <li className="text-lg flex items-center space-x-2"><span className='w-3 h-3 rounded-full bg-[#ED5088]'></span><span>More benefits coming soon</span></li>
             </ul>
             <div
-              onClick={() => router.push('/become-premium')}
+              onClick={() => router.push('/premium')}
               className="mt-[50px] w-[300px] h-[50px] bg-[#ED5088] text-white rounded-lg flex items-center justify-center space-x-4 hover:cursor-pointer">
               <div className="w-6 h-6 bg-center bg-contain bg-no-repeat"
                 style={{ backgroundImage: "url(/assets/subscribe.png)" }}
@@ -37,7 +39,7 @@ export default function SubscribeDialog({ dialogShow, setDialogShow }: Props) {
               <span>Become Premium</span>
             </div>
           </div>
-        </div>
+        </div> */}
       </div>
     </dialog>
   )

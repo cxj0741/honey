@@ -26,7 +26,7 @@ function Item({
           url = formatURL(title)
         }
         if (title.toLocaleLowerCase() === 'premium') {
-          url = '/become-premium'
+          url = '/premium'
         }
         if (title.toLocaleLowerCase() === 'account') {
           url = '/personal-center'
@@ -66,7 +66,7 @@ export default function FooterNav() {
         title="Chat"
       />
       <Item
-        src={path === '/become-premium' ? '/assets/becomePremiumSelected.png' : '/assets/becomePremium.png'}
+        src={path === '/premium' ? '/assets/premiumSelected.png' : '/assets/premium.png'}
         title="Premium"
       />
       <Item

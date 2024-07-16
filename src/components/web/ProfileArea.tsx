@@ -2,41 +2,96 @@ import Image from 'next/image'
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 
-export default function ProfileArea({ botList }: { botList: any[] }) {
+// const [botList, setbotList] = useState([])
+export default function ProfileArea({ girlList, guyList }: { girlList: any[], guyList: any[] }) {
   const router = useRouter()
   const [activeId, setActiveId] = useState(0)
 
   return (
-    botList.length &&
-    // <div className="border-8 border-transparent flex flex-wrap">
-    <div className="flex flex-wrap">
-      {botList.map((item) => (
-        <div
-          key={item.id}
-          className="w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/5 aspect-[3/4] border-8 border-transparent relative"
-        >
-          {/* <div className="w-full h-full"> */}
-          <Image
-            onMouseEnter={() => setActiveId(item.id)}
-            onMouseOut={() => setActiveId(0)}
-            onClick={() => { router.push(`/chat?botId=${item.id}`) }}
-            className="rounded-lg object-cover hover:cursor-pointer"
-            layout="fill"
-            objectFit="cover"
-            objectPosition='top'
-            src={activeId === item.id ? item.image2 : item.image1}
-            alt={'avatar'}
-          />
-          {/* </div> */}
-          <div className="absolute bottom-0 w-full p-2 text-white">
-            <div className="text-xl font-semibold">{item.name}</div>
-            <div className="mt-2 text-xs">{item.age}</div>
-            <div className="mt-2 text-sm">
-              {item.description.slice(0, 80)}...
-            </div>
-          </div>
+    girlList.length &&
+    <>
+      <div id='girls'>
+        <div className="ml-4 my-4 flex items-center space-x-2">
+          <div className="w-6 h-6 bg-center bg-contain bg-no-repeat" style={{ backgroundImage: 'url(/assets/female.png)' }}></div>
+          <div className="text-black font-semibold">Grils</div>
         </div>
-      ))}
-    </div>
+        <div className="flex flex-wrap">
+          {girlList.map((item) => (
+            <div
+              key={item.id}
+              className="w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/5 p-2 border-transparent"
+            >
+              <div className="w-full aspect-[3/4] rounded-lg relative">
+                <Image
+                  onMouseEnter={() => setActiveId(item.id)}
+                  onMouseOut={() => setActiveId(0)}
+                  onClick={() => { router.push(`/chat?botId=${item.id}`) }}
+                  className="rounded-lg hover:cursor-pointer"
+                  layout="fill"
+                  objectFit="cover"
+                  objectPosition='top'
+                  src={activeId === item.id ? item.image2 : item.image1}
+                  alt={'avatar'}
+                />
+                <div className="absolute bottom-0 w-full px-4 pt-2 pb-4 rounded-b-lg bg-white text-black">
+                  <div className="absolute left-4 -top-6 w-16 h-16 bg-white p-1 rounded-full" style={{ background: 'linear-gradient( 180deg, #FFB5CF 0%, #FFFFFF 34%, #FFFFFF 100%)' }}>
+                    <div className="w-full h-full rounded-full bg-center bg-no-repeat bg-cover" style={{ backgroundImage: `url(${item.image1})` }}></div>
+                  </div>
+                  <div className="ml-[72px] flex items-baseline space-x-2">
+                    <div className="max-w-[150px] text-base lg:text-xl xl:text-xl font-semibold">{item.name}</div>
+                    <div className="text-xs text-[rgba(0,0,0,0.64)]">{item.age} years</div>
+                  </div>
+                  <div className="mt-2 text-sm">
+                    {item.description.slice(0, 60)}...
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div id='guys'>
+        <div className="ml-4 my-4 flex items-center space-x-2">
+          <div className="w-6 h-6 bg-center bg-contain bg-no-repeat" style={{ backgroundImage: 'url(/assets/male.png)' }}></div>
+          <div className="text-black font-semibold">Guys</div>
+        </div>
+        <div className="flex flex-wrap">
+          {guyList.map((item) => (
+            <div
+              key={item.id}
+              className="w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/5 p-2 border-transparent"
+            >
+              <div className="w-full aspect-[3/4] rounded-lg relative">
+                <Image
+                  onMouseEnter={() => setActiveId(item.id)}
+                  onMouseOut={() => setActiveId(0)}
+                  onClick={() => { router.push(`/chat?botId=${item.id}`) }}
+                  className="rounded-lg hover:cursor-pointer"
+                  layout="fill"
+                  objectFit="cover"
+                  objectPosition='top'
+                  src={activeId === item.id ? item.image2 : item.image1}
+                  alt={'avatar'}
+                />
+                <div className="absolute bottom-0 w-full px-4 pt-2 pb-4 rounded-b-lg bg-white text-black">
+                  <div className="absolute left-4 -top-6 w-16 h-16 bg-white p-1 rounded-full" style={{ background: 'linear-gradient( 180deg, #FFB5CF 0%, #FFFFFF 34%, #FFFFFF 100%)' }}>
+                    <div className="w-full h-full rounded-full bg-center bg-no-repeat bg-cover" style={{ backgroundImage: `url(${item.image1})` }}></div>
+                  </div>
+                  <div className="ml-[72px] flex items-baseline space-x-2">
+                    <div className="max-w-[150px] text-base lg:text-xl xl:text-2xl font-semibold">{item.name}</div>
+                    <div className="text-xs text-[rgba(0,0,0,0.64)]">{item.age} years</div>
+                  </div>
+                  <div className="mt-2 text-sm">
+                    {item.description.slice(0, 60)}...
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </>
   )
 }
