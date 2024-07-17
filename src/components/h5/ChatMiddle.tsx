@@ -17,11 +17,11 @@ interface Props {
   setPart: Function
   activeBot: Record<string, any>
   setActiveBot: Function
-  currentArray: Record<string, any>[]
-  setCurrentArray: Function
+  // currentArray: Record<string, any>[]
+  // setCurrentArray: Function
 }
 
-export default function ChatMiddle({ setPart, activeBot, setActiveBot, currentArray, setCurrentArray }: Props) {
+export default function ChatMiddle({ setPart, activeBot, setActiveBot}: Props) {
   const { toast, handleToast } = useToast()
   const router = useRouter()
   const [chatArray, setChatArray] = useState([] as ({

@@ -52,7 +52,7 @@ export default function Chat({ userBotArray, usersToBotsArray, botId }: { userBo
           currentArray={currentArray}
           setCurrentArray={setCurrentArray}
           timeArray={timeArray} />}
-      {part === CHAT_PART.MIDDLE && <ChatMiddle setPart={setPart} activeBot={activeBot} />}
+      {part === CHAT_PART.MIDDLE && <ChatMiddle setPart={setPart} activeBot={activeBot} setActiveBot={setActiveBot}/>}
       {part === CHAT_PART.RIGHT && <ChatRight setPart={setPart} activeBot={activeBot} />}
     </>
   )
