@@ -133,7 +133,7 @@ export default function ChatMiddle({ setPart, activeBot, setActiveBot }: Props) 
     <>
       <div className="bg-center bg-cover bg-no-repeat" style={{ backgroundImage: 'url(/assets/chatMiddleBg.png)' }}>
         {/* HEADER */}
-        <div className="z-50 fixed top-16 left-0 w-[100vw]  text-black">
+        <div className="z-50 fixed top-12 left-0 w-[100vw] text-black">
           <div className="h-12 px-4 bg-white flex items-center justify-between">
             <div
               onClick={() => {
@@ -164,7 +164,7 @@ export default function ChatMiddle({ setPart, activeBot, setActiveBot }: Props) 
           <div className="h-6" style={{ background: 'linear-gradient( 180deg, #FDFDFD 0%, rgba(253,253,253,0) 100%)' }}></div>
         </div>
         {/* CHAT WINDOW */}
-        <div ref={chatContainer} className="px-4 pb-20 space-y-4 text-sm">
+        <div ref={chatContainer} className="px-4 py-20 space-y-4 text-sm">
           {/* START */}
           <div className="flex items-start">
             <div className="w-12 h-12 rounded-full bg-top bg-cover bg-no-repeat" style={{ backgroundImage: `url(${activeBot.image1})` }}></div>
@@ -286,16 +286,18 @@ export default function ChatMiddle({ setPart, activeBot, setActiveBot }: Props) 
         </div>
       </div>
       {/* </div> */}
-      <dialog onClick={() => setImageShow(false)} open={imageShow} className="modal bg-[rgba(0,0,0,0.8)]">
-        <div className="modal-box aspect-[3/4] p-0 rounded-none bg-transparent">
-          <Image
-            layout="fill"
-            objectFit="contain"
-            src={activeImage}
-            alt={'bot'}
-          />
-        </div>
-      </dialog>
+      {activeImage &&
+        <dialog onClick={() => setImageShow(false)} open={imageShow} className="modal bg-[rgba(0,0,0,0.8)]">
+          <div className="modal-box aspect-[3/4] p-0 rounded-none bg-transparent">
+            <Image
+              layout="fill"
+              objectFit="contain"
+              src={activeImage}
+              alt={'bot'}
+            />
+          </div>
+        </dialog>
+      }
       {toast.show && <Toast type={toast.type} message={toast.message} />}
       <div className={`${dialogShow ? 'block' : 'hidden'}`}>
         <div className="z-50 fixed left-0 top-0 w-[100vw] h-[100vh] flex items-center justify-center bg-center bg-cover bg-no-repeat"

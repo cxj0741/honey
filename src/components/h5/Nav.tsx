@@ -39,7 +39,6 @@ function Item({
   )
 }
 
-
 export default function Nav() {
   const [fold, setFold] = useState(true)
   const router = useRouter()
@@ -51,7 +50,7 @@ export default function Nav() {
   return (
     <>
       {/* HEADER */}
-      <div className="z-50 fixed left-0 top-0 w-[100vw] pt-5 px-4 h-16 flex items-center justify-between bg-bottom bg-cover bg-no-repeat" style={{ backgroundImage: 'url(/assets/chatMiddleBg.png)' }}>
+      <div className="z-50 fixed left-0 top-0 w-[100vw] px-4 h-12 flex items-center justify-between bg-bottom bg-cover bg-no-repeat" style={{ backgroundImage: 'url(/assets/chatMiddleBg.png)' }}>
         <div className="flex items-center">
           {path === '/' &&
             <>

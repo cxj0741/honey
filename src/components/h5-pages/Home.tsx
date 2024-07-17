@@ -36,7 +36,7 @@ export default function Home() {
           <div className={`absolute left-0 -bottom-2 w-full h-[2px] rounded ${type === TYPE.MALE ? 'bg-[#FE387F]' : 'bg-transparent'}`}></div>
         </div>
       </div>
-      <ProfileArea botList={botList} />
+      <ProfileArea botList={botList} type={type} />
     </>
   )
 }
