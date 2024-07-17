@@ -4,7 +4,7 @@ const info1 = [
   { name: 'personality', img: 'personality' },
   { name: 'occupation', img: 'occupation' },
   { name: 'hobbies', img: 'label' },
-  { name: 'relationship', img: 'chatStyle' },
+  { name: 'relationship', img: 'relationship' },
 ]
 const info2 = [
   { name: 'body', img: 'body' },

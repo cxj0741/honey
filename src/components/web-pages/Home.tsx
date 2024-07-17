@@ -48,7 +48,6 @@ export default function Home() {
             </div>
           </div>
         </div>
-
         <div
           className="flex justify-center"
         // style={{ maxHeight: 'calc(100vh - 100px)' }}

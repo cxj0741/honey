@@ -33,6 +33,9 @@ export default function ProfileArea({ girlList, guyList }: { girlList: any[], gu
                   src={activeId === item.id ? item.image2 : item.image1}
                   alt={'avatar'}
                 />
+                <div onClick={() => { router.push(`/chat?botId=${item.id}`) }} className="absolute right-4 top-4 w-10 h-10 rounded-full bg-[#F53276] flex items-center justify-center hover:cursor-pointer">
+                  <div className="w-6 h-6 bg-center bg-no-repeat bg-contain" style={{ backgroundImage: 'url(/assets/girlMessage.png)' }}></div>
+                </div>
                 <div className="absolute bottom-0 w-full px-4 pt-2 pb-4 rounded-b-lg bg-white text-black">
                   <div className="absolute left-4 -top-6 w-16 h-16 bg-white p-1 rounded-full" style={{ background: 'linear-gradient( 180deg, #FFB5CF 0%, #FFFFFF 34%, #FFFFFF 100%)' }}>
                     <div className="w-full h-full rounded-full bg-center bg-no-repeat bg-cover" style={{ backgroundImage: `url(${item.image1})` }}></div>
@@ -75,8 +78,11 @@ export default function ProfileArea({ girlList, guyList }: { girlList: any[], gu
                   src={activeId === item.id ? item.image2 : item.image1}
                   alt={'avatar'}
                 />
+                <div onClick={() => { router.push(`/chat?botId=${item.id}`) }} className="absolute right-4 top-4 w-10 h-10 rounded-full bg-[#3D7CF2] flex items-center justify-center hover:cursor-pointer">
+                  <div className="w-6 h-6 bg-center bg-no-repeat bg-contain" style={{ backgroundImage: 'url(/assets/guyMessage.png)' }}></div>
+                </div>
                 <div className="absolute bottom-0 w-full px-4 pt-2 pb-4 rounded-b-lg bg-white text-black">
-                  <div className="absolute left-4 -top-6 w-16 h-16 bg-white p-1 rounded-full" style={{ background: 'linear-gradient( 180deg, #FFB5CF 0%, #FFFFFF 34%, #FFFFFF 100%)' }}>
+                  <div className="absolute left-4 -top-6 w-16 h-16 bg-white p-1 rounded-full" style={{ background: 'linear-gradient( 180deg, #78A3F6 0%, #FFFFFF 34%, #FFFFFF 100%)' }}>
                     <div className="w-full h-full rounded-full bg-center bg-no-repeat bg-cover" style={{ backgroundImage: `url(${item.image1})` }}></div>
                   </div>
                   <div className="ml-[72px] flex items-baseline space-x-2">

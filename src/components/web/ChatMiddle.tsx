@@ -3,7 +3,6 @@ import { useEffect, useState, useRef } from 'react'
 import { sendMessage } from '@/request/handleStream'
 import { deleteBotDialogs, deleteUserBot, getDialogs, getUserInfo, saveDialog, setConversationId } from '@/request'
 import { formatUnixTimestamp } from '@/utils/formatUnixTimestamp'
-import SubscribeDialog from '@/components/web/SubscribeDialog'
 import ConfirmDialog from '@/components/web/ConfirmDialog'
 import { getSession, useSession } from 'next-auth/react'
 import { findUrlInString } from '@/utils/findUrlInString'
@@ -219,7 +218,7 @@ export default function ChatMiddle({ fold, setFold, activeBot, setActiveBot, cur
                   <div className="flex flex-row-reverse items-start">
                     <div className="w-12 h-12 rounded-full bg-top bg-cover bg-no-repeat bg-sky-800" style={{ backgroundImage: `url(${session?.data?.user?.image})` }}></div>
                     <div className='mr-2 max-w-[40%]'>
-                      <div className="px-2 py-3 rounded-lg rounded-tr-sm bg-[rgba(0,0,0,0.08)] text-white">{item.dialog.userStr}</div>
+                      <div className="px-2 py-3 rounded-lg rounded-tr-sm bg-[rgba(0,0,0,0.08)] text-black">{item.dialog.userStr}</div>
                       <div className="mt-1 ml-1 text-[rgba(0,0,0,0.64)] text-right">{formatUnixTimestamp(item.timestamp)}</div>
                     </div>
                   </div>
@@ -255,7 +254,7 @@ export default function ChatMiddle({ fold, setFold, activeBot, setActiveBot, cur
                   (<div className="flex flex-row-reverse items-start">
                     <div className="w-12 h-12 rounded-full bg-top bg-cover bg-no-repeat bg-sky-800" style={{ backgroundImage: `url(${session?.data?.user?.image})` }}></div>
                     <div className='mr-2 max-w-[40%]'>
-                      <div className="px-2 py-3 rounded-lg rounded-tr-sm bg-[rgba(0,0,0,0.08)] text-white">{result.dialog.userStr}</div>
+                      <div className="px-2 py-3 rounded-lg rounded-tr-sm bg-[rgba(0,0,0,0.08)] text-black">{result.dialog.userStr}</div>
                       <div className="mt-1 ml-1 text-[rgba(0,0,0,0.64)] text-right">{formatUnixTimestamp(result.timestamp)}</div>
                     </div>
                   </div>)
@@ -326,7 +325,6 @@ export default function ChatMiddle({ fold, setFold, activeBot, setActiveBot, cur
           </div>
         </div>
       </div>
-      <SubscribeDialog dialogShow={dialogShow} setDialogShow={setDialogShow} />
       <ConfirmDialog title={title} open={open} setOpen={setOpen} handleConfirm={() => handleConfirm()} />
       <dialog onClick={() => setImageShow(false)} open={imageShow} className="modal bg-[rgba(0,0,0,0.8)]">
         <div className="modal-box aspect-[3/4] p-0 rounded-none bg-transparent">
@@ -339,6 +337,25 @@ export default function ChatMiddle({ fold, setFold, activeBot, setActiveBot, cur
         </div>
       </dialog>
       {toast.show && <Toast type={toast.type} message={toast.message} />}
+      <div className={`${dialogShow ? 'block' : 'hidden'}`}>
+        <div className="z-50 fixed left-0 top-0 w-[100vw] h-[100vh] flex items-center justify-center bg-center bg-cover bg-no-repeat"
+          style={{ backgroundImage: 'url(/assets/premiumdialogToastBg.png)' }}
+        >
+          <div className="relative w-[918px] h-[602px] bg-center bg-contain bg-no-repeat"
+            style={{ backgroundImage: 'url(/assets/premiumdialogBg.png)' }}
+          >
+            <div onClick={() => { setDialogShow(false) }} className="w-14 h-14 bg-center bg-contain bg-no-repeat absolute top-20 right-12 hover:cursor-pointer"
+              style={{ backgroundImage: "url(/assets/close.png)" }}
+            ></div>
+            <div onClick={() => router.push('/premium')} className="w-[300px] h-12 bg-center bg-contain bg-no-repeat absolute bottom-32 right-[120px] hover:cursor-pointer"
+              style={{ backgroundImage: "url(/assets/premiumDialogButton.png)" }}
+            ></div>
+            <div className="w-[290px] h-[386px] rounded-lg  bg-top bg-cover bg-no-repeat absolute left-20 top-28 hover:cursor-pointer"
+              style={{ backgroundImage: `url(${activeBot.image1})` }}
+            ></div>
+          </div>
+        </div>
+      </div>
     </>
   )
 }
