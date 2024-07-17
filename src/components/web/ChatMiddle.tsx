@@ -339,10 +339,10 @@ export default function ChatMiddle({ fold, setFold, activeBot, setActiveBot, cur
       {toast.show && <Toast type={toast.type} message={toast.message} />}
       <div className={`${dialogShow ? 'block' : 'hidden'}`}>
         <div className="z-50 fixed left-0 top-0 w-[100vw] h-[100vh] flex items-center justify-center bg-center bg-cover bg-no-repeat"
-          style={{ backgroundImage: 'url(/assets/premiumdialogToastBg.png)' }}
+          style={{ backgroundImage: 'url(/assets/premiumDialogToastBg.png)' }}
         >
           <div className="relative w-[918px] h-[602px] bg-center bg-contain bg-no-repeat"
-            style={{ backgroundImage: 'url(/assets/premiumdialogBg.png)' }}
+            style={{ backgroundImage: 'url(/assets/premiumDialogBg.png)' }}
           >
             <div onClick={() => { setDialogShow(false) }} className="w-14 h-14 bg-center bg-contain bg-no-repeat absolute top-20 right-12 hover:cursor-pointer"
               style={{ backgroundImage: "url(/assets/close.png)" }}
