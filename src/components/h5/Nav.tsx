@@ -53,13 +53,19 @@ export default function Nav() {
       {/* HEADER */}
       <div className="z-50 fixed left-0 top-0 w-[100vw] pt-5 px-4 h-16 flex items-center justify-between bg-bottom bg-cover bg-no-repeat" style={{ backgroundImage: 'url(/assets/chatMiddleBg.png)' }}>
         <div className="flex items-center">
-          <div className="w-8 h-8 bg-bottom bg-no-repeat bg-contain" style={{ backgroundImage: 'url(assets/star.png)' }}></div>
-          <div
-            onClick={() => {
-              setFold(!fold)
-            }}
-            className="w-6 h-6 hover:cursor-pointer bg-center bg-no-repeat bg-contain" style={{ backgroundImage: `url(/assets/${fold ? 'arrowOut' : 'arrowIn'}.png)` }}>
-          </div>
+          {path === '/' &&
+            <>
+              <div className="w-8 h-8 bg-bottom bg-no-repeat bg-contain" style={{ backgroundImage: 'url(assets/star.png)' }}></div>
+              <div
+                onClick={() => {
+                  setFold(!fold)
+                }}
+                className="w-6 h-6 hover:cursor-pointer bg-center bg-no-repeat bg-contain" style={{ backgroundImage: `url(/assets/${fold ? 'arrowOut' : 'arrowIn'}.png)` }}>
+              </div>
+            </>}
+          {path === '/chat' && <div className="text-2xl font-semibold">Chat</div>}
+          {path === '/premium' && <div className="text-2xl font-semibold">Premium</div>}
+          {path === '/personal-center' && <div className="text-2xl font-semibold">Personal Info</div>}
         </div>
         {
           session.status === 'authenticated' ?
@@ -73,7 +79,6 @@ export default function Nav() {
               <div className="w-6 h-6 bg-center bg-contain bg-no-repeat" style={{ backgroundImage: 'url(/assets/plus.png)' }}></div>
             </div>
             :
-
             <div className="flex items-center space-x-2 text-sm">
               <div
                 onClick={() => {
