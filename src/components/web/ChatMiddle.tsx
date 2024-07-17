@@ -51,7 +51,7 @@ export default function ChatMiddle({ fold, setFold, activeBot, setActiveBot, cur
   const inputRef = useRef(null)
   const [inputShow, setInputShow] = useState(true)
   const session = useSession()
-  const [dialogShow, setDialogShow] = useState(true)
+  const [dialogShow, setDialogShow] = useState(false)
   const handleSendMessage = async () => {
     const userStr = (inputRef?.current as any)?.value.trim() || ''
     if (!userStr) { return }
