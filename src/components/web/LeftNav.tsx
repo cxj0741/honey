@@ -111,7 +111,7 @@ export default function LeftNav() {
                     <div className="w-8 h-8 rounded-full bg-center bg-contain bg-no-repeat bg-sky-800" style={{ backgroundImage: `url(${session?.data?.user?.image})` }}></div>
                     <div className={`ml-4 flex-1 max-w-[150px] break-words ${fold ? 'hidden' : 'block'}`}>{session?.data?.user?.name}</div>
                     {/* <div className={`w-4 h-4 bg-center bg-contain bg-no-repeat ${fold ? 'hidden' : 'block'}`} style={{ backgroundImage: 'url(/assets/arrowUp.png)' }}></div> */}
-                    <div onClick={event => event.stopPropagation()} className="dropdown dropdown-top dropdown-end">
+                    <div onClick={event => event.stopPropagation()} className={`${fold ? 'hidden' : 'block'} dropdown dropdown-top dropdown-end`}>
                       <div tabIndex={0} role="button" className='w-4 h-4 bg-center bg-contain bg-no-repeat' style={{ backgroundImage: 'url(/assets/arrowUp.png)' }}></div>
                       <ul tabIndex={0} className="dropdown-content menu bg-base-100 rounded-lg z-[1] w-32 p-2 shadow">
                         <li><span onClick={() => router.push('/premium')}>Subscription</span></li>
