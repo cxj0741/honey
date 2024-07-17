@@ -74,12 +74,11 @@ export default function ChatLeft({ setPart, activeBot, setActiveBot, currentArra
   return (
     <>
       <div
-        className="w-[100vw] px-4 py-2 bg-cover bg-center text-white space-y-6 flex flex-col"
-        style={{ backgroundImage: 'url(../../assets/chatBg.png)', height: 'calc(100vh - 7.5rem)' }}
+        className="w-[100vw] p-4 bg-cover bg-center text-black space-y-6 flex flex-col"
+        style={{height: 'calc(100vh - 7.5rem)'}}
       >
         <div className="flex items-center justify-between">
-          <div className="text-2xl">Chat</div>
-          <label className="ml-4 flex-1 input input-bordered input-sm flex items-center gap-2 text-slate-900">
+          <label className="flex-1 input input-bordered flex items-center gap-2 text-slate-900">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 16 16"
@@ -115,30 +114,29 @@ export default function ChatLeft({ setPart, activeBot, setActiveBot, currentArra
                 >
                   <div className="w-12 h-12 rounded-full bg-top bg-cover bg-no-repeat" style={{ backgroundImage: `url(${item.image1})` }}></div>
                   <div className="grow space-y-2">
-                    <div className="text-sm">{item.name}</div>
+                    <div className="text-sm font-semibold">{item.name}</div>
                     <div className="w-[60vw] text-sm overflow-hidden text-ellipsis whitespace-nowrap">
                       {item.description}
                     </div>
                   </div>
                   <div className="space-y-3 flex flex-col items-end">
-                    <div className="text-xs text-[rgba(255,255,255,0.64)]">
+                    <div className="text-xs text-[rgba(0,0,0,0.64)]">
                       {formatUnixTimestamp((timeArray.find(relation => relation.botId === item.id) as any).timestamp)}
                     </div>
                     <div
-                      className="w-3 h-3 bg-center bg-contain bg-no-repeat"
-                      style={{ backgroundImage: "url(/assets/arrowIn.png)" }}
+                      className="w-3 h-3"
                     ></div>
                   </div>
                 </div>
-                <div className="mx-6 h-12 bg-slate-300 space-x-4 flex items-center">
+                <div className="mx-6 h-12 space-x-4 flex items-center">
                   <div
                     onClick={() => { handleOpenDialog('REFRESH') }}
-                    className="w-8 h-8 bg-center bg-contain bg-no-repeat"
+                    className="w-6 h-6 bg-center bg-contain bg-no-repeat"
                     style={{ backgroundImage: "url(/assets/refresh.png)" }}
                   ></div>
                   <div
                     onClick={() => { handleOpenDialog('DELETE') }}
-                    className="w-8 h-8 bg-center bg-contain bg-no-repeat"
+                    className="w-6 h-6 bg-center bg-contain bg-no-repeat"
                     style={{ backgroundImage: "url(/assets/delete.png)" }}
                   ></div>
 

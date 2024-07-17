@@ -27,8 +27,8 @@ export default function PersonalCenter({ user, orderArray }: { user: Record<stri
     setOpen(true)
   }
   const router = useRouter()
+  const session = useSession()
   function EditDialog() {
-    const session = useSession()
     const inputRef = useRef(null)
     const handleConfirm = async () => {
       const str = (inputRef?.current as any)?.value.trim() || ''
@@ -62,7 +62,8 @@ export default function PersonalCenter({ user, orderArray }: { user: Record<stri
 
     return (
       <dialog open={dialogShow} className="modal bg-transparent">
-        <div className="modal-box w-[360px] p-8 rounded-3xl border border-[rgba(0,0,0,0.16)] bg-white relative">
+        {/* border border-[rgba(0,0,0,0.16)] */}
+        <div className="modal-box w-[360px] p-8 rounded-lg bg-white relative">
           <div onClick={() => setDialogShow(false)} className="w-14 h-14 bg-center bg-contain bg-no-repeat absolute top-0 right-0 hover:cursor-pointer"
             style={{ backgroundImage: "url(/assets/close.png)" }}
           ></div>
@@ -116,7 +117,13 @@ export default function PersonalCenter({ user, orderArray }: { user: Record<stri
               <div className="flex items-center justify-between py-6 border-b">
                 <div className="w-60 text-base">Profile picture</div>
                 <div className="flex-1 text-base">Add a profile picture to personalize your account</div>
-                <div onClick={() => { setName('Avatar'); setDialogShow(true) }} className="text-base">Profile picture</div>
+                <div onClick={() => { setName('Avatar'); setDialogShow(true) }} className="w-16 h-16 rounded-full overflow-clip relative bg-top bg-cover bg-no-repeat bg-sky-800"
+                  style={{ backgroundImage: `url(${session?.data?.user?.image})` }}
+                >
+                  <div className="absolute left-0 bottom-0 w-full h-2/5 bg-[rgba(0,0,0,0.56)] flex items-center justify-center">
+                    <div className="w-5 h-4 bg-center bg-contain bg-no-repeat" style={{ backgroundImage: 'url(/assets/camera.png)' }}></div>
+                  </div>
+                </div>
               </div>
 
               <div className="flex items-center justify-between py-6 border-b">
@@ -189,7 +196,6 @@ export default function PersonalCenter({ user, orderArray }: { user: Record<stri
             }
           </div>
         </div>
-
       </div>
       <EditDialog />
       <ConfirmDialog title={'Are you sure you want to delete account?'} open={open} setOpen={setOpen} handleConfirm={() => handleDeleteUser()} />

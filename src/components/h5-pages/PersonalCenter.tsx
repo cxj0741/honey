@@ -7,26 +7,8 @@ import ConfirmDialog from '@/components/web/ConfirmDialog'
 import { z } from 'zod'
 import Toast, { TOAST_TYPE, useToast } from '@/components/web/Toast'
 
-function Item({ name, value }: { name: string, value: string }) {
-  return (
-    <>
-      <div className="flex items-center space-x-1">
-        <div className='text-[rgba(255,255,255,0.64)]'>{name}</div>
-        <div className="w-3 h-3 rounded-full bg-center bg-no-repeat bg-contain" style={{ backgroundImage: 'url(/assets/edit.png)' }}></div>
-      </div>
-      <div className="mt-3 text-white text-sm break-words">{value}</div>
-    </>
-  )
-}
-
-const info = [
-  { name: 'Name', value: 'name' },
-  { name: 'Email', value: 'email' },
-  { name: 'Password', value: 'password' },
-  // { name: 'Tokens', value: 'tokens' },
-]
-
 export default function PersonalCenter({ user, orderArray }: { user: Record<string, any>, orderArray: Record<string, any> }) {
+  // console.log('user info', user)
   const { toast, handleToast } = useToast()
   const handleDeleteUser = async () => {
     try {
@@ -44,11 +26,9 @@ export default function PersonalCenter({ user, orderArray }: { user: Record<stri
   const handleOpenDialog = () => {
     setOpen(true)
   }
-
+  const router = useRouter()
+  const session = useSession()
   function EditDialog() {
-    const session = useSession()
-    // console.log('session>>>>', session)
-    const router = useRouter()
     const inputRef = useRef(null)
     const handleConfirm = async () => {
       const str = (inputRef?.current as any)?.value.trim() || ''
@@ -79,18 +59,20 @@ export default function PersonalCenter({ user, orderArray }: { user: Record<stri
         handleToast(TOAST_TYPE.ERROR, `change ${name.toLowerCase()} error!`)
       }
     }
+
     return (
       <dialog open={dialogShow} className="modal bg-transparent">
-        <div className="modal-box w-[360px] p-8 rounded-3xl border-2 border-[rgba(255,255,255,0.16)] bg-[#1F1D1F] relative">
+        {/* border border-[rgba(0,0,0,0.16)] */}
+        <div className="modal-box p-8 rounded-lg bg-white relative">
           <div onClick={() => setDialogShow(false)} className="w-14 h-14 bg-center bg-contain bg-no-repeat absolute top-0 right-0 hover:cursor-pointer"
             style={{ backgroundImage: "url(/assets/close.png)" }}
           ></div>
-          <h3 className="font-bold text-white text-lg">Edit {name}</h3>
+          <h3 className="font-bold text-black text-lg">Edit {name}</h3>
           <div className="mt-8 flex flex-col space-y-4">
             <input ref={inputRef} type="text" placeholder={name} className="input input-bordered w-full text-black" />
             <button
               onClick={() => handleConfirm()}
-              className="btn btn-outline  text-white">Confirm</button>
+              className="btn text-black">Confirm</button>
           </div>
         </div>
       </dialog>
@@ -99,55 +81,102 @@ export default function PersonalCenter({ user, orderArray }: { user: Record<stri
 
   return (
     <>
-      <div className='fixed top-16 left-0 w-[100vw] h-[0.5px] bg-[rgba(255,255,255,0.32)]'></div>
-      <div className='px-4 pb-4'>
-        <div className="py-4 text-xl font-medium text-center text-[rgba(255,255,255,0.64)]">Basic Information</div>
-        <div className="p-6 rounded-lg border border-[rgba(255,255,255,0.32)]">
-          <div className="flex justify-center">
-            <div className="w-[5rem] h-[5rem] relative"
-              onClick={() => {
-                setName('Avatar')
-                setDialogShow(true)
-              }}>
-              <div className="w-20 h-20 rounded-full bg-center bg-no-repeat bg-contain bg-sky-800" style={{ backgroundImage: `url(${user.image || ''})` }}></div>
-              <div className="absolute right-0 bottom-0 rounded-full w-3 h-3 bg-center bg-no-repeat bg-contain" style={{ backgroundImage: 'url(/assets/edit.png)' }}></div>
-            </div>
+      <div className="w-full space-y-4 p-4">
+        <div className="w-full px-6 py-4 border rounded-lg" style={{ background: 'linear-gradient( 90deg, rgba(245,50,118,0.32) 0%, rgba(245,50,118,0.08) 100%)' }}>
+          <div className="text-base font-semibold">
+            Subscription status
           </div>
-          <div className="mt-6">
-            <div className="w-full flex flex-wrap -mt-6">
-              {info.map((item) => (
-                <div onClick={() => {
-                  setName(item.name)
-                  setDialogShow(true)
-                }}
-                  className="w-1/2 mt-6 hover:cursor-pointer" key={item.name}>
-                  <Item name={item.name} value={item.name === 'Password' ? '*********' : user[item.name.toLowerCase()]}></Item>
+          {
+            user.isVIP ?
+              <>
+                <div className="mt-4 text-[#F53276] font-semibold text-2xl">
+                  Premium Member
                 </div>
-              ))}
+                <div className="mt-1 text-xs">
+                  20224.06.24-20224.06.24
+                </div>
+              </>
+              :
+              <div className="mt-4 text-black font-semibold text-2xl">
+                Free Member
+              </div>
+          }
+          {/* <div className="mt-1 text-xs">
+            20224.06.24-20224.06.24
+          </div> */}
+        </div>
+        <div className="w-full p-6 border rounded-lg">
+          <div className="text-2xl">Basic Infomation</div>
+          <div className="flex items-center justify-between py-6 border-b">
+            <div className="flex-1">
+              <div className="text-base">Profile picture</div>
+              <div className="mt-1.5 text-sm">Add a profile picture to personalize your account</div>
+            </div>
+            <div onClick={() => { setName('Avatar'); setDialogShow(true) }} className="w-16 h-16 rounded-full overflow-clip relative bg-top bg-cover bg-no-repeat bg-sky-800"
+              style={{backgroundImage: `url(${session?.data?.user?.image})`}}
+              >
+              <div className="absolute left-0 bottom-0 w-full h-2/5 bg-[rgba(0,0,0,0.56)] flex items-center justify-center">
+                <div className="w-5 h-4 bg-center bg-contain bg-no-repeat" style={{ backgroundImage: 'url(/assets/camera.png)' }}></div>
+              </div>
             </div>
           </div>
-          <div className="mt-6">
-            <div className="text-[rgba(255,255,255,0.64)]">Current Plan</div>
-            <div className="mt-3 text-[#ED5088]">VIP</div>
-            <div className="mt-2 flex items-center justify-between">
-              <div className='w-1/2 text-xs'>
-                <span className='text-[rgba(255,255,255,0.64)]'>Payment date:</span>
-                <span className='text-white'>24.06.24</span>
-              </div>
-              <div className='w-1/2 text-xs'>
-                <span className='text-[rgba(255,255,255,0.64)]'>Subscription to:</span>
-                <span className='text-white'>24.06.24</span>
-              </div>
+          
+          <div className="flex items-center justify-between py-3 border-b">
+            <div className="flex-1">
+              <div className="text-sm">Name</div>
+              <div className="mt-1.5 text-sm">{user.name}</div>
             </div>
-            <div className="mt-2 text-xs text-white">
-              Extend subscription
+            <div onClick={() => { setName('Name'); setDialogShow(true) }} className="w-6 h-6 bg-center bg-contain bg-no-repeat hover:cursor-pointer" style={{ backgroundImage: 'url(/assets/arrowRight.png)' }}></div>
+          </div>
+
+          <div className="flex items-center justify-between py-3 border-b">
+            <div className="flex-1">
+              <div className="text-sm">Gender</div>
+              <div className="mt-1.5 text-sm">{user.gender || ''}</div>
             </div>
+            <div onClick={() => { setName('Gender'); setDialogShow(true) }} className="w-6 h-6 bg-center bg-contain bg-no-repeat hover:cursor-pointer" style={{ backgroundImage: 'url(/assets/arrowRight.png)' }}></div>
+          </div>
+
+          <div className="flex items-center justify-between py-3 border-b">
+            <div className="flex-1">
+              <div className="text-sm">Email</div>
+              <div className="mt-1.5 text-sm">{user.email}</div>
+            </div>
+            <div onClick={() => { setName('Email'); setDialogShow(true) }} className="w-6 h-6 bg-center bg-contain bg-no-repeat hover:cursor-pointer" style={{ backgroundImage: 'url(/assets/arrowRight.png)' }}></div>
+          </div>
+
+          <div className="flex items-center justify-between py-3 border-b">
+            <div className="flex-1">
+              <div className="text-sm">Password</div>
+              <div className="mt-1.5 text-sm">*********</div>
+            </div>
+            <div onClick={() => { setName('Password'); setDialogShow(true) }} className="w-6 h-6 bg-center bg-contain bg-no-repeat hover:cursor-pointer" style={{ backgroundImage: 'url(/assets/arrowRight.png)' }}></div>
+          </div>
+
+          <div className="flex items-center justify-between py-3 border-b">
+            <div className="flex-1">
+              <div className="text-sm">Phone Number</div>
+              <div className="mt-1.5 text-sm">{user.phone || ''}</div>
+            </div>
+            <div onClick={() => { setName('Phone'); setDialogShow(true) }} className="w-6 h-6 bg-center bg-contain bg-no-repeat hover:cursor-pointer" style={{ backgroundImage: 'url(/assets/arrowRight.png)' }}></div>
           </div>
         </div>
-        {orderArray.length &&
-          <>
-            <div className="py-4 text-xl font-medium text-center text-[rgba(255,255,255,0.64)]">Billing Records</div>
-            <div className="p-6 rounded-lg border border-[rgba(255,255,255,0.32)]">
+
+        <div className="w-full px-6 border rounded-lg">
+          <div className="py-4 border-b">
+            <div className="text-sm">Danger Zone If you want to permanently delete this account and all of its data.</div>
+            <div onClick={() => { handleOpenDialog() }} className="mt-3 h-8 bg-center bg-contain bg-no-repeat hover:cursor-pointer" style={{ backgroundImage: 'url(/h5Assets/deleteAccount.png)' }}></div>
+          </div>
+          <div className="py-7 flex items-center justify-center">
+            <div onClick={() => { signOut({ callbackUrl: '/' }) }} className="w-full h-8 bg-center bg-contain bg-no-repeat hover:cursor-pointer" style={{ backgroundImage: 'url(/assets/logout.png)' }}></div>
+          </div>
+        </div>
+
+        {
+          orderArray.length !== 0 &&
+          (<div className="w-full px-6 border rounded-lg">
+            <div className="py-6 border-b">
+              <div className="text-2xl font-semibold">Billing Records</div>
               {orderArray.map((item: { id: string, createdAt: string, type: string }) => (
                 <div key={item.id} className="h-12 flex items-center justify-center text-white">
                   <div className="w-1/4">
@@ -162,26 +191,14 @@ export default function PersonalCenter({ user, orderArray }: { user: Record<stri
                   <div className="w-1/4 text-[#2DBB55]">
                     Paid
                   </div>
-                  <div className="w-1/4">
+                  {/* <div className="w-1/5">
                     Subscription
-                  </div>
+                  </div> */}
                 </div>
               ))}
             </div>
-          </>
+          </div>)
         }
-        <div className="py-4 text-xl font-medium text-center text-[rgba(255,255,255,0.64)]">Account Management</div>
-        <div className="p-6 rounded-lg border border-[rgba(255,255,255,0.32)]">
-          <div onClick={() => { handleOpenDialog() }} className="w-[10.625rem] h-8 rounded-lg border border-[rgba(255,255,255,0.32)] flex items-center justify-center space-x-2 hover:cursor-pointer">
-            <div className="w-6 h-5 bg-center bg-no-repeat bg-contain" style={{ backgroundImage: 'url(/assets/delete.png)' }}></div>
-            <div className='text-[rgba(255,255,255,0.64)]'>
-              Delete Account
-            </div>
-          </div>
-          <div className="mt-2 text-xs text-[rgba(255,255,255,0.64)]">
-            Danger Zone: If you want to permanently delete this account and all of its data.
-          </div>
-        </div>
       </div>
       <EditDialog />
       <ConfirmDialog title={'Are you sure you want to delete account?'} open={open} setOpen={setOpen} handleConfirm={() => handleDeleteUser()} />

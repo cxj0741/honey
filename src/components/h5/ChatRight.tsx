@@ -6,7 +6,7 @@ const info1 = [
   { name: 'personality', img: 'personality', value: 'Kawai and Extrovert' },
   { name: 'occupation', img: 'occupation', value: 'Kpop Singer' },
   { name: 'label', img: 'label', value: 'working women' },
-  { name: 'chat style', img: 'chatStyle', value: 'humorous' },
+  { name: 'relationship', img: 'relationship', value: 'humorous' },
 ]
 const info2 = [
   { name: 'body', img: 'body', value: 'Kawai and Extrovert' },
@@ -31,7 +31,7 @@ function Item({
           src={`/assets/attributes/${img}.png`}
           alt={'avatar'}
         />
-        <span className="ml-1 text-xs text-[rgba(255,255,255,0.64)]">
+        <span className="ml-1 text-xs text-[rgba(0,0,0,0.64)]">
           {name.toUpperCase()}
         </span>
       </div>
@@ -44,18 +44,14 @@ export default function ChatRight({ setPart, activeBot }: { setPart: Function, a
   const [index, setIndex] = useState(0)
   return (
     <div
-      className="w-[100vw] overflow-auto bg-[#1F1D1F]"
+      className="w-[100vw] overflow-auto bg-white"
     >
       <div className="w-full aspect-[3/4] relative bg-center bg-cover bg-no-repeat" style={{ backgroundImage: `url(${(index == 0 ? activeBot.image1 : activeBot.image2)})` }}>
         <div
           onClick={() => setPart(CHAT_PART.MIDDLE)}
-          className="absolute left-4 top-3 px-2 rounded-lg flex items-center space-x-1 bg-[rgba(255,255,255,0.32)]"
+          className="absolute left-4 top-3 w-16 h-10 bg-center bg-contain bg-no-repeat"
+          style={{ backgroundImage: "url(/assets/back.png)" }}
         >
-          <div
-            className="w-2.5 h-2.5 bg-center bg-contain bg-no-repeat hover:cursor-pointer"
-            style={{ backgroundImage: "url(/assets/arrowLeft.png)" }}
-          ></div>
-          <div className="text-white text-sm">Back</div>
         </div>
         <div
           className="absolute w-full px-4 flex justify-between"
@@ -73,16 +69,13 @@ export default function ChatRight({ setPart, activeBot }: { setPart: Function, a
           ></div>
         </div>
       </div>
-      <div className="text-white p-4 space-y-4">
-        <div className="text-2xl font-semibold">NAME</div>
+      <div className="text-black p-4 space-y-4">
+        <div className="text-2xl font-semibold">{activeBot.name}</div>
         <div className="text-sm">
-          Lorem, ipsum dolor sit amet consectetur adipisicing elit. Accusantium
-          reprehenderit voluptatum quo sit cum commodi iusto soluta adipisci
-          sunt iste quia, qui ipsa quod. Commodi qui dicta quasi repellendus
-          vero?
+          {activeBot.description}
         </div>
-        <div className="pt-4 border-t border-[rgba(255,255,255,0.16)]">
-          <div className="font-sm font-medium text-[rgba(255,255,255,0.64)]">
+        <div className="pt-4 border-t border-[rgba(0,0,0,0.16)]">
+          <div className="font-sm font-medium text-[rgba(0,0,0,0.64)]">
             Personality Attributes
           </div>
           <div className="w-full flex flex-wrap">
@@ -93,8 +86,8 @@ export default function ChatRight({ setPart, activeBot }: { setPart: Function, a
             ))}
           </div>
         </div>
-        <div className="pt-4 border-t border-[rgba(255,255,255,0.16)]">
-          <div className="font-sm font-medium text-[rgba(255,255,255,0.64)]">
+        <div className="pt-4 border-t border-[rgba(0,0,0,0.16)]">
+          <div className="font-sm font-medium text-[rgba(0,0,0,0.64)]">
             Physical Attributes
           </div>
           <div className="w-full flex flex-wrap">

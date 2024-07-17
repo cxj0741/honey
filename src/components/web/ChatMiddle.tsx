@@ -202,8 +202,8 @@ export default function ChatMiddle({ fold, setFold, activeBot, setActiveBot, cur
         </div>
         {/* CHAT WINDOW */}
         <div className="relative" style={{ height: 'calc(100vh - 108px)' }}>
-          <div className="px-6 h-full overflow-y-scroll">
-            <div className="pb-40">
+          <div ref={chatContainer} className="px-6 h-full overflow-y-scroll">
+            <div className="pb-40 space-y-4">
               {/* START */}
               <div className="flex items-start">
                 <div className="w-12 h-12 rounded-full bg-top bg-cover bg-no-repeat" style={{ backgroundImage: `url(${activeBot.image1})` }}></div>

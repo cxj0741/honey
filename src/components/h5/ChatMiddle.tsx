@@ -1,20 +1,29 @@
 import Image from 'next/image'
-import { CHAT_PART } from '@/components/h5-pages/Chat'
-import { emitter, FOOTER_NAV_EVENT } from '@/utils'
 import { useEffect, useState, useRef } from 'react'
 import { sendMessage } from '@/request/handleStream'
+// import { deleteBotDialogs, deleteUserBot, getDialogs, getUserInfo, saveDialog, setConversationId } from '@/request'
 import { getDialogs, getUserInfo, saveDialog, setConversationId } from '@/request'
 import { formatUnixTimestamp } from '@/utils/formatUnixTimestamp'
-import SubscribeDialog from '@/components/h5/SubscribeDialog'
+// import ConfirmDialog from '@/components/web/ConfirmDialog'
 import { getSession, useSession } from 'next-auth/react'
 import { findUrlInString } from '@/utils/findUrlInString'
+import Toast, { TOAST_TYPE, useToast } from '@/components/web/Toast'
+import { useRouter } from 'next/navigation'
+import { CHAT_PART } from '@/components/h5-pages/Chat'
+import { emitter, FOOTER_NAV_EVENT } from '@/utils'
 
 interface Props {
+  // fold: boolean
   setPart: Function
   activeBot: Record<string, any>
+  setActiveBot: Function
+  currentArray: Record<string, any>[]
+  setCurrentArray: Function
 }
 
-export default function ChatMiddle({ setPart, activeBot }: Props) {
+export default function ChatMiddle({ setPart, activeBot, setActiveBot, currentArray, setCurrentArray }: Props) {
+  const { toast, handleToast } = useToast()
+  const router = useRouter()
   const [chatArray, setChatArray] = useState([] as ({
     timestamp: number,
     dialog: { userStr: string, botStr: string, image: string }
@@ -25,13 +34,18 @@ export default function ChatMiddle({ setPart, activeBot }: Props) {
   })
   const chatContainer = useRef(null)
   const changeArray = async () => {
-    const res = await getDialogs(activeBot.id)
-    setChatArray(res)
-    setTimeout(() => {
-      if (chatContainer && chatContainer.current) {
-        (chatContainer.current as any).scrollTop = (chatContainer.current as any).scrollHeight
-      }
-    }, 100)
+    try {
+      const res = await getDialogs(activeBot.id)
+      setChatArray(res)
+      setTimeout(() => {
+        if (chatContainer && chatContainer.current) {
+          (chatContainer.current as any).scrollTop = (chatContainer.current as any).scrollHeight
+        }
+      }, 100)
+    } catch (error) {
+      handleToast(TOAST_TYPE.ERROR, 'get dialogs error! please try later!')
+      throw 'getDialog Error!'
+    }
   }
   useEffect(() => {
     changeArray()
@@ -45,19 +59,24 @@ export default function ChatMiddle({ setPart, activeBot }: Props) {
     const userStr = (inputRef?.current as any)?.value.trim() || ''
     if (!userStr) { return }
 
-    const { messages, tokens } = await getUserInfo()
-    console.log('messages, tokens', messages, tokens)
-    if (messages <= 0) {
-      setDialogShow(true)
-      return
-    }
-    if (tokens <= 0) {
-      console.log('tokens', tokens)
+    try {
+      const { messages, tokens } = await getUserInfo()
+      console.log('messages, tokens', messages, tokens)
+      if (messages <= 0) {
+        setDialogShow(true)
+        return
+      }
+      if (tokens <= 0) {
+        console.log('tokens', tokens)
+      }
+    } catch (error) {
+      handleToast(TOAST_TYPE.ERROR, 'get user info error!')
     }
 
     setInputShow(false);
     (inputRef!.current as any).value = ''
     const timestamp = Date.now()
+
     setResult({ timestamp, dialog: { userStr, botStr: '', image: '' } })
     try {
       let [botStr, images, conversationId] = (await sendMessage(activeBot.key, { user: (session.data?.user as any)?.id, userStr, conversationId: localStorage.getItem(activeBot.id) || '' })) as [string, string[], string]
@@ -71,22 +90,25 @@ export default function ChatMiddle({ setPart, activeBot }: Props) {
       }
       botStr = botStr.replace(image, '')
       setResult({ timestamp, dialog: { userStr, botStr, image } })
-      console.log('succeed send message>>>>> set', botStr, image, conversationId)
-      console.log('conversationId>>>>> set', activeBot.id, conversationId)
+      // console.log('succeed send message>>>>> set', botStr, image, conversationId)
+      // console.log('conversationId>>>>> set', activeBot.id, conversationId)
       if (!localStorage.getItem(activeBot.id)) {
         localStorage.setItem(activeBot.id, conversationId)
         await setConversationId(activeBot.id, conversationId)
       }
       if (botStr) {
-        await saveDialog({ botId: activeBot.id, timestamp, dialog: { userStr, botStr, image }, })
+        await saveDialog({ botId: activeBot.id, timestamp, dialog: { userStr, botStr, image } })
         if (image) {
+          // 这里是为了更新tokens
           const newSession = await getSession();
           session.update(newSession)
         }
       }
     } catch (error) {
-      console.log('fail send message>>>>>', error)
+      handleToast(TOAST_TYPE.ERROR, 'generate or save dialog error!')
       await saveDialog({ botId: activeBot.id, timestamp, dialog: { userStr, botStr: '', image: '' } })
+    } finally {
+      setActiveBot({ ...activeBot })
     }
 
     try {
@@ -111,166 +133,209 @@ export default function ChatMiddle({ setPart, activeBot }: Props) {
   }
   const [activeImage, setActiveImage] = useState('')
   const [imageShow, setImageShow] = useState(false)
+
+  // const [open, setOpen] = useState(false)
+  // const [action, setAction] = useState('')
+  // const [title, setTitle] = useState('')
+  // const handleOpenDialog = (str: string) => {
+  //   if (str === 'REFRESH') {
+  //     setTitle('Are you sure you want to refresh dialogs?')
+  //   }
+  //   if (str === 'DELETE') {
+  //     setTitle('Are you sure you want to delete bot?')
+  //   }
+  //   setAction(str)
+  //   setOpen(true)
+  // }
+  // const handleConfirm = async () => {
+  //   setOpen(false)
+  //   if (action === 'REFRESH') {
+  //     try {
+  //       const res = await deleteBotDialogs(activeBot.id)
+  //       handleToast(TOAST_TYPE.SUCCESS, res.message)
+  //       setActiveBot({ ...activeBot })
+  //     } catch (error) {
+  //       handleToast(TOAST_TYPE.ERROR, 'delete dialogs error!')
+  //     }
+  //   }
+  //   if (action === 'DELETE') {
+  //     try {
+  //       const res = await deleteUserBot(activeBot.id)
+  //       handleToast(TOAST_TYPE.SUCCESS, res.message)
+  //       const array = currentArray.filter(item => item.id !== activeBot.id)
+  //       if (!array.length) {
+  //         router.push('/')
+  //       }
+  //       setCurrentArray(array)
+  //       setActiveBot({ ...array[0] })
+  //     } catch (error) {
+  //       handleToast(TOAST_TYPE.ERROR, 'delete bot error!')
+  //     }
+  //   }
+  //   setAction('')
+  //   setTitle('')
+  // }
   return (
     <>
-      <div className="w-[100vw] bg-[#1F1D1F]">
-        <div className="fixed top-16 left-0 w-full h-12 px-4 border-t border-b border-[rgba(255,255,255,0.16)] bg-[#1F1D1F] text-white flex items-center justify-between">
-          <div
-            onClick={() => {
-              emitter.emit(FOOTER_NAV_EVENT, true)
-              setPart(CHAT_PART.LEFT)
-            }}
-            className="w-6 h-6 bg-center bg-contain bg-no-repeat hover:cursor-pointer"
-            style={{ backgroundImage: 'url(/assets/arrowLeft.png)' }}
-          ></div>
-          <div className="flex items-center">
+      <div className="bg-center bg-cover bg-no-repeat" style={{ backgroundImage: 'url(/assets/chatMiddleBg.png)' }}>
+        {/* HEADER */}
+        <div className="z-50 fixed top-16 left-0 w-[100vw]  text-black">
+          <div className="h-12 px-4 bg-white flex items-center justify-between">
+            <div
+              onClick={() => {
+                emitter.emit(FOOTER_NAV_EVENT, true)
+                setPart(CHAT_PART.LEFT)
+              }}
+              className="w-6 h-6 bg-center bg-contain bg-no-repeat hover:cursor-pointer"
+              style={{ backgroundImage: 'url(/assets/arrowLeft.png)' }}
+            ></div>
+            <div className="flex items-center">
+              <div
+                onClick={() => {
+                  setPart(CHAT_PART.RIGHT)
+                }}
+                className="w-8 h-8 rounded-full bg-top bg-cover bg-no-repeat hover:cursor-pointer"
+                style={{ backgroundImage: `url(${activeBot.image1})` }}
+              ></div>
+              <div className="ml-4">{activeBot.name}</div>
+            </div>
             <div
               onClick={() => {
                 setPart(CHAT_PART.RIGHT)
               }}
-              className="w-8 h-8 rounded-full bg-center bg-contain bg-no-repeat hover:cursor-pointer"
-              style={{ backgroundImage: `url(${activeBot.image1})` }}
+              className="w-6 h-6 bg-center bg-contain bg-no-repeat hover:cursor-pointer"
+              style={{ backgroundImage: 'url(/assets/arrowOut.png)' }}
             ></div>
-            <div className="ml-4">{activeBot.name}</div>
           </div>
-          <div
-            onClick={() => {
-              setPart(CHAT_PART.RIGHT)
-            }}
-            className="w-6 h-6 bg-center bg-contain bg-no-repeat hover:cursor-pointer"
-            style={{ backgroundImage: 'url(/assets/arrowOut.png)' }}
-          ></div>
+          <div className="h-6" style={{ background: 'linear-gradient( 180deg, #FDFDFD 0%, rgba(253,253,253,0) 100%)' }}></div>
         </div>
-        <div
-          ref={chatContainer}
-          className="mt-12 p-2 space-y-4 pb-20 overflow-auto"
-          style={{ height: 'calc(100vh - 10rem)' }}
-        >
-          <div className="flex justify-start text-white bg-transparent">
-            <div className="max-w-[80vw] space-y-1">
-              <div className="text-sm bg-[#F36C9C] px-3 py-2 rounded-lg break-words">
-                {activeBot.start}
-              </div>
-            </div>
-          </div>
-          {/* 一组对话的结构 */}
-          {chatArray.map(item => (
-            <div key={item.timestamp} className='w-full'>
-              <div className="flex justify-end text-white">
-                <div className="max-w-[80vw] space-y-1">
-                  <div className="text-sm bg-[rgba(255,255,255,0.16)] px-3 py-2 rounded-lg break-words">
-                    {item.dialog.userStr}
-                  </div>
-                  <div className="text-xs text-right text-[rgba(255,255,255,0.64)]">{formatUnixTimestamp(item.timestamp)}</div>
+        {/* CHAT WINDOW */}
+        <div className="relative" style={{ height: 'calc(100vh - 3.75rem)' }}>
+          {/* <div ref={chatContainer} className="px-12 h-full overflow-y-scroll"> */}
+          <div ref={chatContainer} className="px-4 h-full">
+            <div className="space-y-4 text-sm">
+              {/* START */}
+              <div className="flex items-start">
+                <div className="w-12 h-12 rounded-full bg-top bg-cover bg-no-repeat" style={{ backgroundImage: `url(${activeBot.image1})` }}></div>
+                <div className='ml-2 max-w-[60%]'>
+                  <div className="px-2 py-3 rounded-lg rounded-tl-sm bg-[#F86C9E] text-white">{activeBot.start || 'hello world'}</div>
+                  {/* <div className="mt-1 ml-1 text-[rgba(0,0,0,0.64)]">00:00</div> */}
                 </div>
               </div>
-
-              {item.dialog.botStr &&
-                <div className="flex justify-start text-white bg-transparent">
-                  <div className="max-w-[80vw] space-y-1">
-                    <div className="text-sm bg-[#F36C9C] px-3 py-2 rounded-lg break-words">
-                      {item.dialog.botStr}
+              {/* DIALOG */}
+              {chatArray.map(item => (
+                <div key={item.timestamp} className="w-full">
+                  <div className="flex flex-row-reverse items-start">
+                    <div className="w-12 h-12 rounded-full bg-top bg-cover bg-no-repeat bg-sky-800" style={{ backgroundImage: `url(${session?.data?.user?.image})` }}></div>
+                    <div className='mr-2 max-w-[60%]'>
+                      <div className="px-2 py-3 rounded-lg rounded-tr-sm bg-[rgba(0,0,0,0.08)] text-black">{item.dialog.userStr}</div>
+                      <div className="mt-1 ml-1 text-[rgba(0,0,0,0.64)] text-right">{formatUnixTimestamp(item.timestamp)}</div>
                     </div>
                   </div>
-                </div>
-              }
 
-              {item.dialog.image &&
-                <div className="py-4 flex justify-start text-white bg-transparent">
-                  {/* <div className={`w-[300px] h-[400px] aspect-[3/4] rounded-2xl border-8 border-[#F36C9C] bg-center bg-cover bg-no-repeat`} */}
-                  <div
-                    onClick={() => {
-                      setActiveImage(item.dialog.image)
-                      setImageShow(true)
-                    }}
-                    className={`w-[300px] h-[400px] aspect-[3/4] rounded-xl bg-top bg-cover bg-no-repeat`}
-                    style={{ backgroundImage: `url(${item.dialog.image})` }}>
-                  </div>
-                </div>
-              }
-            </div>
-          ))}
+                  {item.dialog.botStr &&
+                    (<div className="flex items-start">
+                      <div className="w-12 h-12 rounded-full bg-top bg-cover bg-no-repeat" style={{ backgroundImage: `url(${activeBot.image1})` }}></div>
+                      <div className='ml-2 max-w-[60%]'>
+                        <div className="px-2 py-3 rounded-lg rounded-tl-sm bg-[#F86C9E] text-white">{item.dialog.botStr}</div>
+                        {/* <div className="mt-1 ml-1 text-[rgba(0,0,0,0.64)]">00:00</div> */}
+                      </div>
+                    </div>)
+                  }
 
-          {result.dialog.userStr && (
-            <div className="flex justify-end text-white">
-              <div className="max-w-[80vw] space-y-1">
-                <div className="text-sm bg-[rgba(255,255,255,0.16)] px-3 py-2 rounded-lg break-words">
-                  {result.dialog.userStr}
+                  {item.dialog.image &&
+                    (<div className="py-4 flex justify-start bg-transparent">
+                      <div
+                        onClick={() => {
+                          setActiveImage(item.dialog.image)
+                          setImageShow(true)
+                        }}
+                        className={`w-[300px] h-[400px] aspect-[3/4] rounded-xl bg-top bg-cover bg-no-repeat`}
+                        style={{ backgroundImage: `url(${item.dialog.image})` }}
+                      >
+                      </div>
+                    </div>)
+                  }
                 </div>
-                <div className="text-xs text-right text-[rgba(255,255,255,0.64)]">{formatUnixTimestamp(result.timestamp)}</div>
+              ))}
+              {/* CURRENT DIANLOG */}
+              <div className="w-full">
+                {result.dialog.userStr &&
+                  (<div className="flex flex-row-reverse items-start">
+                    <div className="w-12 h-12 rounded-full bg-top bg-cover bg-no-repeat bg-sky-800" style={{ backgroundImage: `url(${session?.data?.user?.image})` }}></div>
+                    <div className='mr-2 max-w-[60%]'>
+                      <div className="px-2 py-3 rounded-lg rounded-tr-sm bg-[rgba(0,0,0,0.08)] text-black">{result.dialog.userStr}</div>
+                      <div className="mt-1 ml-1 text-[rgba(0,0,0,0.64)] text-right">{formatUnixTimestamp(result.timestamp)}</div>
+                    </div>
+                  </div>)
+                }
+                {(result.timestamp !== 0) &&
+                  (result.dialog.botStr ?
+                    (<div className="flex items-start">
+                      <div className="w-12 h-12 rounded-full bg-top bg-cover bg-no-repeat" style={{ backgroundImage: `url(${activeBot.image1})` }}></div>
+                      <div className='ml-2 max-w-[60%]'>
+                        <div className="px-2 py-3 rounded-lg rounded-tl-sm bg-[#F86C9E] text-white">{result.dialog.botStr}</div>
+                        {/* <div className="mt-1 ml-1 text-[rgba(0,0,0,0.64)]">00:00</div> */}
+                      </div>
+                    </div>)
+                    :
+                    (<div className="flex items-start">
+                      <div className="w-12 h-12 rounded-full bg-top bg-cover bg-no-repeat" style={{ backgroundImage: `url(${activeBot.image1})` }}></div>
+                      <div className='ml-2'>
+                        <div className="w-40 h-12 rounded-lg rounded-tl-sm bg-[#F86C9E] flex items-center justify-center">
+                          <div className="loading loading-dots loading-sm text-white"></div>
+                          <div className="loading loading-dots loading-sm text-white"></div>
+                        </div>
+                      </div>
+                    </div>)
+                  )
+                }
               </div>
-            </div>)}
-
-          {result.timestamp ?
-            (result.dialog.botStr ?
-              (<div className="flex justify-start text-white bg-transparent">
-                <div className="max-w-[80vw] space-y-1">
-                  <div className="text-sm bg-[#F36C9C] px-3 py-2 rounded-lg break-words">
-                    {result.dialog.botStr}
-                  </div>
-                </div>
-              </div>)
-              :
-              (<div className="flex justify-start text-white bg-transparent">
-                <div className="max-w-[12rem] space-y-1">
-                  <div className="bg-[rgba(255,255,255,0.16)] px-3 py-2 rounded-lg break-words flex items-center">
-                    {new Array(1).fill(0).map((item, index) => (
-                      <span key={index} className="loading loading-dots loading-sm text-white"></span>
-                    ))}
-                  </div>
-                </div>
-              </div>)
-            )
-            :
-            null}
-        </div>
-        {/* CHAT CONTENT SEND MESSAGE INPUT */}
-        <div className="fixed -bottom-1 w-[100vw] h-[3.6rem] px-1 pb-1 border-t border-[rgba(255,255,255,0.16)] bg-[#1F1D1F] flex items-center space-x-1">
-          {inputShow ?
-            <>
-              <input
-                ref={inputRef}
-                onKeyDown={(event) => handleKeyDown(event.key)}
-                type="text"
-                placeholder="Type a message"
-                className="flex-1 input input-bordered input-sm whitespace-normal break-words text-wrap"
-              />
-              <div className="w-[5rem] h-8 rounded-lg bg-[rgba(255,255,255,0.16)] flex items-center justify-center hover:cursor-pointer">
-                <div className="w-full px-2 dropdown dropdown-top dropdown-end">
+            </div>
+          </div>
+          <div className="absolute left-0 bottom-0 w-full px-4 pb-4">
+            {inputShow ?
+              <div className='p-2 rounded-lg bg-white flex items-center space-x-2'>
+                <input
+                  ref={inputRef}
+                  onKeyDown={(event) => handleKeyDown(event.key)}
+                  type="text"
+                  placeholder="Type a message"
+                  className="input input-bordered flex-1" />
+                <div className="dropdown dropdown-top dropdown-end">
                   <div
                     tabIndex={0}
                     className="text-white flex items-center justify-between"
                   >
-                    <div className="w-4 h-5 bg-center bg-contain bg-no-repeat"
+                    <div
+                      className="w-20 h-12 bg-center bg-contain bg-no-repeat hover:cursor-pointer"
                       style={{ backgroundImage: "url(/assets/ask.png)" }}
                     ></div>
-                    <span>Ask</span>
-                    <div className="w-3 h-3 bg-center bg-contain bg-no-repeat"
-                      style={{ backgroundImage: "url(/assets/arrowUp.png)" }}
-                    ></div>
                   </div>
-                  <ul tabIndex={0}
-                    className="dropdown-content menu bg-base-100 rounded-lg z-[1] w-52 p-2 shadow"
-                  >{['Show me', 'Send me', 'Can I see'].map((item) => (
-                    <li key={item} onClick={() => handleInputPrompt(item)}>
-                      <span>{item}...</span>
-                    </li>
-                  ))}
+                  <ul
+                    tabIndex={0}
+                    className="dropdown-content menu bg-base-100 rounded-lg z-[1] w-32 p-2 shadow"
+                  >
+                    {['Show me', 'Send me', 'Can I see'].map((item) => (
+                      <li key={item} onClick={() => handleInputPrompt(item)}>
+                        <span>{item}...</span>
+                      </li>
+                    ))}
                   </ul>
                 </div>
+                <div
+                  onClick={() => handleSendMessage()}
+                  className="w-12 h-12 bg-center bg-contain bg-no-repeat hover:cursor-pointer"
+                  style={{ backgroundImage: "url(/assets/send.png)" }}
+                ></div>
               </div>
-              <div
-                onClick={() => handleSendMessage()}
-                className="w-10 h-10 bg-center bg-cover bg-no-repeat hover:cursor-pointer"
-                style={{ backgroundImage: "url(/assets/send.png)" }}
-              ></div>
-            </>
-            :
-            <div className='w-full py-2 rounded-xl bg-white text-base text-center'>Please wait! {activeBot.name} is writing...</div>
-          }
+              :
+              <div className='w-full py-2 rounded-xl bg-white text-base text-center'>{activeBot.name} is responding...</div>
+            }
+          </div>
         </div>
       </div>
-      <SubscribeDialog dialogShow={dialogShow} setDialogShow={setDialogShow} />
+      {/* <ConfirmDialog title={title} open={open} setOpen={setOpen} handleConfirm={() => handleConfirm()} /> */}
       <dialog onClick={() => setImageShow(false)} open={imageShow} className="modal bg-[rgba(0,0,0,0.8)]">
         <div className="modal-box aspect-[3/4] p-0 rounded-none bg-transparent">
           <Image
@@ -281,6 +346,26 @@ export default function ChatMiddle({ setPart, activeBot }: Props) {
           />
         </div>
       </dialog>
+      {toast.show && <Toast type={toast.type} message={toast.message} />}
+      <div className={`${dialogShow ? 'block' : 'hidden'}`}>
+        <div className="z-50 fixed left-0 top-0 w-[100vw] h-[100vh] flex items-center justify-center bg-center bg-cover bg-no-repeat"
+          style={{ backgroundImage: 'url(/assets/premiumDialogToastBg.png)' }}
+        >
+          <div className="relative w-[918px] h-[602px] bg-center bg-contain bg-no-repeat"
+            style={{ backgroundImage: 'url(/assets/premiumDialogBg.png)' }}
+          >
+            <div onClick={() => { setDialogShow(false) }} className="w-14 h-14 bg-center bg-contain bg-no-repeat absolute top-20 right-12 hover:cursor-pointer"
+              style={{ backgroundImage: "url(/assets/close.png)" }}
+            ></div>
+            <div onClick={() => router.push('/premium')} className="w-[300px] h-12 bg-center bg-contain bg-no-repeat absolute bottom-32 right-[120px] hover:cursor-pointer"
+              style={{ backgroundImage: "url(/assets/premiumDialogButton.png)" }}
+            ></div>
+            <div className="w-[290px] h-[386px] rounded-lg  bg-top bg-cover bg-no-repeat absolute left-20 top-28 hover:cursor-pointer"
+              style={{ backgroundImage: `url(${activeBot.image1})` }}
+            ></div>
+          </div>
+        </div>
+      </div>
     </>
   )
 }

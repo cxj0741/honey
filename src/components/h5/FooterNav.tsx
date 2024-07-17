@@ -37,7 +37,7 @@ function Item({
       className={`flex flex-col items-center space-y-1 hover:bg-[rgba(255,255,255,0.08)] hover:cursor-pointer`}
     >
       <Image width={24} height={24} src={src} alt={title} />
-      <div>{title}</div>
+      <div >{title}</div>
     </div>
   )
 }
@@ -54,8 +54,8 @@ export default function FooterNav() {
   }, [])
 
   return (
-    <div className='z-50 fixed left-0 -bottom-[1px] w-[100vw] h-14 border-t border-[rgba(255,255,255,0.16)] bg-[#121112] text-[rgba(255,255,255,0.64)] text-xs flex items-center justify-around'
-      style={{ visibility: footerNavShow ? 'visible' : 'hidden' }}
+    <div className='z-50 fixed left-0 -bottom-[1px] w-[100vw] h-14 border-t border-[rgba(255,255,255,0.16)] text-black text-xs flex items-center justify-around bg-bottom bg-cover bg-no-repeat'
+      style={{ visibility: footerNavShow ? 'visible' : 'hidden', backgroundImage: 'url(/assets/chatMiddleBg.png)' }}
     >
       <Item
         src={path === '/' ? '/assets/exploreSelected.png' : '/assets/explore.png'}

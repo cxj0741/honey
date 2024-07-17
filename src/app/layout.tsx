@@ -26,7 +26,7 @@ export default function RootLayout({
         <head>
           <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"></meta>
         </head>
-        <body className={`${inter.className}`}>
+        <body className={`${inter.className} bg-center bg-cover bg-no-repeat`} style={{ backgroundImage: 'url(/assets/chatMiddleBg.png)' }}>
           <AuthProvider>
             <Nav />
             <FooterNav />

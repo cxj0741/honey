@@ -20,6 +20,9 @@ export default function Provider({
         s1.setAttribute('crossorigin', '*');
         (s0.parentNode as any).insertBefore(s1, s0);
       })();
+      window.Tawk_API.onLoad = function () {
+        window.Tawk_API.hideWidget();
+      };
     }
   }, [])
   return <SessionProvider>

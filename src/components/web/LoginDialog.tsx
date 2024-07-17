@@ -78,7 +78,8 @@ export default function LoginDialog({ type, setType, dialogShow, setDialogShow }
   return (
     <>
       <dialog open={dialogShow} className="modal bg-transparent">
-        <div className="modal-box w-[810px] max-w-[810px] bg-[#121212] rounded-lg p-0 flex relative">
+        <div className="modal-box w-[810px] max-w-[810px] rounded-lg p-0 flex relative bg-bottom bg-cover bg-no-repeat"
+          style={{ backgroundImage: 'url(/assets/chatMiddleBg.png)' }}>
           <div onClick={() => {
             setDialogShow(false)
             router.push('/')
@@ -94,7 +95,7 @@ export default function LoginDialog({ type, setType, dialogShow, setDialogShow }
           </div>
           <div className="flex-1">
             <div className="mx-8 my-9 space-y-4">
-              <div className="text-2xl font-bold text-white">{type}</div>
+              <div className="text-2xl font-bold text-black">{type}</div>
               <label className="input input-bordered flex items-center gap-2">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -125,9 +126,9 @@ export default function LoginDialog({ type, setType, dialogShow, setDialogShow }
                 </label>
                 {
                   type === ACCOUNT.SIGN_UP ?
-                    <div className="mt-3 text-white">Minimum 6 characters</div>
+                    <div className="mt-3 text-black">Minimum 6 characters</div>
                     :
-                    <a className="inline-block mt-3 text-white underline decoration-solid">Forget Password?</a>
+                    <a className="inline-block mt-3 text-black underline decoration-solid">Forget Password?</a>
                 }
               </div>
               {type === ACCOUNT.SIGN_UP && <button onClick={() => handleConfirm(ACCOUNT.SIGN_UP)} className="btn w-full">{ACCOUNT.SIGN_UP}</button>}
@@ -137,17 +138,17 @@ export default function LoginDialog({ type, setType, dialogShow, setDialogShow }
                   className="flex-1 h-[1px]"
                   style={{
                     background:
-                      'linear-gradient(270deg, rgba(255, 255, 255, 0.30) 0%, rgba(255, 255, 255, 0.00) 100%)',
+                      'linear-gradient(270deg, rgba(0,0,0,0.30) 0%, rgba(0,0,0,0.00) 100%)',
                   }}
                 ></div>
-                <div className="flex-0 text-white text-sm font-medium mx-4">
+                <div className="flex-0 text-black text-sm font-medium mx-4">
                   or continue with
                 </div>
                 <div
                   className="flex-1 h-[1px]"
                   style={{
                     background:
-                      'linear-gradient(270deg, rgba(255, 255, 255, 0.00) 0%, rgba(255, 255, 255, 0.30) 100%)',
+                      'linear-gradient(270deg, rgba(0,0,0,0.00) 0%, rgba(0,0,0,0.30) 100%)',
                   }}
                 ></div>
               </div>
@@ -159,14 +160,14 @@ export default function LoginDialog({ type, setType, dialogShow, setDialogShow }
                 ></div>
                 <div className="font-normal text-[#344054]">Google</div>
               </div>
-              <div className="text-base font-medium text-white text-center" style={{ visibility: type === ACCOUNT.SIGN_UP ? "visible" : 'hidden' }}>
+              <div className="text-base font-medium text-black text-center" style={{ visibility: type === ACCOUNT.SIGN_UP ? "visible" : 'hidden' }}>
                 By signing up, you agree to{' '}
                 <a className="underline" href="/legal-information">
                   Terms of Service
                 </a>
               </div>
             </div>
-            <div className="pt-6 border-t font-medium text-sm text-white flex justify-center items-center">
+            <div className="pt-6 border-t border-[rgba(0,0,0,0.32)] font-medium text-sm text-black flex justify-center items-center">
               Already have an account yet? &nbsp;
               <span onClick={() => {
                 if (type === ACCOUNT.SIGN_IN) {
