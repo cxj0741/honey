@@ -9,6 +9,7 @@ import Toast, { TOAST_TYPE, useToast } from '@/components/web/Toast'
 
 export default function PersonalCenter({ user, orderArray }: { user: Record<string, any>, orderArray: Record<string, any> }) {
   // console.log('user info', user)
+  // user.isVIP = true
   const { toast, handleToast } = useToast()
   const handleDeleteUser = async () => {
     try {
@@ -103,29 +104,38 @@ export default function PersonalCenter({ user, orderArray }: { user: Record<stri
               <span className="text-[#F53276]">Personal</span>
               <span className="ml-4 text-black">Information</span>
             </div>
-            <div className="w-full p-6 border rounded-lg" style={{ background: 'linear-gradient( 90deg, rgba(245,50,118,0.32) 0%, rgba(245,50,118,0.08) 100%)' }}>
-              <div className="flex items-center">
-                <div className="flex-1">
-                  <div className="text-2xl font-semibold">
-                    Subscription status
+            <div className="w-full p-6 border rounded-lg" style={{ background: user.isVIP ? 'linear-gradient( 90deg, rgba(245,50,118,0.32) 0%, rgba(245,50,118,0.08) 100%)' : 'linear-gradient( 90deg, rgba(165,153,157,0.32) 0%, rgba(165,153,157,0.08) 100%)' }}>
+              <div className="text-2xl font-semibold">
+                Subscription status
+              </div>
+              {user.isVIP ?
+                <>
+                  <div className="mt-8 flex items-center">
+                    <div className=" flex-1 text-[#F53276] font-semibold text-3xl">
+                      Premium Member
+                    </div>
+                    <div onClick={() => { router.push('/premium') }} className="w-[178px] h-8 bg-center bg-contain bg-no-repeat hover:cursor-pointer" style={{ backgroundImage: 'url(/assets/renew.png)' }}></div>
+
                   </div>
-                  {
-                    user.isVIP ?
-                      <div className="mt-8 text-[#F53276] font-semibold text-3xl">
-                        Premium Member
-                      </div>
-                      :
-                      <div className="mt-8 text-black font-semibold text-3xl">
-                        Free Member
-                      </div>
-                  }
                   <div className="mt-4 flex items-center">
                     <span className='text-base'>Payment date: 20224.06.24</span>
                     <span className='ml-16 text-base'>Subscription to: 20224.06.24</span>
                   </div>
-                </div>
-                <div onClick={() => { router.push('/premium') }} className="w-[178px] h-8 bg-center bg-contain bg-no-repeat hover:cursor-pointer" style={{ backgroundImage: user.isVIP ? 'url(/assets/renew.png)' : 'url(/assets/sub.png)' }}></div>
-              </div>
+                </>
+                :
+                <>
+                  <div className="mt-8 flex items-center">
+                    <div className="flex-1 text-black font-semibold text-3xl">
+                      Free Member
+                    </div>
+                    <div onClick={() => { router.push('/premium') }} className="w-[178px] h-8 bg-center bg-contain bg-no-repeat hover:cursor-pointer" style={{ backgroundImage: 'url(/assets/sub.png)' }}></div>
+                  </div>
+                  <div className="mt-4 flex items-center">
+                    <span className='text-base'>Payment date: --</span>
+                    <span className='ml-16 text-base'>Subscription to: --</span>
+                  </div>
+                </>
+              }
             </div>
             <div className="w-full p-6 border rounded-lg">
               <div className="text-2xl">Basic Infomation</div>
@@ -212,7 +222,7 @@ export default function PersonalCenter({ user, orderArray }: { user: Record<stri
             }
           </div>
         </div>
-      </div>
+      </div >
       <EditDialog />
       <ConfirmDialog title={'Are you sure you want to delete account?'} open={open} setOpen={setOpen} handleConfirm={() => handleDeleteUser()} />
       {toast.show && <Toast type={toast.type} message={toast.message} />}

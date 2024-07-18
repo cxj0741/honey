@@ -11,9 +11,10 @@ export default function NoBot() {
   }, [router])
 
   return (
-    <div className="z-50 toast toast-center toast-top">
-      <div className={`alert alert-error`}>
-        <span className='text-white font-semibold'>no bot selected,&nbsp; please select at least one bot!</span>
+    <div className="z-50 mt-20 toast toast-center toast-top">
+      <div className='alert alert-error text-white font-semibold'>
+        <div>no bot selected!</div>
+        <div>please select at least one bot!</div>
       </div>
     </div>
   )

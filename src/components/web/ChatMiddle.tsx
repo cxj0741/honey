@@ -181,7 +181,7 @@ export default function ChatMiddle({ fold, setFold, activeBot, setActiveBot, cur
     <>
       <div className="flex-1 h-[100vh] relative bg-center bg-cover bg-no-repeat" style={{ backgroundImage: 'url(/assets/chatMiddleBg.png)' }}>
         {/* HEADER */}
-        <div className='z-50 absolute left-0 top-0 w-full'>
+        <div className='z-10 absolute left-0 top-0 w-full'>
           <div className="px-6 py-4 text-black bg-[#FCFBFA] flex items-center">
             <div className="w-12 h-12 rounded-full bg-top bg-cover bg-no-repeat" style={{ backgroundImage: `url(${activeBot.image1})` }}>
             </div>
@@ -245,7 +245,10 @@ export default function ChatMiddle({ fold, setFold, activeBot, setActiveBot, cur
                     <div
                       onClick={() => {
                         setActiveImage(item.dialog.image)
-                        setImageShow(true)
+                        setTimeout(() => {
+                          // 担心图片不能及时切换
+                          setImageShow(true)
+                        }, 100)
                       }}
                       className={`w-[300px] h-[400px] aspect-[3/4] rounded-xl bg-top bg-cover bg-no-repeat`}
                       style={{ backgroundImage: `url(${item.dialog.image})` }}
@@ -334,16 +337,6 @@ export default function ChatMiddle({ fold, setFold, activeBot, setActiveBot, cur
         </div>
       </div>
       <ConfirmDialog title={title} open={open} setOpen={setOpen} handleConfirm={() => handleConfirm()} />
-      <dialog onClick={() => setImageShow(false)} open={imageShow} className="modal bg-[rgba(0,0,0,0.8)]">
-        <div className="modal-box aspect-[3/4] p-0 rounded-none bg-transparent">
-          <Image
-            layout="fill"
-            objectFit="contain"
-            src={activeImage}
-            alt={'bot'}
-          />
-        </div>
-      </dialog>
       {toast.show && <Toast type={toast.type} message={toast.message} />}
       <div className={`${dialogShow ? 'block' : 'hidden'}`}>
         <div className="z-50 fixed left-0 top-0 w-[100vw] h-[100vh] flex items-center justify-center bg-center bg-cover bg-no-repeat"
@@ -361,6 +354,23 @@ export default function ChatMiddle({ fold, setFold, activeBot, setActiveBot, cur
             <div className="w-[290px] h-[386px] rounded-lg  bg-top bg-cover bg-no-repeat absolute left-20 top-28 hover:cursor-pointer"
               style={{ backgroundImage: `url(${activeBot.image1})` }}
             ></div>
+          </div>
+        </div>
+      </div>
+      <div className={`${imageShow ? 'block' : 'hidden'}`}>
+        <div className="z-50 fixed left-0 top-0 w-[100vw] h-[100vh] flex items-center justify-center bg-[rgba(0,0,0,0.8)]">
+          <div className="relative aspect-[3/5] h-[90vh]">
+            <div onClick={() => { setDialogShow(false) }} className="z-50 absolute -top-7 -right-7 w-7 h-7 bg-center bg-contain bg-no-repeat bg-white rounded-full hover:cursor-pointer"
+              style={{ backgroundImage: "url(/assets/close.png)" }}
+            ></div>
+            <Image
+              layout="fill"
+              objectFit="cover"
+              objectPosition='top'
+              src={activeImage}
+              // src="/bots/Ashley1.png"
+              alt={'bot'}
+            />
           </div>
         </div>
       </div>

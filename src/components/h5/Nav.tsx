@@ -50,7 +50,7 @@ export default function Nav() {
   return (
     <>
       {/* HEADER */}
-      <div className="z-50 fixed left-0 top-0 w-[100vw] px-4 h-12 flex items-center justify-between bg-bottom bg-cover bg-no-repeat" style={{ backgroundImage: 'url(/assets/chatMiddleBg.png)' }}>
+      <div className="z-10 fixed left-0 top-0 w-[100vw] px-4 h-12 flex items-center justify-between bg-bottom bg-cover bg-no-repeat" style={{ backgroundImage: 'url(/assets/chatMiddleBg.png)' }}>
         <div className="flex items-center">
           {path === '/' &&
             <>
@@ -92,8 +92,8 @@ export default function Nav() {
       </div>
       {/* LEFT NAV */}
       {!fold &&
-        <div onClick={() => setFold(true)} className='z-50 fixed left-0 top-[4rem] w-[100vw] bg-[rgba(0,0,0,0.16)]'>
-          <div className="w-[12.5rem] bg-white text-black text-sm" style={{ height: 'calc(100vh - 4rem)' }}>
+        <div onClick={() => setFold(true)} className='z-40 fixed left-0 top-[3rem] w-[100vw] bg-[rgba(0,0,0,0.16)]'>
+          <div className="w-[12.5rem] bg-white text-black text-sm" style={{ height: 'calc(100vh - 3rem)' }}>
             {
               session.status === 'authenticated' &&
               <div

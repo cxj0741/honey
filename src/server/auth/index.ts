@@ -64,6 +64,11 @@ export const authOptions: AuthOptions = {
       },
     }),
   ],
+  pages:{
+    signIn:'/login',
+    signOut:'/',
+    error:'/login',
+  }
 }
 
 export const handler = NextAuth(authOptions)

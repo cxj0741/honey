@@ -3,6 +3,8 @@ import Image from 'next/image'
 import ProfileArea from '@/components/web/ProfileArea'
 import { useCallback, useEffect, useState } from 'react'
 import { TYPE, getBots } from '@/request'
+import { useSession } from 'next-auth/react'
+
 export default function Home() {
   // const [type, setType] = useState(TYPE.FEMALE)
   const [girlList, setGirlList] = useState([])
@@ -29,12 +31,12 @@ export default function Home() {
       block: 'start' // 将元素的顶部对齐到视窗的顶部
     })
   }, [])
-
+  const session = useSession()
   return (
     <>
       <div className="px-2 flex-1 bg-[#F4F4F5] max-h-[100vh] overflow-scroll">
         <div className="ml-4 my-6">
-          <div className="font-semibold text-[#FE387F]">Hi,honeybun</div>
+          <div className="font-semibold text-[#FE387F]">Hi,{session.status === 'authenticated' ? (session?.data?.user?.name) : 'honeybun'}</div>
           <div className="mt-1 flex items-center">
             <div className="font-semibold text-[#FE387F]">Welcome back</div>
             <div

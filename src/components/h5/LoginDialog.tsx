@@ -54,7 +54,6 @@ export default function LoginDialog({ type, setType, dialogShow, setDialogShow }
         const res = await signUp({ email, password })
         // console.log('sign up>>>>>', res)
         if (res.ok) {
-          handleToast(TOAST_TYPE.SUCCESS, 'sign up success!')
           setDialogShow(false)
           await signIn('credentials', { email, password })
         } else {
@@ -70,7 +69,6 @@ export default function LoginDialog({ type, setType, dialogShow, setDialogShow }
       // const res = await signIn('google')
       // console.log('sign in result', res)
       await signIn('google')
-      handleToast(TOAST_TYPE.SUCCESS, 'sign in success!')
       setDialogShow(false)
     } catch (error) {
       handleToast(TOAST_TYPE.ERROR, 'google account sign in error!')
@@ -152,7 +150,7 @@ export default function LoginDialog({ type, setType, dialogShow, setDialogShow }
               className="inline-flex items-center justify-center w-full rounded-[10px] px-4 py-2.5 mb-2.5 bg-white hover:cursor-pointer"
             >
               <div className="w-6 h-6 bg-center bg-contain bg-no-repeat"
-                style={{ backgroundImage: "url(https://candy.ai/assets/google-auth-a8a364c5c399770d07ce74e6110a120970b1953557a47719692d85ea9334efb6.png)" }}
+                style={{ backgroundImage: "url(/assets/google.png)" }}
               ></div>
               <div className="font-normal text-[#344054]">Google</div>
             </div>

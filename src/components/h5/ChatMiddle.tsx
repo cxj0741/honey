@@ -138,7 +138,7 @@ export default function ChatMiddle({ setPart, activeBot, setActiveBot }: Props) 
     <>
       <div className="bg-center bg-cover bg-no-repeat" style={{ backgroundImage: 'url(/assets/chatMiddleBg.png)' }}>
         {/* HEADER */}
-        <div className="z-50 fixed top-12 left-0 w-[100vw] text-black">
+        <div className="z-10 fixed top-12 left-0 w-[100vw] text-black">
           <div className="h-12 px-4 bg-white flex items-center justify-between">
             <div
               onClick={() => {
@@ -205,7 +205,10 @@ export default function ChatMiddle({ setPart, activeBot, setActiveBot }: Props) 
                     <div
                       onClick={() => {
                         setActiveImage(item.dialog.image)
-                        setImageShow(true)
+                        setTimeout(() => {
+                          // 担心图片不能及时切换
+                          setImageShow(true)
+                        }, 100)
                       }}
                       className={`w-[300px] h-[400px] aspect-[3/4] rounded-xl bg-top bg-cover bg-no-repeat`}
                       style={{ backgroundImage: `url(${item.dialog.image})` }}
@@ -248,7 +251,6 @@ export default function ChatMiddle({ setPart, activeBot, setActiveBot }: Props) 
                 )
               }
             </div>
-            {/* </div> */}
           </div>
         </div>
         <div className="fixed left-0 bottom-0 w-full px-4 pb-4 bg-cover bg-bottom bg-no-repeat"
@@ -294,36 +296,43 @@ export default function ChatMiddle({ setPart, activeBot, setActiveBot }: Props) 
           }
         </div>
       </div>
-      {/* </div> */}
-      {activeImage &&
-        <dialog onClick={() => setImageShow(false)} open={imageShow} className="modal bg-[rgba(0,0,0,0.8)]">
-          <div className="modal-box aspect-[3/4] p-0 rounded-none bg-transparent">
-            <Image
-              layout="fill"
-              objectFit="contain"
-              src={activeImage}
-              alt={'bot'}
-            />
-          </div>
-        </dialog>
-      }
       {toast.show && <Toast type={toast.type} message={toast.message} />}
       <div className={`${dialogShow ? 'block' : 'hidden'}`}>
-        <div className="z-50 fixed left-0 top-0 w-[100vw] h-[100vh] flex items-center justify-center bg-center bg-cover bg-no-repeat"
-          style={{ backgroundImage: 'url(/assets/premiumDialogToastBg.png)' }}
+        <div onClick={() => { setDialogShow(false) }} className="z-50 fixed left-0 top-0 w-[100vw] h-[100vh] flex items-center justify-center bg-center bg-cover bg-no-repeat"
+          style={{ backgroundImage: 'url(/h5Assets/premiumDialogToastBg.png)' }}
         >
-          <div className="relative w-[918px] h-[602px] bg-center bg-contain bg-no-repeat"
-            style={{ backgroundImage: 'url(/assets/premiumDialogBg.png)' }}
-          >
-            <div onClick={() => { setDialogShow(false) }} className="w-14 h-14 bg-center bg-contain bg-no-repeat absolute top-20 right-12 hover:cursor-pointer"
+          <div className="p-2 rounded-lg bg-white">
+            <div className="rounded-lg bg-top bg-cover bg-no-repeat"
+              style={{ backgroundImage: 'url(/bots/Ashley1.png)' }}
+            >
+              <div className="relative aspect-[327/505] bg-center bg-cover bg-no-repeat"
+                style={{ width: 'calc(100vw - 3rem)', backgroundImage: 'url(/h5Assets/premiumDialogBg.png)' }}
+              >
+                {/* <div onClick={() => { setDialogShow(false) }} className="w-14 h-14 bg-center bg-contain bg-no-repeat absolute top-20 right-12 hover:cursor-pointer"
               style={{ backgroundImage: "url(/assets/close.png)" }}
-            ></div>
-            <div onClick={() => router.push('/premium')} className="w-[300px] h-12 bg-center bg-contain bg-no-repeat absolute bottom-32 right-[120px] hover:cursor-pointer"
-              style={{ backgroundImage: "url(/assets/premiumDialogButton.png)" }}
-            ></div>
-            <div className="w-[290px] h-[386px] rounded-lg  bg-top bg-cover bg-no-repeat absolute left-20 top-28 hover:cursor-pointer"
-              style={{ backgroundImage: `url(${activeBot.image1})` }}
-            ></div>
+            ></div> */}
+                <div onClick={() => router.push('/premium')} className=" absolute bottom-6 left-2 aspect-[295/48] bg-center bg-contain bg-no-repeat hover:cursor-pointer"
+                  style={{ width: 'calc(100% - 1rem)', backgroundImage: "url(/assets/premiumDialogButton.png)" }}
+                ></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div className={`${imageShow ? 'block' : 'hidden'}`}>
+        <div onClick={() => { setDialogShow(false) }} className="z-50 fixed left-0 top-0 w-[100vw] h-[100vh] flex items-center justify-center bg-[rgba(0,0,0,0.8)]">
+          <div className="relative aspect-[3/5]" style={{ width: 'calc(100vw - 2rem)' }}>
+            {/* <div onClick={() => { setDialogShow(false) }} className="z-50 absolute -top-7 -right-0 w-7 h-7 bg-center bg-contain bg-no-repeat bg-white rounded-full hover:cursor-pointer"
+              style={{ backgroundImage: "url(/assets/close.png)" }}
+            ></div> */}
+            <Image
+              layout="fill"
+              objectFit="cover"
+              objectPosition='top'
+              src={activeImage}
+              // src="/bots/Ashley1.png"
+              alt={'bot'}
+            />
           </div>
         </div>
       </div>

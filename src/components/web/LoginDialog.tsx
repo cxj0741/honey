@@ -17,6 +17,12 @@ interface Props {
   setDialogShow: Function
 }
 
+function getImageName() {
+  const botArray = ['Ashley1', 'Ashley2', 'Ashley3', 'Derek1', 'Derek2', 'Derek3', 'Keisha', 'Megan1', 'Megan2', 'Megan3', 'Olivia1', 'Olivia2', 'Robert1', 'Robert2', 'Sarah', 'William1', 'William2']
+  const randomIndex = Math.floor(Math.random() * botArray.length);
+  return botArray[randomIndex]
+}
+
 export default function LoginDialog({ type, setType, dialogShow, setDialogShow }: Props) {
   const { toast, handleToast } = useToast()
   const emailRef = useRef(null)
@@ -86,8 +92,8 @@ export default function LoginDialog({ type, setType, dialogShow, setDialogShow }
           }} className="w-14 h-14 bg-center bg-contain bg-no-repeat absolute top-0 right-0 hover:cursor-pointer"
             style={{ backgroundImage: "url(/assets/close.png)" }}
           ></div>
-          <div className="w-1/2 aspect-[3/4] bg-cover bg-center bg-no-repeat relative"
-            style={{ backgroundImage: 'url(https://cdn.candy.ai/12-908d871b-57da-4c96-a4f5-c05341873b42)' }}
+          <div className="w-1/2 aspect-[3/4] bg-cover bg-top bg-no-repeat relative"
+            style={{ backgroundImage: `url(/bots/${getImageName()}.png)` }}
           >
             <div className="absolute bottom-10 w-full flex justify-center">
               <div className="w-40 h-8 bg-center bg-no-repeat bg-contain" style={{ backgroundImage: 'url(assets/Honeybun.png)' }}></div>
@@ -128,7 +134,7 @@ export default function LoginDialog({ type, setType, dialogShow, setDialogShow }
                   type === ACCOUNT.SIGN_UP ?
                     <div className="mt-3 text-black">Minimum 6 characters</div>
                     :
-                    <a className="inline-block mt-3 text-black underline decoration-solid">Forget Password?</a>
+                    <a className="inline-block mt-3 text-transparent underline decoration-solid">Forget Password?</a>
                 }
               </div>
               {type === ACCOUNT.SIGN_UP && <button onClick={() => handleConfirm(ACCOUNT.SIGN_UP)} className="btn w-full">{ACCOUNT.SIGN_UP}</button>}
@@ -156,7 +162,7 @@ export default function LoginDialog({ type, setType, dialogShow, setDialogShow }
                 className="inline-flex items-center justify-center w-full rounded-[10px] px-4 py-2.5 mb-2.5 bg-white hover:cursor-pointer"
               >
                 <div className="w-6 h-6 bg-center bg-contain bg-no-repeat"
-                  style={{ backgroundImage: "url(https://candy.ai/assets/google-auth-a8a364c5c399770d07ce74e6110a120970b1953557a47719692d85ea9334efb6.png)" }}
+                  style={{ backgroundImage: "url(/assets/google.png)" }}
                 ></div>
                 <div className="font-normal text-[#344054]">Google</div>
               </div>
