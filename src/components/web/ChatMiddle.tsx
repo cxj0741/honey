@@ -75,6 +75,11 @@ export default function ChatMiddle({ fold, setFold, activeBot, setActiveBot, cur
     const timestamp = Date.now()
 
     setResult({ timestamp, dialog: { userStr, botStr: '', image: '' } })
+    setTimeout(() => {
+      if (chatContainer && chatContainer.current) {
+        (chatContainer.current as any).scrollTop = (chatContainer.current as any).scrollHeight
+      }
+    }, 100)
     try {
       let [botStr, images, conversationId] = (await sendMessage(activeBot.key, { user: (session.data?.user as any)?.id, userStr, conversationId: localStorage.getItem(activeBot.id) || '' })) as [string, string[], string]
       let image: string = ''
@@ -204,8 +209,8 @@ export default function ChatMiddle({ fold, setFold, activeBot, setActiveBot, cur
           <div className='w-full h-6' style={{ background: 'linear-gradient( 180deg, #FCFCFA 0%, rgba(251,250,249,0) 100%)' }}></div>
         </div>
         {/* CHAT WINDOW */}
-        <div ref={chatContainer} className="px-6 h-full overflow-y-scroll">
-          <div className="pb-40 space-y-4">
+        <div ref={chatContainer} className="px-6 py-32 h-full overflow-y-scroll">
+          <div className="space-y-4">
             {/* START */}
             <div className="flex items-start">
               <div className="w-12 h-12 rounded-full bg-top bg-cover bg-no-repeat" style={{ backgroundImage: `url(${activeBot.image1})` }}></div>
@@ -221,7 +226,7 @@ export default function ChatMiddle({ fold, setFold, activeBot, setActiveBot, cur
                   <div className="w-12 h-12 rounded-full bg-top bg-cover bg-no-repeat bg-sky-800" style={{ backgroundImage: `url(${session?.data?.user?.image})` }}></div>
                   <div className='mr-2 max-w-[40%]'>
                     <div className="px-2 py-3 rounded-lg rounded-tr-sm bg-[rgba(0,0,0,0.08)] text-black">{item.dialog.userStr}</div>
-                    <div className="mt-1 ml-1 text-[rgba(0,0,0,0.64)] text-right">{formatUnixTimestamp(item.timestamp)}</div>
+                    <div className="mt-1 ml-1 text-[rgba(0,0,0,0.64)] text-sm text-right">{formatUnixTimestamp(item.timestamp)}</div>
                   </div>
                 </div>
 
@@ -257,7 +262,7 @@ export default function ChatMiddle({ fold, setFold, activeBot, setActiveBot, cur
                   <div className="w-12 h-12 rounded-full bg-top bg-cover bg-no-repeat bg-sky-800" style={{ backgroundImage: `url(${session?.data?.user?.image})` }}></div>
                   <div className='mr-2 max-w-[40%]'>
                     <div className="px-2 py-3 rounded-lg rounded-tr-sm bg-[rgba(0,0,0,0.08)] text-black">{result.dialog.userStr}</div>
-                    <div className="mt-1 ml-1 text-[rgba(0,0,0,0.64)] text-right">{formatUnixTimestamp(result.timestamp)}</div>
+                    <div className="mt-1 ml-1 text-[rgba(0,0,0,0.64)] text-sm text-right">{formatUnixTimestamp(result.timestamp)}</div>
                   </div>
                 </div>)
               }

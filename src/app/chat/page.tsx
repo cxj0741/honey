@@ -6,6 +6,7 @@ import { db } from '@/server/db'
 import { bots, usersToBots } from '@/server/db/schema'
 import { sql } from 'drizzle-orm/sql'
 import { getUserId } from '@/utils/getUserId'
+import NoBot from './NoBot'
 
 export default async function Chat({ searchParams }: { searchParams: Record<string, any> }) {
   console.log('searchParams', searchParams)
@@ -21,7 +22,7 @@ export default async function Chat({ searchParams }: { searchParams: Record<stri
     if (usersToBotsArray.length) {
       id = usersToBotsArray[0].botId
     } else {
-      redirect('/')
+      return <NoBot />
     }
   }
   const botArray = await db

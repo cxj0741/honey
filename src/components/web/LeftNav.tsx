@@ -80,7 +80,7 @@ export default function LeftNav() {
                 title="Premium"
               />
             </div>
-            <div className="mt-[72px] text-black">
+            <div className="mt-4 text-black">
               <div onClick={() => {
                 console.log('Tawk_API CHAT>>>>>')
                 if (typeof window.Tawk_API === 'undefined') {
