@@ -112,15 +112,15 @@ export default function PersonalCenter({ user, orderArray }: { user: Record<stri
               <div className="text-base">Profile picture</div>
               <div className="mt-1.5 text-sm">Add a profile picture to personalize your account</div>
             </div>
-            <div onClick={() => { setName('Avatar'); setDialogShow(true) }} className="w-16 h-16 rounded-full overflow-clip relative bg-top bg-cover bg-no-repeat bg-sky-800"
-              style={{backgroundImage: `url(${session?.data?.user?.image})`}}
-              >
+            <div onClick={() => { setName('Avatar'); setDialogShow(true) }} className="w-16 h-16 rounded-full overflow-clip relative bg-top bg-cover bg-no-repeat"
+              style={{ backgroundImage: `url(${session?.data?.user?.image})`, backgroundColor: session?.data?.user?.image ? 'transparent' : '#075985' }}
+            >
               <div className="absolute left-0 bottom-0 w-full h-2/5 bg-[rgba(0,0,0,0.56)] flex items-center justify-center">
                 <div className="w-5 h-4 bg-center bg-contain bg-no-repeat" style={{ backgroundImage: 'url(/assets/camera.png)' }}></div>
               </div>
             </div>
           </div>
-          
+
           <div className="flex items-center justify-between py-3 border-b">
             <div className="flex-1">
               <div className="text-sm">Name</div>

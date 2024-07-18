@@ -6,7 +6,9 @@ import { useRouter } from 'next/navigation'
 export default function ProfileArea({ girlList, guyList }: { girlList: any[], guyList: any[] }) {
   const router = useRouter()
   const [activeId, setActiveId] = useState(0)
-
+  girlList = [...girlList, ...girlList]
+  guyList = [...guyList, ...guyList]
+  
   return (
     girlList.length &&
     <>
@@ -16,9 +18,9 @@ export default function ProfileArea({ girlList, guyList }: { girlList: any[], gu
           <div className="text-black font-semibold">Grils</div>
         </div>
         <div className="flex flex-wrap">
-          {girlList.map((item) => (
+          {girlList.map((item, index) => (
             <div
-              key={item.id}
+              key={item.id + index}
               className="w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/5 p-2 border-transparent"
             >
               <div className="w-full aspect-[3/4] rounded-lg relative">

@@ -21,19 +21,18 @@ const nextConfig = {
         port: '',
         pathname: '/**',
       },
-      {
-        protocol: 'https',
-        hostname: 'candy.ai',
-        port: '',
-        pathname: '/**',
-      },
-      {
-        protocol: 'https',
-        hostname: 'cdn.candy.ai',
-        port: '',
-        pathname: '/**',
-      },
-      
+      // {
+      //   protocol: 'https',
+      //   hostname: 'candy.ai',
+      //   port: '',
+      //   pathname: '/**',
+      // },
+      // {
+      //   protocol: 'https',
+      //   hostname: 'cdn.candy.ai',
+      //   port: '',
+      //   pathname: '/**',
+      // },
       {
         protocol: 'https',
         hostname: 'aitexttovideo.obs.cn-north-4.myhuaweicloud.com',

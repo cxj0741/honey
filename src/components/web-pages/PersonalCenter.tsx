@@ -1,5 +1,5 @@
 'use client'
-import { changeUserInfo, deleteUser } from '@/request'
+import { changeUserInfo, deleteUser, uploadAvatar } from '@/request'
 import { signOut, useSession, getSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import { useCallback, useRef, useState } from 'react'
@@ -80,11 +80,12 @@ export default function PersonalCenter({ user, orderArray }: { user: Record<stri
     )
   }
 
-  const handleUpload = useCallback((event: any) => {
+  const handleUpload = useCallback(async (event: any) => {
     const fileInput = event.target;
     const files = fileInput.files;
     if (files.length > 0) {
       const file = files[0];
+      /**
       const reader = new FileReader();
       reader.onload = function (e) {
         const img = document.createElement('img');
@@ -93,8 +94,25 @@ export default function PersonalCenter({ user, orderArray }: { user: Record<stri
         document.body.appendChild(img);
       };
       reader.readAsDataURL(file);
+      */
+      // console.log('file size', file.size)
+      if (file.size > 5 * 1024 * 1024) {
+        handleToast(TOAST_TYPE.WARNING, 'error, please note that max image size is 5M!')
+        return
+      } //最大5M
+      try {
+        const res = await uploadAvatar(file)
+        handleToast(TOAST_TYPE.SUCCESS, res.message)
+        const newSession = await getSession();
+        session.update(newSession)
+        router.push('/personal-center')
+      } catch (error) {
+        console.error('Error uploading file:', error);
+        handleToast(TOAST_TYPE.ERROR, 'upload image error!')
+      }
     }
-  }, [])
+  }, [handleToast, router, session])
+
   return (
     <>
       <div className="flex-1 max-h-[100vh] overflow-y-scroll">
@@ -142,10 +160,10 @@ export default function PersonalCenter({ user, orderArray }: { user: Record<stri
               <div className="flex items-center justify-between py-6 border-b">
                 <div className="w-60 text-base">Profile picture</div>
                 <div className="flex-1 text-base">Add a profile picture to personalize your account</div>
-                <div onClick={() => { window.document.getElementById('upload')?.click() }} className="w-16 h-16 rounded-full overflow-clip relative bg-top bg-cover bg-no-repeat bg-sky-800 hover:cursor-pointer"
-                  style={{ backgroundImage: `url(${session?.data?.user?.image})` }}
+                <div onClick={() => { window.document.getElementById('upload')?.click() }} className="w-16 h-16 rounded-full overflow-clip relative bg-top bg-cover bg-no-repeat hover:cursor-pointer"
+                  style={{ backgroundImage: `url(${session?.data?.user?.image})`, backgroundColor: session?.data?.user?.image ? 'transparent' : '#075985' }}
                 >
-                  <input id="upload" onChange={event => handleUpload(event)} type="file" className='hidden' />
+                  <input id="upload" accept=".jpg, .jpeg, .png, .webp" onChange={event => handleUpload(event)} type="file" className='hidden' />
                   <div className="absolute left-0 bottom-0 w-full h-2/5 bg-[rgba(0,0,0,0.56)] flex items-center justify-center">
                     <div className="w-5 h-4 bg-center bg-contain bg-no-repeat" style={{ backgroundImage: 'url(/assets/camera.png)' }}></div>
                   </div>

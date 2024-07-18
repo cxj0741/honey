@@ -114,3 +114,23 @@ export async function changeUserInfo(name: string, str: string) {
   // console.log('data>>>>> userData', data)
   return data
 }
+
+export async function uploadAvatar(file: File) {
+  // console.log('file', file)
+  // console.log('file.name', file.name)
+  // console.log('file', file.type)
+  const res = await fetch(`${baseURL}/api/uploadAvatar`, {
+    method: 'POST',
+    mode: 'cors',
+    headers: {
+      'Content-Type': 'application/octet-stream',
+      'X-File-Name': file.name,
+      'X-File-Type': file.type,
+    },
+    body: file,
+  })
+  // console.log('res', res)
+  const data = await res.json()
+  // console.log('data>>>>> userData', data)
+  return data
+}

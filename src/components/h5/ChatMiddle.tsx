@@ -183,7 +183,8 @@ export default function ChatMiddle({ setPart, activeBot, setActiveBot }: Props) 
             {chatArray.map(item => (
               <div key={item.timestamp} className="w-full">
                 <div className="flex flex-row-reverse items-start">
-                  <div className="w-12 h-12 rounded-full bg-top bg-cover bg-no-repeat bg-sky-800" style={{ backgroundImage: `url(${session?.data?.user?.image})` }}></div>
+                  <div className="w-12 h-12 rounded-full bg-top bg-cover bg-no-repeat"
+                    style={{ backgroundImage: `url(${session?.data?.user?.image})`, backgroundColor: session?.data?.user?.image ? 'transparent' : '#075985' }}></div>
                   <div className='mr-2 max-w-[60%]'>
                     <div className="px-2 py-3 rounded-lg rounded-tr-sm bg-[rgba(0,0,0,0.08)] text-black break-words">{item.dialog.userStr}</div>
                     <div className="mt-1 ml-1 text-[rgba(0,0,0,0.64)] text-xs text-right">{formatUnixTimestamp(item.timestamp)}</div>
@@ -222,7 +223,8 @@ export default function ChatMiddle({ setPart, activeBot, setActiveBot }: Props) 
             <div className="w-full">
               {result.dialog.userStr &&
                 (<div className="flex flex-row-reverse items-start">
-                  <div className="w-12 h-12 rounded-full bg-top bg-cover bg-no-repeat bg-sky-800" style={{ backgroundImage: `url(${session?.data?.user?.image})` }}></div>
+                  <div className="w-12 h-12 rounded-full bg-top bg-cover bg-no-repeat"
+                    style={{ backgroundImage: `url(${session?.data?.user?.image})`, backgroundColor: session?.data?.user?.image ? 'transparent' : '#075985' }}></div>
                   <div className='mr-2 max-w-[60%]'>
                     <div className="px-2 py-3 rounded-lg rounded-tr-sm bg-[rgba(0,0,0,0.08)] text-black break-words">{result.dialog.userStr}</div>
                     <div className="mt-1 ml-1 text-[rgba(0,0,0,0.64)] text-xs text-right">{formatUnixTimestamp(result.timestamp)}</div>
