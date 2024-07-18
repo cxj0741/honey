@@ -130,7 +130,7 @@ export const bots = pgTable('bots',{
   botId: serial('bot_id'), //自动生成
   key: varchar("key", { length: 50 }).notNull().default(''), //api-key不超过50位
   type: varchar("type", {
-    enum: ["girls", "guys","anime"], //3种类型
+    enum: ["girls", "guys", "anime"], //3种类型
   }).notNull(),
   name: varchar("name", { length: 100 }).notNull(), //姓名
   age:integer("age"), //年龄
@@ -199,6 +199,7 @@ export const chats = pgTable(
 )
 
 // 订单列表
+/**
 export const orders = pgTable("orders", {
   id: text("id")
     .primaryKey()
@@ -224,3 +225,4 @@ export const ordersRelations = relations(orders, ({ one }) => ({
     references: [users.id],
   }),
 }))
+ */
