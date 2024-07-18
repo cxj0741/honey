@@ -30,7 +30,7 @@ export default function RootLayout({
           <AuthProvider>
             <Nav />
             <FooterNav />
-            <div className="relative z-0 pt-16 pb-14 min-h-[100vh]">
+            <div className="relative z-0 pt-12 pb-14 min-h-[100vh]">
               {children}
             </div>
             <StyleLoad />

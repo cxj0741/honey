@@ -174,155 +174,158 @@ export default function ChatMiddle({ fold, setFold, activeBot, setActiveBot, cur
   }
   return (
     <>
-      <div className="flex-1 bg-center bg-cover bg-no-repeat" style={{ backgroundImage: 'url(/assets/chatMiddleBg.png)' }}>
+      <div className="flex-1 h-[100vh] relative bg-center bg-cover bg-no-repeat" style={{ backgroundImage: 'url(/assets/chatMiddleBg.png)' }}>
         {/* HEADER */}
-        <div className="px-6 pt-5 pb-10 text-black flex items-center bg-top bg-cover bg-no-repeat bg-transparent" style={{ backgroundImage: 'url(/assets/chatHeaderBg.png)' }} >
-          <div className="w-12 h-12 rounded-full bg-top bg-cover bg-no-repeat" style={{ backgroundImage: `url(${activeBot.image1})` }}>
+        <div className='z-50 absolute left-0 top-0 w-full'>
+          <div className="px-6 py-4 text-black bg-[#FCFBFA] flex items-center">
+            <div className="w-12 h-12 rounded-full bg-top bg-cover bg-no-repeat" style={{ backgroundImage: `url(${activeBot.image1})` }}>
+            </div>
+            <div className="ml-4 text-xl font-semibold">
+              {activeBot.name}
+            </div>
+            <div className="flex-1 flex justify-end items-center space-x-4">
+              <div
+                onClick={() => handleOpenDialog('DELETE')}
+                className="w-6 h-6 bg-center bg-contain bg-no-repeat hover:cursor-pointer"
+                style={{ backgroundImage: 'url(/assets/delete.png)' }}
+              ></div>
+              <div
+                onClick={() => handleOpenDialog('REFRESH')}
+                className="w-6 h-6 bg-center bg-contain bg-no-repeat hover:cursor-pointer"
+                style={{ backgroundImage: 'url(/assets/refresh.png)' }}
+              ></div>
+              <div
+                onClick={() => setFold(!fold)}
+                className="w-6 h-6 bg-center bg-contain bg-no-repeat hover:cursor-pointer"
+                style={{ backgroundImage: fold ? "url(/assets/arrowIn.png)" : "url(/assets/arrowOut.png)" }}
+              ></div>
+            </div>
           </div>
-          <div className="ml-4 text-xl font-semibold">
-            {activeBot.name}
-          </div>
-          <div className="flex-1 flex justify-end items-center space-x-4">
-            <div
-              onClick={() => handleOpenDialog('DELETE')}
-              className="w-6 h-6 bg-center bg-contain bg-no-repeat hover:cursor-pointer"
-              style={{ backgroundImage: 'url(/assets/delete.png)' }}
-            ></div>
-            <div
-              onClick={() => handleOpenDialog('REFRESH')}
-              className="w-6 h-6 bg-center bg-contain bg-no-repeat hover:cursor-pointer"
-              style={{ backgroundImage: 'url(/assets/refresh.png)' }}
-            ></div>
-            <div
-              onClick={() => setFold(!fold)}
-              className="w-6 h-6 bg-center bg-contain bg-no-repeat hover:cursor-pointer"
-              style={{ backgroundImage: fold ? "url(/assets/arrowIn.png)" : "url(/assets/arrowOut.png)" }}
-            ></div>
-          </div>
+          <div className='w-full h-6' style={{ background: 'linear-gradient( 180deg, #FCFCFA 0%, rgba(251,250,249,0) 100%)' }}></div>
         </div>
         {/* CHAT WINDOW */}
-        <div className="relative" style={{ height: 'calc(100vh - 108px)' }}>
-          <div ref={chatContainer} className="px-6 h-full overflow-y-scroll">
-            <div className="pb-40 space-y-4">
-              {/* START */}
-              <div className="flex items-start">
-                <div className="w-12 h-12 rounded-full bg-top bg-cover bg-no-repeat" style={{ backgroundImage: `url(${activeBot.image1})` }}></div>
-                <div className='ml-2 max-w-[40%]'>
-                  <div className="px-2 py-3 rounded-lg rounded-tl-sm bg-[#F86C9E] text-white">{activeBot.start || 'hello world'}</div>
-                  {/* <div className="mt-1 ml-1 text-[rgba(0,0,0,0.64)]">00:00</div> */}
-                </div>
+        <div ref={chatContainer} className="px-6 h-full overflow-y-scroll">
+          <div className="pb-40 space-y-4">
+            {/* START */}
+            <div className="flex items-start">
+              <div className="w-12 h-12 rounded-full bg-top bg-cover bg-no-repeat" style={{ backgroundImage: `url(${activeBot.image1})` }}></div>
+              <div className='ml-2 max-w-[40%]'>
+                <div className="px-2 py-3 rounded-lg rounded-tl-sm bg-[#F86C9E] text-white">{activeBot.start || 'hello world'}</div>
+                {/* <div className="mt-1 ml-1 text-[rgba(0,0,0,0.64)]">00:00</div> */}
               </div>
-              {/* DIALOG */}
-              {chatArray.map(item => (
-                <div key={item.timestamp} className="w-full">
-                  <div className="flex flex-row-reverse items-start">
-                    <div className="w-12 h-12 rounded-full bg-top bg-cover bg-no-repeat bg-sky-800" style={{ backgroundImage: `url(${session?.data?.user?.image})` }}></div>
-                    <div className='mr-2 max-w-[40%]'>
-                      <div className="px-2 py-3 rounded-lg rounded-tr-sm bg-[rgba(0,0,0,0.08)] text-black">{item.dialog.userStr}</div>
-                      <div className="mt-1 ml-1 text-[rgba(0,0,0,0.64)] text-right">{formatUnixTimestamp(item.timestamp)}</div>
-                    </div>
+            </div>
+            {/* DIALOG */}
+            {chatArray.map(item => (
+              <div key={item.timestamp} className="w-full">
+                <div className="flex flex-row-reverse items-start">
+                  <div className="w-12 h-12 rounded-full bg-top bg-cover bg-no-repeat bg-sky-800" style={{ backgroundImage: `url(${session?.data?.user?.image})` }}></div>
+                  <div className='mr-2 max-w-[40%]'>
+                    <div className="px-2 py-3 rounded-lg rounded-tr-sm bg-[rgba(0,0,0,0.08)] text-black">{item.dialog.userStr}</div>
+                    <div className="mt-1 ml-1 text-[rgba(0,0,0,0.64)] text-right">{formatUnixTimestamp(item.timestamp)}</div>
                   </div>
-
-                  {item.dialog.botStr &&
-                    (<div className="flex items-start">
-                      <div className="w-12 h-12 rounded-full bg-top bg-cover bg-no-repeat" style={{ backgroundImage: `url(${activeBot.image1})` }}></div>
-                      <div className='ml-2 max-w-[40%]'>
-                        <div className="px-2 py-3 rounded-lg rounded-tl-sm bg-[#F86C9E] text-white">{item.dialog.botStr}</div>
-                        {/* <div className="mt-1 ml-1 text-[rgba(0,0,0,0.64)]">00:00</div> */}
-                      </div>
-                    </div>)
-                  }
-
-                  {item.dialog.image &&
-                    (<div className="py-4 flex justify-start bg-transparent">
-                      <div
-                        onClick={() => {
-                          setActiveImage(item.dialog.image)
-                          setImageShow(true)
-                        }}
-                        className={`w-[300px] h-[400px] aspect-[3/4] rounded-xl bg-top bg-cover bg-no-repeat`}
-                        style={{ backgroundImage: `url(${item.dialog.image})` }}
-                      >
-                      </div>
-                    </div>)
-                  }
                 </div>
-              ))}
-              {/* CURRENT DIANLOG */}
-              <div className="w-full">
-                {result.dialog.userStr &&
-                  (<div className="flex flex-row-reverse items-start">
-                    <div className="w-12 h-12 rounded-full bg-top bg-cover bg-no-repeat bg-sky-800" style={{ backgroundImage: `url(${session?.data?.user?.image})` }}></div>
-                    <div className='mr-2 max-w-[40%]'>
-                      <div className="px-2 py-3 rounded-lg rounded-tr-sm bg-[rgba(0,0,0,0.08)] text-black">{result.dialog.userStr}</div>
-                      <div className="mt-1 ml-1 text-[rgba(0,0,0,0.64)] text-right">{formatUnixTimestamp(result.timestamp)}</div>
+
+                {item.dialog.botStr &&
+                  (<div className="flex items-start">
+                    <div className="w-12 h-12 rounded-full bg-top bg-cover bg-no-repeat" style={{ backgroundImage: `url(${activeBot.image1})` }}></div>
+                    <div className='ml-2 max-w-[40%]'>
+                      <div className="px-2 py-3 rounded-lg rounded-tl-sm bg-[#F86C9E] text-white">{item.dialog.botStr}</div>
+                      {/* <div className="mt-1 ml-1 text-[rgba(0,0,0,0.64)]">00:00</div> */}
                     </div>
                   </div>)
                 }
-                {(result.timestamp !== 0) &&
-                  (result.dialog.botStr ?
-                    (<div className="flex items-start">
-                      <div className="w-12 h-12 rounded-full bg-top bg-cover bg-no-repeat" style={{ backgroundImage: `url(${activeBot.image1})` }}></div>
-                      <div className='ml-2 max-w-[40%]'>
-                        <div className="px-2 py-3 rounded-lg rounded-tl-sm bg-[#F86C9E] text-white">{result.dialog.botStr}</div>
-                        {/* <div className="mt-1 ml-1 text-[rgba(0,0,0,0.64)]">00:00</div> */}
-                      </div>
-                    </div>)
-                    :
-                    (<div className="flex items-start">
-                      <div className="w-12 h-12 rounded-full bg-top bg-cover bg-no-repeat" style={{ backgroundImage: `url(${activeBot.image1})` }}></div>
-                      <div className='ml-2'>
-                        <div className="w-40 h-12 rounded-lg rounded-tl-sm bg-[#F86C9E] flex items-center justify-center">
-                          <div className="loading loading-dots loading-sm text-white"></div>
-                          <div className="loading loading-dots loading-sm text-white"></div>
-                        </div>
-                      </div>
-                    </div>)
-                  )
+
+                {item.dialog.image &&
+                  (<div className="py-4 flex justify-start bg-transparent">
+                    <div
+                      onClick={() => {
+                        setActiveImage(item.dialog.image)
+                        setImageShow(true)
+                      }}
+                      className={`w-[300px] h-[400px] aspect-[3/4] rounded-xl bg-top bg-cover bg-no-repeat`}
+                      style={{ backgroundImage: `url(${item.dialog.image})` }}
+                    >
+                    </div>
+                  </div>)
                 }
               </div>
+            ))}
+            {/* CURRENT DIANLOG */}
+            <div className="w-full">
+              {result.dialog.userStr &&
+                (<div className="flex flex-row-reverse items-start">
+                  <div className="w-12 h-12 rounded-full bg-top bg-cover bg-no-repeat bg-sky-800" style={{ backgroundImage: `url(${session?.data?.user?.image})` }}></div>
+                  <div className='mr-2 max-w-[40%]'>
+                    <div className="px-2 py-3 rounded-lg rounded-tr-sm bg-[rgba(0,0,0,0.08)] text-black">{result.dialog.userStr}</div>
+                    <div className="mt-1 ml-1 text-[rgba(0,0,0,0.64)] text-right">{formatUnixTimestamp(result.timestamp)}</div>
+                  </div>
+                </div>)
+              }
+              {(result.timestamp !== 0) &&
+                (result.dialog.botStr ?
+                  (<div className="flex items-start">
+                    <div className="w-12 h-12 rounded-full bg-top bg-cover bg-no-repeat" style={{ backgroundImage: `url(${activeBot.image1})` }}></div>
+                    <div className='ml-2 max-w-[40%]'>
+                      <div className="px-2 py-3 rounded-lg rounded-tl-sm bg-[#F86C9E] text-white">{result.dialog.botStr}</div>
+                      {/* <div className="mt-1 ml-1 text-[rgba(0,0,0,0.64)]">00:00</div> */}
+                    </div>
+                  </div>)
+                  :
+                  (<div className="flex items-start">
+                    <div className="w-12 h-12 rounded-full bg-top bg-cover bg-no-repeat" style={{ backgroundImage: `url(${activeBot.image1})` }}></div>
+                    <div className='ml-2'>
+                      <div className="w-40 h-12 rounded-lg rounded-tl-sm bg-[#F86C9E] flex items-center justify-center">
+                        <div className="loading loading-dots loading-sm text-white"></div>
+                        <div className="loading loading-dots loading-sm text-white"></div>
+                      </div>
+                    </div>
+                  </div>)
+                )
+              }
             </div>
           </div>
-          <div className="absolute left-0 bottom-0 w-full px-4 pb-4">
-            {inputShow ?
-              <div className='p-2 rounded-lg bg-white flex items-center space-x-2'>
-                <input
-                  ref={inputRef}
-                  onKeyDown={(event) => handleKeyDown(event.key)}
-                  type="text"
-                  placeholder="Type a message"
-                  className="input input-bordered flex-1" />
-                <div className="dropdown dropdown-top dropdown-end">
-                  <div
-                    tabIndex={0}
-                    className="text-white flex items-center justify-between"
-                  >
-                    <div
-                      className="w-20 h-12 bg-center bg-contain bg-no-repeat hover:cursor-pointer"
-                      style={{ backgroundImage: "url(/assets/ask.png)" }}
-                    ></div>
-                  </div>
-                  <ul
-                    tabIndex={0}
-                    className="dropdown-content menu bg-base-100 rounded-lg z-[1] w-32 p-2 shadow"
-                  >
-                    {['Show me', 'Send me', 'Can I see'].map((item) => (
-                      <li key={item} onClick={() => handleInputPrompt(item)}>
-                        <span>{item}...</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
+        </div>
+        <div className="absolute left-0 bottom-0 w-full px-4 pb-4 bg-cover bg-bottom bg-no-repeat"
+          style={{ backgroundImage: 'url(/assets/chatMiddleBg.png)' }}
+        >
+          {inputShow ?
+            <div className='p-2 rounded-lg flex items-center space-x-2'>
+              <input
+                ref={inputRef}
+                onKeyDown={(event) => handleKeyDown(event.key)}
+                type="text"
+                placeholder="Type a message"
+                className="input input-bordered flex-1" />
+              <div className="dropdown dropdown-top dropdown-end bg-[rgba(255,255,255,0.5)] rounded-lg">
                 <div
-                  onClick={() => handleSendMessage()}
-                  className="w-12 h-12 bg-center bg-contain bg-no-repeat hover:cursor-pointer"
-                  style={{ backgroundImage: "url(/assets/send.png)" }}
-                ></div>
+                  tabIndex={0}
+                  className="text-white flex items-center justify-between"
+                >
+                  <div
+                    className="w-20 h-12 bg-center bg-contain bg-no-repeat hover:cursor-pointer"
+                    style={{ backgroundImage: "url(/assets/ask.png)" }}
+                  ></div>
+                </div>
+                <ul
+                  tabIndex={0}
+                  className="dropdown-content menu bg-base-100 rounded-lg z-[1] w-32 p-2 shadow"
+                >
+                  {['Show me', 'Send me', 'Can I see'].map((item) => (
+                    <li key={item} onClick={() => handleInputPrompt(item)}>
+                      <span>{item}...</span>
+                    </li>
+                  ))}
+                </ul>
               </div>
-              :
-              <div className='w-full py-2 rounded-xl bg-white text-base text-center'>{activeBot.name} is responding...</div>
-            }
-          </div>
+              <div
+                onClick={() => handleSendMessage()}
+                className="w-12 h-12 bg-center bg-contain bg-no-repeat hover:cursor-pointer"
+                style={{ backgroundImage: "url(/assets/send.png)" }}
+              ></div>
+            </div>
+            :
+            <div className='w-full py-2 rounded-xl bg-white text-base text-center'>{activeBot.name} is responding...</div>
+          }
         </div>
       </div>
       <ConfirmDialog title={title} open={open} setOpen={setOpen} handleConfirm={() => handleConfirm()} />

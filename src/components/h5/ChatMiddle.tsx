@@ -180,7 +180,7 @@ export default function ChatMiddle({ setPart, activeBot, setActiveBot }: Props) 
                 <div className="w-12 h-12 rounded-full bg-top bg-cover bg-no-repeat bg-sky-800" style={{ backgroundImage: `url(${session?.data?.user?.image})` }}></div>
                 <div className='mr-2 max-w-[60%]'>
                   <div className="px-2 py-3 rounded-lg rounded-tr-sm bg-[rgba(0,0,0,0.08)] text-black break-words">{item.dialog.userStr}</div>
-                  <div className="mt-1 ml-1 text-[rgba(0,0,0,0.64)] text-right">{formatUnixTimestamp(item.timestamp)}</div>
+                  <div className="mt-1 ml-1 text-[rgba(0,0,0,0.64)] text-xs text-right">{formatUnixTimestamp(item.timestamp)}</div>
                 </div>
               </div>
 
@@ -216,7 +216,7 @@ export default function ChatMiddle({ setPart, activeBot, setActiveBot }: Props) 
                 <div className="w-12 h-12 rounded-full bg-top bg-cover bg-no-repeat bg-sky-800" style={{ backgroundImage: `url(${session?.data?.user?.image})` }}></div>
                 <div className='mr-2 max-w-[60%]'>
                   <div className="px-2 py-3 rounded-lg rounded-tr-sm bg-[rgba(0,0,0,0.08)] text-black break-words">{result.dialog.userStr}</div>
-                  <div className="mt-1 ml-1 text-[rgba(0,0,0,0.64)] text-right">{formatUnixTimestamp(result.timestamp)}</div>
+                  <div className="mt-1 ml-1 text-[rgba(0,0,0,0.64)] text-xs text-right">{formatUnixTimestamp(result.timestamp)}</div>
                 </div>
               </div>)
             }

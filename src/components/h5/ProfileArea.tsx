@@ -9,16 +9,20 @@ export default function ProfileArea({ botList, type }: { botList: any[], type: s
 
   useEffect(() => {
     const carouselContainer = document.querySelector('.carousel');
-    carouselContainer!.scrollLeft = 0; 
+    carouselContainer!.scrollLeft = 0;
   }, [botList])
   return (
-    <div className="carousel carousel-center space-x-3 p-4 w-full">
+    <div className="carousel carousel-center space-x-4 p-4 w-full"
+      style={{ height: 'calc(100vh - 10rem)' }}
+    >
       {botList.map((item) => (
         <div
           key={item.id}
           className='carousel-item w-[95%]'
         >
-          <div key={item.id} className="w-full aspect-[3/5] rounded-lg relative">
+          <div key={item.id} className="w-full rounded-lg relative"
+            style={{ height: 'calc(100vh - 12rem)' }}
+          >
             <Image
               onMouseEnter={() => setActiveId(item.id)}
               onMouseOut={() => setActiveId(0)}
@@ -35,7 +39,7 @@ export default function ProfileArea({ botList, type }: { botList: any[], type: s
               {type === TYPE.MALE && <div className="w-6 h-6 bg-center bg-no-repeat bg-contain" style={{ backgroundImage: 'url(/assets/guyMessage.png)' }}></div>}
             </div>
             <div className="absolute bottom-0 w-full px-4 pt-2 pb-4 rounded-b-lg bg-white text-black">
-              <div className="absolute left-4 -top-6 w-16 h-16 bg-white p-1 rounded-full" style={{ background: 'linear-gradient( 180deg, #FFB5CF 0%, #FFFFFF 34%, #FFFFFF 100%)' }}>
+              <div className="absolute left-4 -top-6 w-16 h-16 bg-white p-1 rounded-full" style={{ background: type === TYPE.FEMALE ? 'linear-gradient( 180deg, #FFB5CF 0%, #FFFFFF 34%, #FFFFFF 100%)' : 'linear-gradient( 180deg, #78A3F6 0%, #FFFFFF 34%, #FFFFFF 100%)' }}>
                 <div className="w-full h-full rounded-full bg-top bg-no-repeat bg-cover" style={{ backgroundImage: `url(${item.image1})` }}></div>
               </div>
               <div className="ml-[72px] flex items-baseline space-x-2">

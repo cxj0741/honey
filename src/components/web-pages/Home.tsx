@@ -24,7 +24,7 @@ export default function Home() {
   }, [handler])
 
   const scrollTo = useCallback((anchor: string) => {
-    (document.getElementById('girls') as any).scrollIntoView({
+    (document.getElementById(anchor) as any).scrollIntoView({
       behavior: 'smooth', // 使用平滑滚动
       block: 'start' // 将元素的顶部对齐到视窗的顶部
     })

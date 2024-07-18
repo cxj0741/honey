@@ -22,6 +22,10 @@ html{
 
 body {
   color: rgb(var(--foreground-rgb));
+  .no-scrollbar {
+    scrollbar-width: none; 
+    overflow: auto; 
+  }
 }
 
 @layer utilities {
