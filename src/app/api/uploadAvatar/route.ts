@@ -6,13 +6,11 @@ import path from 'path'
 import mime from 'mime-types' // 需要安装 mime-types 依赖
 import { sql } from 'drizzle-orm/sql'
 import { getUserId } from '@/utils/getUserId'
-
-export const config = {
-  api: {
-    bodyParser: false, // 关闭默认的 body 解析器
-  },
-}
-
+// export const config = {
+//   api: {
+//     bodyParser: false, // 关闭默认的 body 解析器
+//   },
+// }
 export async function POST(request: NextRequest) {
   const chunks = []
   // const uploadDir = path.join(process.cwd(), '/public/avatars')
