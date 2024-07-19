@@ -1,3 +1,4 @@
+const AGENT_MESSAGE = 'agent_message'
 const AGENT_THOUGHT = 'agent_thought'
 const ERROR_FORMAT = 'ERROR_FORMAT'
 
@@ -41,9 +42,12 @@ export async function sendMessage(apiKey: string, userInfo: {userStr:string, con
         } catch (error) {
           return ERROR_FORMAT
         }
-      }).filter(item => item.event === AGENT_THOUGHT)
-      console.log('dataList>>>>>', dataList)
-      for (const item of dataList) {
+      })
+      const messageList = dataList.filter(item => item.event === AGENT_MESSAGE)
+      const thoughtList = dataList.filter(item => item.event === AGENT_THOUGHT)
+      // console.log('dataList>>>>>', dataList)
+      console.log('thoughtList', thoughtList)
+      for (const item of thoughtList) {
         if(!conversationId && item.conversation_id){
           conversationId = item.conversation_id
         }
@@ -58,6 +62,18 @@ export async function sendMessage(apiKey: string, userInfo: {userStr:string, con
             }
           }
           botStr = item.thought as string
+        }
+      }
+      console.log('botStr', botStr)
+      if(!botStr){
+        console.log('messageList',messageList)
+        for (const item of messageList) {
+          if(!conversationId && item.conversation_id){
+            conversationId = item.conversation_id
+          }
+          if(item.answer){
+            botStr += item.answer as string
+          }
         }
       }
       await handleStream()
