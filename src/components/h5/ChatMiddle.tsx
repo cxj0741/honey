@@ -173,7 +173,7 @@ export default function ChatMiddle({ setPart, activeBot, setActiveBot }: Props) 
           <div className="space-y-4 text-sm">
             {/* START */}
             <div className="flex items-start">
-              <div className="w-12 h-12 rounded-full bg-top bg-cover bg-no-repeat" style={{ backgroundImage: `url(${activeBot.image1})` }}></div>
+              <div className="w-8 h-8 rounded-full bg-top bg-cover bg-no-repeat" style={{ backgroundImage: `url(${activeBot.image1})` }}></div>
               <div className='ml-2 max-w-[60%]'>
                 <div className="px-2 py-3 rounded-lg rounded-tl-sm bg-[#F86C9E] text-white break-words">{activeBot.start || 'hello world'}</div>
                 {/* <div className="mt-1 ml-1 text-[rgba(0,0,0,0.64)]">00:00</div> */}
@@ -183,7 +183,7 @@ export default function ChatMiddle({ setPart, activeBot, setActiveBot }: Props) 
             {chatArray.map(item => (
               <div key={item.timestamp} className="w-full">
                 <div className="flex flex-row-reverse items-start">
-                  <div className="w-12 h-12 rounded-full bg-top bg-cover bg-no-repeat"
+                  <div className="w-8 h-8 rounded-full bg-top bg-cover bg-no-repeat"
                     style={{ backgroundImage: `url(${session?.data?.user?.image})`, backgroundColor: session?.data?.user?.image ? 'transparent' : '#075985' }}></div>
                   <div className='mr-2 max-w-[60%]'>
                     <div className="px-2 py-3 rounded-lg rounded-tr-sm bg-[rgba(0,0,0,0.08)] text-black break-words">{item.dialog.userStr}</div>
@@ -193,25 +193,23 @@ export default function ChatMiddle({ setPart, activeBot, setActiveBot }: Props) 
 
                 {item.dialog.botStr &&
                   (<div className="flex items-start">
-                    <div className="w-12 h-12 rounded-full bg-top bg-cover bg-no-repeat" style={{ backgroundImage: `url(${activeBot.image1})` }}></div>
+                    <div className="w-8 h-8 rounded-full bg-top bg-cover bg-no-repeat" style={{ backgroundImage: `url(${activeBot.image1})` }}></div>
                     <div className='ml-2 max-w-[60%]'>
                       <div className="px-2 py-3 rounded-lg rounded-tl-sm bg-[#F86C9E] text-white break-words">{item.dialog.botStr}</div>
                       {/* <div className="mt-1 ml-1 text-[rgba(0,0,0,0.64)]">00:00</div> */}
                     </div>
                   </div>)
                 }
-
+                
                 {item.dialog.image &&
-                  (<div className="py-4 flex justify-start bg-transparent">
+                  (<div className="flex items-start">
+                    <div className="w-8 h-8 rounded-full bg-top bg-cover bg-no-repeat" style={{ backgroundImage: `url(${activeBot.image1})` }}></div>
                     <div
                       onClick={() => {
                         setActiveImage(item.dialog.image)
-                        setTimeout(() => {
-                          // 担心图片不能及时切换
-                          setImageShow(true)
-                        }, 100)
+                        setImageShow(true)
                       }}
-                      className={`w-[300px] h-[400px] aspect-[3/4] rounded-xl bg-top bg-cover bg-no-repeat`}
+                      className={`ml-2 w-[60vw] h-[80vw] aspect-[3/4] rounded-xl bg-top bg-cover bg-no-repeat`}
                       style={{ backgroundImage: `url(${item.dialog.image})` }}
                     >
                     </div>
@@ -223,7 +221,7 @@ export default function ChatMiddle({ setPart, activeBot, setActiveBot }: Props) 
             <div className="w-full">
               {result.dialog.userStr &&
                 (<div className="flex flex-row-reverse items-start">
-                  <div className="w-12 h-12 rounded-full bg-top bg-cover bg-no-repeat"
+                  <div className="w-8 h-8 rounded-full bg-top bg-cover bg-no-repeat"
                     style={{ backgroundImage: `url(${session?.data?.user?.image})`, backgroundColor: session?.data?.user?.image ? 'transparent' : '#075985' }}></div>
                   <div className='mr-2 max-w-[60%]'>
                     <div className="px-2 py-3 rounded-lg rounded-tr-sm bg-[rgba(0,0,0,0.08)] text-black break-words">{result.dialog.userStr}</div>
@@ -234,7 +232,7 @@ export default function ChatMiddle({ setPart, activeBot, setActiveBot }: Props) 
               {(result.timestamp !== 0) &&
                 (result.dialog.botStr ?
                   (<div className="flex items-start">
-                    <div className="w-12 h-12 rounded-full bg-top bg-cover bg-no-repeat" style={{ backgroundImage: `url(${activeBot.image1})` }}></div>
+                    <div className="w-8 h-8 rounded-full bg-top bg-cover bg-no-repeat" style={{ backgroundImage: `url(${activeBot.image1})` }}></div>
                     <div className='ml-2 max-w-[60%]'>
                       <div className="px-2 py-3 rounded-lg rounded-tl-sm bg-[#F86C9E] text-white break-words">{result.dialog.botStr}</div>
                       {/* <div className="mt-1 ml-1 text-[rgba(0,0,0,0.64)]">00:00</div> */}
@@ -242,7 +240,7 @@ export default function ChatMiddle({ setPart, activeBot, setActiveBot }: Props) 
                   </div>)
                   :
                   (<div className="flex items-start">
-                    <div className="w-12 h-12 rounded-full bg-top bg-cover bg-no-repeat" style={{ backgroundImage: `url(${activeBot.image1})` }}></div>
+                    <div className="w-8 h-8 rounded-full bg-top bg-cover bg-no-repeat" style={{ backgroundImage: `url(${activeBot.image1})` }}></div>
                     <div className='ml-2'>
                       <div className="w-40 h-12 rounded-lg rounded-tl-sm bg-[#F86C9E] flex items-center justify-center">
                         <div className="loading loading-dots loading-sm text-white"></div>
@@ -322,7 +320,10 @@ export default function ChatMiddle({ setPart, activeBot, setActiveBot }: Props) 
         </div>
       </div>
       <div className={`${imageShow ? 'block' : 'hidden'}`}>
-        <div onClick={() => { setDialogShow(false) }} className="z-50 fixed left-0 top-0 w-[100vw] h-[100vh] flex items-center justify-center bg-[rgba(0,0,0,0.8)]">
+        <div onClick={() => {
+          setImageShow(false)
+          setActiveImage('')
+        }} className="z-50 fixed left-0 top-0 w-[100vw] h-[100vh] flex items-center justify-center bg-[rgba(0,0,0,0.8)]">
           <div className="relative aspect-[3/5]" style={{ width: 'calc(100vw - 2rem)' }}>
             {/* <div onClick={() => { setDialogShow(false) }} className="z-50 absolute -top-7 -right-0 w-7 h-7 bg-center bg-contain bg-no-repeat bg-white rounded-full hover:cursor-pointer"
               style={{ backgroundImage: "url(/assets/close.png)" }}
@@ -332,7 +333,6 @@ export default function ChatMiddle({ setPart, activeBot, setActiveBot }: Props) 
               objectFit="cover"
               objectPosition='top'
               src={activeImage}
-              // src="/bots/Ashley1.png"
               alt={'bot'}
             />
           </div>
