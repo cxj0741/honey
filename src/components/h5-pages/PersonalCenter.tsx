@@ -30,7 +30,19 @@ export default function PersonalCenter({ user, orderArray }: { user: Record<stri
   const session = useSession()
   function EditDialog() {
     const inputRef = useRef(null)
+    const [gender, setGender] = useState('Male')
     const handleConfirm = async () => {
+      if (name === 'Gender') {
+        setDialogShow(false)
+        try {
+          const res = await changeUserInfo(name.toLocaleLowerCase(), gender)
+          handleToast(TOAST_TYPE.SUCCESS, res.message)
+          router.refresh()
+        } catch (error) {
+          handleToast(TOAST_TYPE.ERROR, `change ${name.toLowerCase()} error!`)
+        }
+        return
+      }
       const str = (inputRef?.current as any)?.value.trim() || ''
       if (!str) { return }
       if (name.toLocaleLowerCase() === 'email') {
@@ -54,7 +66,7 @@ export default function PersonalCenter({ user, orderArray }: { user: Record<stri
         handleToast(TOAST_TYPE.SUCCESS, res.message)
         const newSession = await getSession();
         session.update(newSession)
-        router.push('/personal-center')
+        router.refresh()
       } catch (error) {
         handleToast(TOAST_TYPE.ERROR, `change ${name.toLowerCase()} error!`)
       }
@@ -69,7 +81,19 @@ export default function PersonalCenter({ user, orderArray }: { user: Record<stri
           ></div>
           <h3 className="font-bold text-black text-lg">Edit {name}</h3>
           <div className="mt-8 flex flex-col space-y-4">
-            <input ref={inputRef} type="text" placeholder={name} className="input input-bordered w-full text-black" />
+            {name !== 'Gender' && <input ref={inputRef} type="text" placeholder={name} className="input input-bordered w-full text-black" />}
+            {name === 'Gender' &&
+              <div className="flex items-center justify-center space-x-4">
+                <label onClick={() => setGender('Male')} className="space-x-2 font-semibold label cursor-pointer">
+                  <span className="label-text">Male</span>
+                  <input type="radio" name="gender" className="radio checked:bg-blue-500" defaultChecked />
+                </label>
+                <label onClick={() => setGender('Female')} className="space-x-2 font-semibold label cursor-pointer">
+                  <span className="label-text">Female</span>
+                  <input type="radio" name="gender" className="radio checked:bg-red-500" />
+                </label>
+              </div>
+            }
             <button
               onClick={() => handleConfirm()}
               className="btn text-black">Confirm</button>
@@ -105,13 +129,12 @@ export default function PersonalCenter({ user, orderArray }: { user: Record<stri
         handleToast(TOAST_TYPE.SUCCESS, res.message)
         const newSession = await getSession();
         session.update(newSession)
-        router.push('/personal-center')
       } catch (error) {
         console.error('Error uploading file:', error);
         handleToast(TOAST_TYPE.ERROR, 'upload image error!')
       }
     }
-  }, [handleToast, router, session])
+  }, [handleToast, session])
 
 
   return (

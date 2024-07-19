@@ -38,7 +38,7 @@ export default function PersonalCenter({ user, orderArray }: { user: Record<stri
         try {
           const res = await changeUserInfo(name.toLocaleLowerCase(), gender)
           handleToast(TOAST_TYPE.SUCCESS, res.message)
-          router.push('/personal-center')
+          router.refresh()
         } catch (error) {
           handleToast(TOAST_TYPE.ERROR, `change ${name.toLowerCase()} error!`)
         }
@@ -67,7 +67,7 @@ export default function PersonalCenter({ user, orderArray }: { user: Record<stri
         handleToast(TOAST_TYPE.SUCCESS, res.message)
         const newSession = await getSession();
         session.update(newSession)
-        router.push('/personal-center')
+        router.refresh()
       } catch (error) {
         handleToast(TOAST_TYPE.ERROR, `change ${name.toLowerCase()} error!`)
       }
@@ -129,13 +129,12 @@ export default function PersonalCenter({ user, orderArray }: { user: Record<stri
         handleToast(TOAST_TYPE.SUCCESS, res.message)
         const newSession = await getSession();
         session.update(newSession)
-        router.push('/personal-center')
       } catch (error) {
         console.error('Error uploading file:', error);
         handleToast(TOAST_TYPE.ERROR, 'upload image error!')
       }
     }
-  }, [handleToast, router, session])
+  }, [handleToast, session])
 
   return (
     <>
