@@ -36,7 +36,7 @@ export default function Home() {
     <>
       <div className="px-2 flex-1 bg-[#F4F4F5] max-h-[100vh] overflow-scroll">
         <div className="ml-4 my-6">
-          <div className="font-semibold text-[#FE387F]">Hi,{session.status === 'authenticated' ? (session?.data?.user?.name) : 'honeybun'}</div>
+          <div className="font-semibold text-[#FE387F]">Hi,&nbsp;&nbsp;{session.status === 'authenticated' ? (session?.data?.user?.name) : 'honeybun'}</div>
           <div className="mt-1 flex items-center">
             <div className="font-semibold text-[#FE387F]">Welcome back</div>
             <div

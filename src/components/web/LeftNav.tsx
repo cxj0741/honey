@@ -55,7 +55,7 @@ export default function LeftNav() {
 
   return (
     <>
-      <div className={` ${fold ? 'w-[88px]' : 'w-[216px]'}`}>
+      <div className={`bg-white ${fold ? 'w-[88px]' : 'w-[216px]'}`}>
         <div className="w-full h-full py-8 border-r border-[rgba(0,0,0,0.16)] flex flex-col">
           <div className="px-4 flex-1 flex flex-col">
             <div className="h-6 flex items-center justify-center gap-2">

@@ -10,8 +10,7 @@ export default function BecomePremium() {
       >
       </div>
 
-      <div className="flex-1 flex items-center justify-center gap-8">
-
+      <div className="flex-1 flex items-center justify-center gap-8 bg-white">
         <div
           onClick={() => setActive(1)}
           className={`w-[268px] h-[348px] px-4 py-5 rounded-xl border-2 hover:cursor-pointer ${active === 1 ? 'border-[#FE387F]' : 'border-[rgba(0,0,0,0.32)'}`}>

@@ -24,5 +24,8 @@ const config: Config = {
     },
   },
   plugins: [daisyui],
+  daisyui: {
+    darkTheme: false, // 禁用 DaisyUI 的 dark mode
+  },
 }
 export default config
