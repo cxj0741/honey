@@ -31,7 +31,19 @@ export default function PersonalCenter({ user, orderArray }: { user: Record<stri
   const session = useSession()
   function EditDialog() {
     const inputRef = useRef(null)
+    const [gender, setGender] = useState('Male')
     const handleConfirm = async () => {
+      if (name === 'Gender') {
+        setDialogShow(false)
+        try {
+          const res = await changeUserInfo(name.toLocaleLowerCase(), gender)
+          handleToast(TOAST_TYPE.SUCCESS, res.message)
+          router.push('/personal-center')
+        } catch (error) {
+          handleToast(TOAST_TYPE.ERROR, `change ${name.toLowerCase()} error!`)
+        }
+        return
+      }
       const str = (inputRef?.current as any)?.value.trim() || ''
       if (!str) { return }
       if (name.toLocaleLowerCase() === 'email') {
@@ -70,7 +82,19 @@ export default function PersonalCenter({ user, orderArray }: { user: Record<stri
           ></div>
           <h3 className="font-bold text-black text-lg">Edit {name}</h3>
           <div className="mt-8 flex flex-col space-y-4">
-            <input ref={inputRef} type="text" placeholder={name} className="input input-bordered w-full text-black" />
+            {name !== 'Gender' && <input ref={inputRef} type="text" placeholder={name} className="input input-bordered w-full text-black" />}
+            {name === 'Gender' &&
+              <div className="flex items-center justify-center space-x-4">
+                <label onClick={() => setGender('Male')} className="space-x-2 font-semibold label cursor-pointer">
+                  <span className="label-text">Male</span>
+                  <input type="radio" name="gender" className="radio checked:bg-blue-500" defaultChecked />
+                </label>
+                <label onClick={() => setGender('Female')} className="space-x-2 font-semibold label cursor-pointer">
+                  <span className="label-text">Female</span>
+                  <input type="radio" name="gender" className="radio checked:bg-red-500" />
+                </label>
+              </div>
+            }
             <button
               onClick={() => handleConfirm()}
               className="btn text-black">Confirm</button>
@@ -194,11 +218,11 @@ export default function PersonalCenter({ user, orderArray }: { user: Record<stri
                 <div onClick={() => { setName('Password'); setDialogShow(true) }} className="w-6 h-6 bg-center bg-contain bg-no-repeat hover:cursor-pointer" style={{ backgroundImage: 'url(/assets/arrowRight.png)' }}></div>
               </div>
 
-              <div className="flex items-center justify-between py-6 border-b">
+              {/* <div className="flex items-center justify-between py-6 border-b">
                 <div className="w-60 text-base">Phone Number</div>
                 <div className="flex-1 text-base">{user.phone || ''}</div>
                 <div onClick={() => { setName('Phone'); setDialogShow(true) }} className="w-6 h-6 bg-center bg-contain bg-no-repeat hover:cursor-pointer" style={{ backgroundImage: 'url(/assets/arrowRight.png)' }}></div>
-              </div>
+              </div> */}
             </div>
 
             <div className="w-full px-6 border rounded-lg">

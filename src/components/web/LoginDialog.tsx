@@ -17,11 +17,11 @@ interface Props {
   setDialogShow: Function
 }
 
-function getImageName() {
-  const botArray = ['Ashley1', 'Ashley2', 'Ashley3', 'Derek1', 'Derek2', 'Derek3', 'Keisha', 'Megan1', 'Megan2', 'Megan3', 'Olivia1', 'Olivia2', 'Robert1', 'Robert2', 'Sarah', 'William1', 'William2']
-  const randomIndex = Math.floor(Math.random() * botArray.length);
-  return botArray[randomIndex] || 'Ashley1'
-}
+// function getImageName() {
+//   const botArray = ['Ashley1', 'Ashley2', 'Ashley3', 'Derek1', 'Derek2', 'Derek3', 'Keisha', 'Megan1', 'Megan2', 'Megan3', 'Olivia1', 'Olivia2', 'Robert1', 'Robert2', 'Sarah', 'William1', 'William2']
+//   const randomIndex = Math.floor(Math.random() * botArray.length);
+//   return botArray[randomIndex] || 'Ashley1'
+// }
 
 export default function LoginDialog({ type, setType, dialogShow, setDialogShow }: Props) {
   const { toast, handleToast } = useToast()
@@ -93,7 +93,7 @@ export default function LoginDialog({ type, setType, dialogShow, setDialogShow }
             style={{ backgroundImage: "url(/assets/close.png)" }}
           ></div>
           <div className="w-1/2 aspect-[3/4] bg-cover bg-top bg-no-repeat relative"
-            style={{ backgroundImage: `url(/bots/${getImageName()}.png)` }}
+            style={{ backgroundImage: `url(/bots/Ashley1.png)` }}
           >
             <div className="absolute bottom-10 w-full flex justify-center">
               <div className="w-40 h-8 bg-center bg-no-repeat bg-contain" style={{ backgroundImage: 'url(assets/Honeybun.png)' }}></div>

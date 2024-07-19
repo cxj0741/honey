@@ -28,6 +28,9 @@ export const users = pgTable("user", {
   .primaryKey()
   .$defaultFn(() => crypto.randomUUID()),
   name: text("name"),
+  gender: varchar("gender", {
+    enum: ["Male", "Female"],
+  }).notNull().default('Male'),
   email: text("email").notNull(),
   emailVerified: timestamp("emailVerified", { mode: "date" }),
   image: text("image"),
@@ -199,7 +202,6 @@ export const chats = pgTable(
 )
 
 // 订单列表
-/**
 export const orders = pgTable("orders", {
   id: text("id")
     .primaryKey()
@@ -225,4 +227,3 @@ export const ordersRelations = relations(orders, ({ one }) => ({
     references: [users.id],
   }),
 }))
- */
