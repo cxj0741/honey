@@ -20,7 +20,7 @@ interface Props {
 function getImageName() {
   const botArray = ['Ashley1', 'Ashley2', 'Ashley3', 'Derek1', 'Derek2', 'Derek3', 'Keisha', 'Megan1', 'Megan2', 'Megan3', 'Olivia1', 'Olivia2', 'Robert1', 'Robert2', 'Sarah', 'William1', 'William2']
   const randomIndex = Math.floor(Math.random() * botArray.length);
-  return botArray[randomIndex]
+  return botArray[randomIndex] || 'Ashley1'
 }
 
 export default function LoginDialog({ type, setType, dialogShow, setDialogShow }: Props) {
