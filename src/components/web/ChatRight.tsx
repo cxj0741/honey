@@ -42,7 +42,7 @@ export default function ChatRight({ fold, activeBot }: { fold: boolean, activeBo
     <div
       className={`flex-1 max-w-[340px] min-w-[270px] h-full overflow-y-scroll ${fold ? 'hidden' : 'block'}`}
     >
-      <div className="w-full aspect-[3/5] relative bg-center bg-cover bg-no-repeat" style={{ backgroundImage: `url(${(index == 0 ? activeBot.image1 : activeBot.image2)})` }}>
+      <div className="w-full aspect-[3/5] relative bg-top bg-cover bg-no-repeat" style={{ backgroundImage: `url(${(index == 0 ? activeBot.image1 : activeBot.image2)})` }}>
         <div
           className="absolute w-full px-4 flex justify-between"
           style={{ top: '50%', transform: 'translateY(-50)' }}

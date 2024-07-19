@@ -46,7 +46,7 @@ export default function ChatRight({ setPart, activeBot }: { setPart: Function, a
     <div
       className="w-[100vw] overflow-auto bg-white -mb-14"
     >
-      <div className="w-full aspect-[3/4] relative bg-center bg-cover bg-no-repeat" style={{ backgroundImage: `url(${(index == 0 ? activeBot.image1 : activeBot.image2)})` }}>
+      <div className="w-full aspect-[3/4] relative bg-top bg-cover bg-no-repeat" style={{ backgroundImage: `url(${(index == 0 ? activeBot.image1 : activeBot.image2)})` }}>
         <div
           onClick={() => setPart(CHAT_PART.MIDDLE)}
           className="absolute left-4 top-3 w-16 h-10 bg-center bg-contain bg-no-repeat"
