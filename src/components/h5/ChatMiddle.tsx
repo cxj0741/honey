@@ -169,7 +169,7 @@ export default function ChatMiddle({ setPart, activeBot, setActiveBot }: Props) 
           <div className="h-6" style={{ background: 'linear-gradient( 180deg, #FDFDFD 0%, rgba(253,253,253,0) 100%)' }}></div>
         </div>
         {/* CHAT WINDOW */}
-        <div ref={chatContainer} className="px-4 py-20 overflow-y-scroll" style={{ height: 'calc(100vh - 3rem)' }}>
+        <div ref={chatContainer} className="px-4 py-20 overflow-y-scroll no-scrollbar" style={{ height: 'calc(100vh - 3rem)' }}>
           <div className="space-y-4 text-sm">
             {/* START */}
             <div className="flex items-start">
@@ -202,7 +202,7 @@ export default function ChatMiddle({ setPart, activeBot, setActiveBot }: Props) 
                 }
                 
                 {item.dialog.image &&
-                  (<div className="flex items-start">
+                  (<div className="mt-4 flex items-start">
                     <div className="w-8 h-8 rounded-full bg-top bg-cover bg-no-repeat" style={{ backgroundImage: `url(${activeBot.image1})` }}></div>
                     <div
                       onClick={() => {

@@ -209,7 +209,7 @@ export default function ChatMiddle({ fold, setFold, activeBot, setActiveBot, cur
           <div className='w-full h-6' style={{ background: 'linear-gradient( 180deg, #FCFCFA 0%, rgba(251,250,249,0) 100%)' }}></div>
         </div>
         {/* CHAT WINDOW */}
-        <div ref={chatContainer} className="px-6 py-32 h-full overflow-y-scroll">
+        <div ref={chatContainer} className="px-6 py-32 h-full overflow-y-scroll no-scrollbar">
           <div className="space-y-4">
             {/* START */}
             <div className="flex items-start">
@@ -241,7 +241,7 @@ export default function ChatMiddle({ fold, setFold, activeBot, setActiveBot, cur
                 }
 
                 {item.dialog.image &&
-                  (<div className="flex items-start">
+                  (<div className="mt-5 flex items-start">
                     <div className="w-8 h-8 rounded-full bg-top bg-cover bg-no-repeat" style={{ backgroundImage: `url(${activeBot.image1})` }}></div>
                     <div
                       onClick={() => {

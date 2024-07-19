@@ -99,7 +99,7 @@ export default function ChatLeft({ setPart, activeBot, setActiveBot, currentArra
             />
           </label>
         </div>
-        <div className="grow space-y-4 overflow-auto">
+        <div className="grow space-y-4 overflow-auto no-scrollbar">
           {currentArray.filter(item => item.show).map((item) => (
             <div key={item.id} className='mt-2 pb-2 overflow-x-auto no-scrollbar'>
               <div className='flex items-center'>

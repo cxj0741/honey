@@ -45,7 +45,7 @@ export default function ChatLeft({ activeBot, setActiveBot, currentArray, setCur
             placeholder="Search for a profile..."
           />
         </label>
-        <div className="mt-6 flex-1 space-y-4 overflow-auto">
+        <div className="mt-6 flex-1 space-y-4 overflow-auto no-scrollbar">
           {currentArray.filter(item => item.show).map((item) => (
             <div
               onClick={() => setActiveBot({ ...item })}

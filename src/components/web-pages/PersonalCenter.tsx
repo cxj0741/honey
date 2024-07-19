@@ -138,7 +138,7 @@ export default function PersonalCenter({ user, orderArray }: { user: Record<stri
 
   return (
     <>
-      <div className="flex-1 max-h-[100vh] overflow-y-scroll">
+      <div className="flex-1 max-h-[100vh] overflow-y-scroll no-scrollbar">
         <div className="py-10 w-full flex justify-center">
           <div className="max-w-[872px] min-w-[536px] space-y-8">
             <div className="text-4xl font-semibold text-left">
