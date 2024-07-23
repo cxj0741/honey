@@ -28,7 +28,7 @@ function Item({
         <Image
           width={24}
           height={24}
-          src={`/assets/attributes/${img}.png`}
+          src={`/assets/attributes/${img}.jpg`}
           alt={'avatar'}
         />
         <span className="ml-1 text-xs text-[rgba(0,0,0,0.64)]">
