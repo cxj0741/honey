@@ -303,7 +303,7 @@ export default function ChatMiddle({ setPart, activeBot, setActiveBot }: Props) 
         >
           <div className="p-2 rounded-lg bg-white">
             <div className="rounded-lg bg-top bg-cover bg-no-repeat"
-              style={{ backgroundImage: 'url(/bots/Ashley1.png)' }}
+              style={{ backgroundImage: 'url(/bots/Ashley1.jpg)' }}
             >
               <div className="relative aspect-[327/505] bg-center bg-cover bg-no-repeat"
                 style={{ width: 'calc(100vw - 3rem)', backgroundImage: 'url(/h5Assets/premiumDialogBg.png)' }}

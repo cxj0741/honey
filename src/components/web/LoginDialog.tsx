@@ -93,7 +93,7 @@ export default function LoginDialog({ type, setType, dialogShow, setDialogShow }
             style={{ backgroundImage: "url(/assets/close.png)" }}
           ></div>
           <div className="w-1/2 aspect-[3/4] bg-cover bg-top bg-no-repeat relative"
-            style={{ backgroundImage: `url(/bots/Ashley1.png)` }}
+            style={{ backgroundImage: `url(/bots/Ashley1.jpg)` }}
           >
             <div className="absolute bottom-10 w-full flex justify-center">
               <div className="w-40 h-8 bg-center bg-no-repeat bg-contain" style={{ backgroundImage: 'url(assets/Honeybun.png)' }}></div>
