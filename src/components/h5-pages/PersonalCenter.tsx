@@ -6,6 +6,7 @@ import { useCallback, useRef, useState } from 'react'
 import ConfirmDialog from '@/components/web/ConfirmDialog'
 import { z } from 'zod'
 import Toast, { TOAST_TYPE, useToast } from '@/components/web/Toast'
+import { formatDate } from '@/utils/formatUnixTimestamp'
 
 export default function PersonalCenter({ user, orderArray }: { user: Record<string, any>, orderArray: Record<string, any> }) {
   // console.log('user info', user)
@@ -140,18 +141,18 @@ export default function PersonalCenter({ user, orderArray }: { user: Record<stri
   return (
     <>
       <div className="w-full space-y-4 p-4">
-        <div className="w-full px-6 py-4 border rounded-lg" style={{ background: 'linear-gradient( 90deg, rgba(245,50,118,0.32) 0%, rgba(245,50,118,0.08) 100%)' }}>
+        <div className="w-full px-6 py-4 border rounded-lg" style={{ background: user.vipLevel ? 'linear-gradient( 90deg, rgba(245,50,118,0.32) 0%, rgba(245,50,118,0.08) 100%)' : 'linear-gradient( 90deg, rgba(165,153,157,0.32) 0%, rgba(165,153,157,0.08) 100%)' }}>
           <div className="text-base font-semibold">
             Subscription status
           </div>
           {
-            user.isVIP ?
+            user.vipLevel ?
               <>
                 <div className="mt-4 text-[#F53276] font-semibold text-2xl">
                   Premium Member
                 </div>
                 <div className="mt-1 text-xs">
-                  20224.06.24-20224.06.24
+                  Subscription to: {formatDate(user.vipDeadline)}
                 </div>
               </>
               :

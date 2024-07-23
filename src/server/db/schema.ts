@@ -37,11 +37,11 @@ export const users = pgTable("user", {
   // 这个表格上面的内容是next-auth adapter自动生成的内容
   userId: serial('user_id'),
   hashPassword: text('hash_password').notNull().default(''),
-  isVIP: boolean('is_vip').default(false),
-  messages: integer('messages').default(10),
-  tokens: integer('tokens').default(5),
   createdAt: timestamp('created_at', { mode: 'date' }).defaultNow(),
-  updatedAt: timestamp('updated_at', { mode: 'date' }).defaultNow(),
+  vipLevel:integer('vip_level').default(0), //vip的等级，0级是普通用户，1 2 3级别依次递增
+  messages: integer('messages').default(10), //每天开始定时更新 普通用户10条，vip用户如果低于10条更新为10条
+  tokens: integer('tokens').default(5), //每月首日定时更新 普通用户5个
+  vipDeadline: timestamp('vip_deadline', { mode: 'date' }).defaultNow(),
 })
 
 // export const users = pgTable("user", {
@@ -194,27 +194,28 @@ export const chats = pgTable(
     botId: text("bot_id").notNull(),
     timestamp: bigint('timestamp', { mode: 'number'}).notNull(),
     dialog: text('dialog').notNull(),
-    // isDeleted: boolean('is_deleted').default(false)
+    isDeleted: boolean('is_deleted').default(false)
   },
   (t)=>({
     pk: primaryKey({columns:[t.userId, t.botId,t.timestamp]})
   })
 )
 
-// 订单列表
+// 用户购买订单记录
 export const orders = pgTable("orders", {
   id: text("id")
     .primaryKey()
     .$defaultFn(() => crypto.randomUUID()),
   orderId: serial('order_id'),
   type: varchar("type", {
-    enum: ["1", "3", "12"],
+    enum: ["1", "3", "12"], //订单类型
   }).notNull(),
-  createdAt: timestamp('created_at', { mode: 'date' }).defaultNow(),
+  amount: text('amount').notNull(), //用户每次付费支付的金额
+  createdAt: timestamp('created_at', { mode: 'date' }).defaultNow(), //订单创建日期
   status: varchar("status", {
     enum: ["success", "failure"],
   }).notNull(),
-  userId: text('user_id').references(() => users.id,{ onDelete: "cascade" } ),
+  userId: text('user_id').references(() => users.id, { onDelete: "cascade" } ),
 })
 
 export const userRelations2 = relations(users, ({ many }) => ({
@@ -224,6 +225,32 @@ export const userRelations2 = relations(users, ({ many }) => ({
 export const ordersRelations = relations(orders, ({ one }) => ({
   user: one(users, {
     fields: [orders.userId],
+    references: [users.id],
+  }),
+}))
+
+// 用户使用消费记录，可用于后续统计更新bot的功能
+export const records = pgTable('records',{
+  id: text("id")
+    .primaryKey()
+    .$defaultFn(() => crypto.randomUUID()), //主键uuid
+  recordId: serial('record_id'), //自增id
+  createdAt: timestamp('created_at', { mode: 'date' }).defaultNow(), //消费日期
+  botId: text('bot_id'), //bot的id
+  chatId: text('chat_id'), //聊天记录id标识
+  type:varchar("type", {
+    enum: ["message", "photo"], //消费类型有很多种，photo包括message，后续的video和audio也包括message
+  }).notNull(),
+  userId: text('user_id').references(() => users.id, { onDelete: "cascade" } ),
+})
+
+export const userRelations3 = relations(users, ({ many }) => ({
+  records: many(records),
+}))
+
+export const recordsRelations = relations(records, ({ one }) => ({
+  user: one(users, {
+    fields: [records.userId],
     references: [users.id],
   }),
 }))
