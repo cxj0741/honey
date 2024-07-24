@@ -87,11 +87,11 @@ export default function PersonalCenter({ user, orderArray }: { user: Record<stri
               <div className="flex items-center justify-center space-x-4">
                 <label onClick={() => setGender('Male')} className="space-x-2 font-semibold label cursor-pointer">
                   <span className="label-text">Male</span>
-                  <input type="radio" name="gender" className="radio checked:bg-blue-500" defaultChecked />
+                  <input type="radio" name="gender" className="radio checked:bg-blue-500" defaultChecked={user.gender === 'Male'} />
                 </label>
                 <label onClick={() => setGender('Female')} className="space-x-2 font-semibold label cursor-pointer">
                   <span className="label-text">Female</span>
-                  <input type="radio" name="gender" className="radio checked:bg-red-500" />
+                  <input type="radio" name="gender" className="radio checked:bg-red-500" defaultChecked={user.gender === 'Female'} />
                 </label>
               </div>
             }

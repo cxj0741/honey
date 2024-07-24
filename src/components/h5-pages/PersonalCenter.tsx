@@ -87,11 +87,11 @@ export default function PersonalCenter({ user, orderArray }: { user: Record<stri
               <div className="flex items-center justify-center space-x-4">
                 <label onClick={() => setGender('Male')} className="space-x-2 font-semibold label cursor-pointer">
                   <span className="label-text">Male</span>
-                  <input type="radio" name="gender" className="radio checked:bg-blue-500" defaultChecked />
+                  <input type="radio" name="gender" className="radio checked:bg-blue-500" defaultChecked={user.gender === 'Male'} />
                 </label>
                 <label onClick={() => setGender('Female')} className="space-x-2 font-semibold label cursor-pointer">
                   <span className="label-text">Female</span>
-                  <input type="radio" name="gender" className="radio checked:bg-red-500" />
+                  <input type="radio" name="gender" className="radio checked:bg-red-500" defaultChecked={user.gender === 'Female'} />
                 </label>
               </div>
             }
@@ -213,13 +213,13 @@ export default function PersonalCenter({ user, orderArray }: { user: Record<stri
             <div onClick={() => { setName('Password'); setDialogShow(true) }} className="w-6 h-6 bg-center bg-contain bg-no-repeat hover:cursor-pointer" style={{ backgroundImage: 'url(/assets/arrowRight.png)' }}></div>
           </div>
 
-          <div className="flex items-center justify-between py-3 border-b">
+          {/* <div className="flex items-center justify-between py-3 border-b">
             <div className="flex-1">
               <div className="text-sm">Phone Number</div>
               <div className="mt-1.5 text-sm">{user.phone || ''}</div>
             </div>
             <div onClick={() => { setName('Phone'); setDialogShow(true) }} className="w-6 h-6 bg-center bg-contain bg-no-repeat hover:cursor-pointer" style={{ backgroundImage: 'url(/assets/arrowRight.png)' }}></div>
-          </div>
+          </div> */}
         </div>
 
         <div className="w-full px-6 border rounded-lg">

@@ -83,7 +83,7 @@ export default function LoginDialog({ type, setType, dialogShow, setDialogShow }
   const router = useRouter()
   return (
     <>
-      <dialog open={dialogShow} className="modal bg-transparent">
+      <dialog open={dialogShow} className="modal bg-[rgba(0,0,0,0.64)]">
         <div className="modal-box w-[810px] max-w-[810px] rounded-lg p-0 flex relative bg-bottom bg-cover bg-no-repeat"
           style={{ backgroundImage: 'url(/assets/chatMiddleBg.png)' }}>
           <div onClick={() => {
