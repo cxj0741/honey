@@ -17,6 +17,7 @@ export default function LeftNav() {
   const path = usePathname()
   const [type, setType] = useState(ACCOUNT.SIGN_UP)
   const [dialogShow, setDialogShow] = useState(false)
+  const [contactDialogShow, setContactDialogShow] = useState(false)
   // 三种状态 authenticated unauthenticated loading
   const session = useSession()
 
@@ -81,13 +82,15 @@ export default function LeftNav() {
               />
             </div>
             <div className="mt-4 text-black">
-              <div onClick={() => {
-                console.log('Tawk_API CHAT>>>>>')
-                if (typeof window.Tawk_API === 'undefined') {
-                  return
-                }
-                window.Tawk_API.toggle();
-              }}
+              <div
+                // onClick={() => {
+                //   console.log('Tawk_API CHAT>>>>>')
+                //   if (typeof window.Tawk_API === 'undefined') {
+                //     return
+                //   }
+                //   window.Tawk_API.toggle();
+                // }}
+                onClick={() => {setContactDialogShow(true)}}
                 className={`flex ${fold ? 'justify-center' : 'justify-start'}`}
               >
                 <div className={`px-4 py-3 rounded-lg flex items-center space-x-4 hover:bg-[rgba(0,0,0,0.04)] hover:cursor-pointer ${fold ? '' : 'flex-1'}`}>
@@ -146,6 +149,17 @@ export default function LeftNav() {
         </div>
       </div >
       <LoginDialog type={type} setType={setType} dialogShow={dialogShow} setDialogShow={setDialogShow} />
+      <dialog open={contactDialogShow} className="modal bg-transparent">
+        <div className="modal-box">
+          <h3 className="font-bold text-lg">ATTENTION</h3>
+          <p className="pt-2">contact us: support@honeybun.ai</p>
+          <div className="modal-action">
+            <button
+              onClick={() => {setContactDialogShow(false)}}
+              className="w-20 btn btn-outline btn-success btn-sm">OK</button>
+          </div>
+        </div>
+      </dialog>
     </>
   )
 }

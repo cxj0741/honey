@@ -1,14 +1,17 @@
 'use client'
 import { SessionProvider } from 'next-auth/react'
-import { ReactNode, useEffect } from 'react'
+import { ReactNode } from 'react'
+// import { ReactNode, useEffect } from 'react'
 
 export default function Provider({
   children,
 }: Readonly<{
   children: ReactNode,
 }>) {
+
+  // var Tawk_API = Tawk_API || {}, Tawk_LoadStart = new Date();
+  /**
   useEffect(() => {
-    // var Tawk_API = Tawk_API || {}, Tawk_LoadStart = new Date();
     if (!window.Tawk_API) {
       window.Tawk_API = {};
       window.Tawk_LoadStart = new Date();
@@ -25,6 +28,7 @@ export default function Provider({
       };
     }
   }, [])
+  */
   return <SessionProvider>
     {children}
   </SessionProvider>
