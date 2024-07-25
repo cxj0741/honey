@@ -254,7 +254,7 @@ export default function ChatMiddle({ setPart, activeBot, setActiveBot }: Props) 
           </div>
         </div>
         <div className="fixed left-0 bottom-0 w-full px-4 pb-4 bg-cover bg-bottom bg-no-repeat"
-          style={{ backgroundImage: 'url(/assets/chatMiddleBg.png)' }}
+          style={{ backgroundImage: 'url(/assets/footerNavBg.png)' }}
         >
           {inputShow ?
             <div className='p-1 rounded-lg bg-white flex items-center'>

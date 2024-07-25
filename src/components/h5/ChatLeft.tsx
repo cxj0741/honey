@@ -75,8 +75,8 @@ export default function ChatLeft({ setPart, activeBot, setActiveBot, currentArra
   return (
     <>
       <div
-        className="w-[100vw] p-4 bg-cover bg-center text-black space-y-6 flex flex-col"
-        style={{ height: 'calc(100vh - 7.5rem)' }}
+        className="w-[100vw] p-4 pb-0 bg-cover bg-center text-black space-y-6 flex flex-col"
+        style={{ height: 'calc(100vh - 6.5rem)' }}
       >
 
         <label className="px-4 h-10 rounded-lg border bg-[rgba(0,0,0,0.04)] flex items-center gap-2 text-slate-900">
@@ -115,9 +115,9 @@ export default function ChatLeft({ setPart, activeBot, setActiveBot, currentArra
                   style={{ width: '100vw' }}
                 >
                   <div className="w-12 h-12 rounded-full bg-top bg-cover bg-no-repeat" style={{ backgroundImage: `url(${item.image1})` }}></div>
-                  <div className="grow space-y-2">
+                  <div className="flex-1 space-y-2">
                     <div className="text-sm font-semibold">{item.name}</div>
-                    <div className="w-[60vw] text-sm single-line-ellipsis font-light">
+                    <div className="block w-[60vw] text-sm single-line-ellipsis font-light">
                       {item.description}
                     </div>
                   </div>

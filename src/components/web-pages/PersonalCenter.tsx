@@ -6,7 +6,6 @@ import { useCallback, useRef, useState } from 'react'
 import ConfirmDialog from '@/components/web/ConfirmDialog'
 import { z } from 'zod'
 import Toast, { TOAST_TYPE, useToast } from '@/components/web/Toast'
-import { formatDate } from '@/utils/formatUnixTimestamp'
 
 export default function PersonalCenter({ user, orderArray }: { user: Record<string, any>, orderArray: Record<string, any> }) {
   console.log('user info', user, orderArray)
@@ -162,7 +161,7 @@ export default function PersonalCenter({ user, orderArray }: { user: Record<stri
                     <div onClick={() => { router.push('/premium') }} className="w-[178px] h-8 bg-center bg-contain bg-no-repeat hover:cursor-pointer" style={{ backgroundImage: 'url(/assets/renew.png)' }}></div>
 
                   </div>
-                  <div className='mt-4 text-base'>Subscription to: {formatDate(user.vipDeadline)}</div>
+                  <div className='mt-4 text-base'>Subscription to: {user.vipDeadline}</div>
                 </>
                 :
                 <>

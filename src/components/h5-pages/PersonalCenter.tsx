@@ -6,7 +6,6 @@ import { useCallback, useRef, useState } from 'react'
 import ConfirmDialog from '@/components/web/ConfirmDialog'
 import { z } from 'zod'
 import Toast, { TOAST_TYPE, useToast } from '@/components/web/Toast'
-import { formatDate } from '@/utils/formatUnixTimestamp'
 
 export default function PersonalCenter({ user, orderArray }: { user: Record<string, any>, orderArray: Record<string, any> }) {
   // console.log('user info', user)
@@ -152,7 +151,7 @@ export default function PersonalCenter({ user, orderArray }: { user: Record<stri
                   Premium Member
                 </div>
                 <div className="mt-1 text-xs">
-                  Subscription to: {formatDate(user.vipDeadline)}
+                  Subscription to: {user.vipDeadline}
                 </div>
               </>
               :
