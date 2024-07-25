@@ -117,8 +117,11 @@ export default function ChatLeft({ setPart, activeBot, setActiveBot, currentArra
                   <div className="w-12 h-12 rounded-full bg-top bg-cover bg-no-repeat" style={{ backgroundImage: `url(${item.image1})` }}></div>
                   <div className="flex-1 space-y-2">
                     <div className="text-sm font-semibold">{item.name}</div>
-                    <div className="block w-[60vw] text-sm single-line-ellipsis font-light">
+                    {/* <div className="block w-[60vw] text-sm single-line-ellipsis font-light">
                       {item.description}
+                    </div> */}
+                    <div className="block w-[60vw] text-sm single-line-ellipsis font-light">
+                      {item.description.slice(0,30)}...
                     </div>
                   </div>
                   <div className="space-y-3 flex flex-col items-end">
