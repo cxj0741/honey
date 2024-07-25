@@ -3,15 +3,15 @@ import { CHAT_PART } from '@/components/h5-pages/Chat'
 import { useState } from 'react'
 
 const info1 = [
-  { name: 'personality', img: 'personality', value: 'Kawai and Extrovert' },
-  { name: 'occupation', img: 'occupation', value: 'Kpop Singer' },
-  { name: 'label', img: 'label', value: 'working women' },
-  { name: 'relationship', img: 'relationship', value: 'humorous' },
+  { name: 'personality', img: 'personality' },
+  { name: 'occupation', img: 'occupation' },
+  { name: 'label', img: 'label' },
+  { name: 'relationship', img: 'relationship' },
 ]
 const info2 = [
-  { name: 'body', img: 'body', value: 'Kawai and Extrovert' },
-  { name: 'age', img: 'age', value: 'Kpop Singer' },
-  { name: 'ethnicity', img: 'ethnicity', value: 'working women' },
+  { name: 'body', img: 'body' },
+  { name: 'age', img: 'age' },
+  { name: 'ethnicity', img: 'ethnicity' },
 ]
 function Item({
   img,
@@ -81,7 +81,7 @@ export default function ChatRight({ setPart, activeBot }: { setPart: Function, a
           <div className="w-full flex flex-wrap">
             {info1.map((item) => (
               <div className="w-1/2 mt-4" key={item.name}>
-                <Item img={item.img} name={item.name} value={item.value}></Item>
+                <Item img={item.img} name={item.name} value={activeBot[item.name]}></Item>
               </div>
             ))}
           </div>
@@ -93,7 +93,7 @@ export default function ChatRight({ setPart, activeBot }: { setPart: Function, a
           <div className="w-full flex flex-wrap">
             {info2.map((item) => (
               <div className="w-1/2 mt-4" key={item.name}>
-                <Item img={item.img} name={item.name} value={item.value}></Item>
+                <Item img={item.img} name={item.name} value={activeBot[item.name]}></Item>
               </div>
             ))}
           </div>
