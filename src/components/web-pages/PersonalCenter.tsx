@@ -1,5 +1,5 @@
 'use client'
-import { changeUserInfo, deleteUser, uploadAvatar } from '@/request'
+import { changeUserInfo, deleteUser, uploadAvatarToCloud } from '@/request'
 import { signOut, useSession, getSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import { useCallback, useRef, useState } from 'react'
@@ -124,17 +124,21 @@ export default function PersonalCenter({ user, orderArray }: { user: Record<stri
         handleToast(TOAST_TYPE.WARNING, 'error, please note that max image size is 5M!')
         return
       } //最大5M
+
       try {
-        const res = await uploadAvatar(file)
+        const formData = new FormData();
+        formData.append('file', file);
+        console.log('start upload form data', formData)
+        const res = await uploadAvatarToCloud(formData)
         handleToast(TOAST_TYPE.SUCCESS, res.message)
-        const newSession = await getSession();
-        session.update(newSession)
+        // const newSession = await getSession();
+        // session.update(newSession)
       } catch (error) {
         console.error('Error uploading file:', error);
         handleToast(TOAST_TYPE.ERROR, 'upload image error!')
       }
     }
-  }, [handleToast, session])
+  }, [handleToast])
 
   return (
     <>

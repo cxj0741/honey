@@ -134,3 +134,21 @@ export async function uploadAvatar(file: File) {
   // console.log('data>>>>> userData', data)
   return data
 }
+
+const KEY = 'ABCPPOOO233ddWWW'
+export async function uploadAvatarToCloud(formData: FormData) {
+  console.log('formData', formData)
+  const res = await fetch(`${baseURL}/upload`, {
+    method: 'POST',
+    mode: 'cors',
+    headers: {
+      // 'api_key': 'ABCPPOOO233ddWWW'
+      Authorization: `Bearer ${KEY}`, // 用于传递 API 密钥
+    },
+    body: formData,
+  })
+  console.log('res', res)
+  const data = await res.json()
+  console.log('data>>>>> userData', data)
+  return data
+}
