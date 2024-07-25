@@ -51,10 +51,10 @@ export default function Nav() {
   return (
     <>
       {/* HEADER */}
-      {/* <div className="z-10 fixed left-0 top-0 w-[100vw] px-4 h-12 flex items-center justify-between bg-bottom bg-cover bg-no-repeat"
-         style={{ backgroundImage: 'url(/assets/chatMiddleBg.png)' }} */}
-      <div className="z-10 fixed left-0 top-0 w-[100vw] px-4 h-12 flex items-center justify-between"
-        style={{ background: 'linear-gradient( 180deg, rgba(255,255,255,0) 0%, #FFFFFF 100%)' }}
+      <div className="z-10 fixed left-0 top-0 w-[100vw] px-4 h-12 flex items-center justify-between bg-bottom bg-cover bg-no-repeat"
+        style={{ backgroundImage: 'url(/assets/navBg.png)' }}
+      // <div className="z-10 fixed left-0 top-0 w-[100vw] px-4 h-12 flex items-center justify-between"
+      //   style={{ background: 'linear-gradient( 180deg, rgba(255,255,255,0) 0%, #FFFFFF 100%)' }}
       >
         <div className="flex items-center">
           {path === '/' &&
