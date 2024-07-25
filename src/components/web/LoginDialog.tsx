@@ -82,9 +82,9 @@ export default function LoginDialog({ type, setType, dialogShow, setDialogShow }
   }
   const router = useRouter()
   return (
-    <>
-      <dialog open={dialogShow} className="modal bg-[rgba(0,0,0,0.16)]">
-        <div className="modal-box w-[810px] max-w-[810px] rounded-lg p-0 flex relative bg-bottom bg-cover bg-no-repeat"
+    <div className={`${dialogShow ? 'block' : 'hidden'}`}>
+      <div className="z-50 fixed left-0 top-0 w-[100vw] h-[100vh] flex items-center justify-center bg-[rgba(0,0,0,0.8)]">
+        <div className="w-[810px] rounded-lg flex relative bg-bottom bg-cover bg-no-repeat"
           style={{ backgroundImage: 'url(/assets/chatMiddleBg.png)' }}>
           <div onClick={() => {
             setDialogShow(false)
@@ -92,7 +92,7 @@ export default function LoginDialog({ type, setType, dialogShow, setDialogShow }
           }} className="w-14 h-14 bg-center bg-contain bg-no-repeat absolute top-0 right-0 hover:cursor-pointer"
             style={{ backgroundImage: "url(/assets/close.png)" }}
           ></div>
-          <div className="w-1/2 aspect-[3/4] bg-cover bg-top bg-no-repeat relative"
+          <div className="w-1/2 aspect-[3/4] rounded-l-lg bg-cover bg-top bg-no-repeat relative"
             style={{ backgroundImage: `url(/bots/Ashley1.jpg)` }}
           >
             <div className="absolute bottom-10 w-full flex justify-center">
@@ -193,8 +193,8 @@ export default function LoginDialog({ type, setType, dialogShow, setDialogShow }
             </div>
           </div>
         </div>
-      </dialog>
+      </div>
       {toast.show && <Toast type={toast.type} message={toast.message} />}
-    </>
+    </div>
   )
 }

@@ -76,10 +76,10 @@ export default function LoginDialog({ type, setType, dialogShow, setDialogShow }
   }
   const router = useRouter()
   return (
-    <>
-      <dialog open={dialogShow} className="modal bg-[rgba(0,0,0,0.64)]">
-        <div className="overflow-scroll no-scrollbar modal-box rounded-3xl border border-[rgba(0,0,0,0.16)] relative flex flex-col justify-end bg-bottom bg-cover bg-no-repeat"
-          style={{ backgroundImage: 'url(/assets/chatMiddleBg.png)' }}>
+    <div className={`${dialogShow ? 'block' : 'hidden'}`}>
+      <div className="z-50 fixed left-0 top-0 w-[100vw] h-[100vh] flex items-center justify-center bg-[rgba(0,0,0,0.8)]">
+        <div className="overflow-scroll no-scrollbar p-4 rounded-3xl border border-[rgba(0,0,0,0.16)] relative flex flex-col justify-end bg-bottom bg-cover bg-no-repeat"
+          style={{ backgroundImage: 'url(/assets/chatMiddleBg.png)',width: 'calc(100vw - 2rem)' }}>
           <div onClick={() => {
             setDialogShow(false)
             router.push('/')
@@ -181,8 +181,8 @@ export default function LoginDialog({ type, setType, dialogShow, setDialogShow }
           </div>
           {/* </div> */}
         </div>
-      </dialog>
+      </div>
       {toast.show && <Toast type={toast.type} message={toast.message} />}
-    </>
+    </div>
   )
 }
