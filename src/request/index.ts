@@ -138,7 +138,7 @@ export async function uploadAvatar(file: File) {
 const KEY = 'ABCPPOOO233ddWWW'
 export async function uploadAvatarToCloud(formData: FormData) {
   console.log('formData', formData)
-  const res = await fetch(`${baseURL}/upload`, {
+  const res = await fetch('https://honeybun-obejcts.vercel.app/upload', {
     method: 'POST',
     mode: 'cors',
     headers: {
