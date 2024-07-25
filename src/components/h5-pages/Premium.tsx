@@ -12,13 +12,13 @@ export default function Premium() {
             <div onClick={() => setActive(12)} className="flex-1 aspect-[109/162] bg-center bg-contain bg-no-repeat" style={{ backgroundImage: active === 12 ? 'url(/h5Assets/twelveActive.png)' : 'url(/h5Assets/twelve.png)' }}></div>
             <div onClick={() => setActive(3)} className="flex-1 aspect-[109/162] bg-center bg-contain bg-no-repeat" style={{ backgroundImage: active === 3 ? 'url(/h5Assets/threeActive.png)' : 'url(/h5Assets/three.png)' }}></div>
           </div>
-          <div className="mt-4 w-[62vw] aspect-[232/169] bg-center bg-no-repeat bg-contain" style={{ backgroundImage: 'url(/h5Assets/premiumDesc.png)' }}></div>
-          <div className="mt-8 w-full py-3 rounded-lg bg-[#F53276] flex items-center justify-center space-x-2 hover:cursor-pointer">
+          <div className="mt-6 w-full py-3 rounded-lg bg-[#F53276] flex items-center justify-center space-x-2 hover:cursor-pointer">
             <div className="w-6 h-4 bg-center bg-no-repeat bg-contain" style={{ backgroundImage: 'url(/assets/card.png)' }}></div>
             <div className='text-white'>
               pay with creadit /debit Card
             </div>
           </div>
+          <div className="mt-6 w-[62vw] aspect-[232/169] bg-center bg-no-repeat bg-contain" style={{ backgroundImage: 'url(/h5Assets/premiumDesc.png)' }}></div>
         </div>
       </div>
       {/* 使用这种方式可以加快图片加载 */}

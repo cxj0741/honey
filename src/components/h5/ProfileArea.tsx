@@ -43,7 +43,7 @@ export default function ProfileArea({ botList, type }: { botList: any[], type: s
                 <div className="w-full h-full rounded-full bg-top bg-no-repeat bg-cover" style={{ backgroundImage: `url(${item.image1})` }}></div>
               </div>
               <div className="ml-[72px] flex items-baseline space-x-2">
-                <div className="max-w-[150px] text-base lg:text-xl xl:text-xl font-semibold">{item.name}</div>
+                <div className="max-w-[10rem] text-base lg:text-xl xl:text-xl font-semibold single-line-ellipsis">{item.name}</div>
                 <div className="text-xs text-[rgba(0,0,0,0.64)]">{item.age} years</div>
               </div>
               <div className="mt-2 text-sm">

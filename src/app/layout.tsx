@@ -24,9 +24,9 @@ export default function RootLayout({
     return (
       <html lang="en">
         <head>
-          <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"></meta>
+          <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
         </head>
-        <body className={`${inter.className} bg-center bg-cover bg-no-repeat`} style={{ backgroundImage: 'url(/assets/chatMiddleBg.png)' }}>
+        <body className={`${inter.className} bg-center bg-cover bg-no-repeat`} style={{ background: 'linear-gradient( 180deg, #FFFFFF 0%, #F4F4F5 100%)' }}>
           <AuthProvider>
             <Nav />
             <FooterNav />

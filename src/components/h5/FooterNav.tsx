@@ -55,7 +55,7 @@ export default function FooterNav() {
 
   return (
     <div className='z-50 fixed left-0 -bottom-[1px] w-[100vw] h-14 border-t border-[rgba(255,255,255,0.16)] text-black text-xs flex items-center justify-around bg-bottom bg-cover bg-no-repeat'
-      style={{ visibility: footerNavShow ? 'visible' : 'hidden', backgroundImage: 'url(/assets/chatMiddleBg.png)' }}
+      style={{ visibility: footerNavShow ? 'visible' : 'hidden', backgroundImage: 'url(/assets/footerNavBg.png)' }}
     >
       <Item
         src={path === '/' ? '/assets/exploreSelected.png' : '/assets/explore.png'}

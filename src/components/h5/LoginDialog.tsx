@@ -78,7 +78,7 @@ export default function LoginDialog({ type, setType, dialogShow, setDialogShow }
   return (
     <>
       <dialog open={dialogShow} className="modal bg-[rgba(0,0,0,0.64)]">
-        <div className="modal-box rounded-3xl border border-[rgba(0,0,0,0.16)] relative flex flex-col justify-end bg-bottom bg-cover bg-no-repeat"
+        <div className="overflow-scroll no-scrollbar modal-box rounded-3xl border border-[rgba(0,0,0,0.16)] relative flex flex-col justify-end bg-bottom bg-cover bg-no-repeat"
           style={{ backgroundImage: 'url(/assets/chatMiddleBg.png)' }}>
           <div onClick={() => {
             setDialogShow(false)
@@ -125,8 +125,8 @@ export default function LoginDialog({ type, setType, dialogShow, setDialogShow }
                   <a className="inline-block mt-3 text-black underline decoration-solid">Forget Password?</a>
               }
             </div>
-            {type === ACCOUNT.SIGN_UP && <button onClick={() => handleConfirm(ACCOUNT.SIGN_UP)} className="btn w-full">{ACCOUNT.SIGN_UP}</button>}
-            {type === ACCOUNT.SIGN_IN && <button onClick={() => handleConfirm(ACCOUNT.SIGN_IN)} className="btn w-full">{ACCOUNT.SIGN_IN}</button>}
+            {type === ACCOUNT.SIGN_UP && <button onClick={() => handleConfirm(ACCOUNT.SIGN_UP)} className="btn btn-outline w-full">{ACCOUNT.SIGN_UP}</button>}
+            {type === ACCOUNT.SIGN_IN && <button onClick={() => handleConfirm(ACCOUNT.SIGN_IN)} className="btn btn-outline w-full">{ACCOUNT.SIGN_IN}</button>}
             <div className="flex flex-row items-center">
               <div
                 className="flex-1 h-[1px]"
@@ -154,7 +154,7 @@ export default function LoginDialog({ type, setType, dialogShow, setDialogShow }
               ></div>
               <div className="font-normal text-[#344054]">Google</div>
             </div>
-            <div className="text-xs font-medium text-black text-center" style={{ visibility: type === ACCOUNT.SIGN_UP ? "visible" : 'hidden' }}>
+            <div className="text-xs font-medium text-black text-center" style={{ visibility: type === ACCOUNT.SIGN_UP ? "hidden" : 'hidden' }}>
               By signing up, you agree to{' '}
               <a className="underline" href="/legal-information">
                 Terms of Service
@@ -162,16 +162,22 @@ export default function LoginDialog({ type, setType, dialogShow, setDialogShow }
             </div>
           </div>
           <div className="pt-6 border-t border-[rgba(0,0,0,0.32)] font-medium text-sm text-black flex justify-center items-center">
-            Already have an account yet? &nbsp;
-            <span onClick={() => {
-              if (type === ACCOUNT.SIGN_IN) {
-                setType(ACCOUNT.SIGN_UP)
-              } else {
-                setType(ACCOUNT.SIGN_IN)
-              }
-            }} className="text-[#E75275] text-sm font-semibold leading-normal cursor-pointer">
-              {type === ACCOUNT.SIGN_IN ? ACCOUNT.SIGN_UP : ACCOUNT.SIGN_IN}
-            </span>
+            {type === ACCOUNT.SIGN_UP &&
+              <span>
+                Already have an account yet? &nbsp;
+                <span onClick={() => { setType(ACCOUNT.SIGN_IN) }} className="text-[#E75275] text-sm font-semibold leading-normal cursor-pointer">
+                  {ACCOUNT.SIGN_IN}
+                </span>
+              </span>
+            }
+            {type === ACCOUNT.SIGN_IN &&
+              <span>
+                Don&apos;t have an account yet? &nbsp;
+                <span onClick={() => { setType(ACCOUNT.SIGN_UP) }} className="text-[#E75275] text-sm font-semibold leading-normal cursor-pointer">
+                  {ACCOUNT.SIGN_UP}
+                </span>
+              </span>
+            }
           </div>
           {/* </div> */}
         </div>

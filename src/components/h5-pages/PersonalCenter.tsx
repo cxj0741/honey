@@ -171,7 +171,7 @@ export default function PersonalCenter({ user, orderArray }: { user: Record<stri
               <div className="text-base">Profile picture</div>
               <div className="mt-1.5 text-sm">Add a profile picture to personalize your account</div>
             </div>
-            <div onClick={() => { window.document.getElementById('upload')?.click() }} className="w-16 h-16 rounded-full overflow-clip relative bg-top bg-cover bg-no-repeat"
+            <div onClick={() => { window.document.getElementById('upload')?.click() }} className="w-16 h-16 rounded-full overflow-hidden relative bg-top bg-cover bg-no-repeat"
               style={{ backgroundImage: `url(${session?.data?.user?.image})`, backgroundColor: session?.data?.user?.image ? 'transparent' : '#075985' }}
             >
               <input id="upload" accept=".jpg, .jpeg, .png, .webp" onChange={event => handleUpload(event)} type="file" className='hidden' />
@@ -205,7 +205,7 @@ export default function PersonalCenter({ user, orderArray }: { user: Record<stri
             <div onClick={() => { setName('Email'); setDialogShow(true) }} className="w-6 h-6 bg-center bg-contain bg-no-repeat hover:cursor-pointer" style={{ backgroundImage: 'url(/assets/arrowRight.png)' }}></div>
           </div>
 
-          <div className="flex items-center justify-between py-3 border-b">
+          <div className="flex items-center justify-between py-3 border-b border-transparent">
             <div className="flex-1">
               <div className="text-sm">Password</div>
               <div className="mt-1.5 text-sm">*********</div>

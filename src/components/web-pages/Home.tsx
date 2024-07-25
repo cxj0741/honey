@@ -36,7 +36,7 @@ export default function Home() {
     <>
       <div className="px-2 flex-1 bg-[#F4F4F5] max-h-[100vh] overflow-scroll no-scrollbar">
         <div className="ml-4 my-6">
-          <div className="font-semibold text-[#FE387F]">Hi,&nbsp;&nbsp;{session.status === 'authenticated' ? (session?.data?.user?.name) : 'honeybun'}</div>
+          <div className="font-semibold text-[#FE387F] max-w-[120px] single-line-ellipsis">Hi,&nbsp;&nbsp;{session.status === 'authenticated' ? (session?.data?.user?.name) : 'honeybun'}</div>
           <div className="mt-1 flex items-center">
             <div className="font-semibold text-[#FE387F]">Welcome back</div>
             <div
@@ -45,7 +45,7 @@ export default function Home() {
               Girls
             </div>
             <div onClick={() => scrollTo('guys')}
-              className="ml-8 text-base text-black font-semibold hover:text-[#FE387F] hover:cursor-pointer">
+              className="ml-8 text-base text-black font-semibold hover:text-[#4b7dea] hover:cursor-pointer">
               Guys
             </div>
           </div>

@@ -1,7 +1,7 @@
 import { deleteBotDialogs, deleteUserBot } from '@/request'
 import { useRouter } from 'next/navigation'
 import ConfirmDialog from '@/components/web/ConfirmDialog'
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import { CHAT_PART } from '@/components/h5-pages/Chat'
 import { emitter, FOOTER_NAV_EVENT } from '@/utils'
 import { formatUnixTimestamp } from '@/utils/formatUnixTimestamp'
@@ -59,6 +59,7 @@ export default function ChatLeft({ setPart, activeBot, setActiveBot, currentArra
     setAction('')
     setTitle('')
   }
+  const inputRef = useRef(null)
   const handleSearch = (str: string) => {
     const arr = currentArray.map(item => {
       if (item.name.toLowerCase().includes(str.toLowerCase())) {
@@ -75,30 +76,31 @@ export default function ChatLeft({ setPart, activeBot, setActiveBot, currentArra
     <>
       <div
         className="w-[100vw] p-4 bg-cover bg-center text-black space-y-6 flex flex-col"
-        style={{height: 'calc(100vh - 7.5rem)'}}
+        style={{ height: 'calc(100vh - 7.5rem)' }}
       >
-        <div className="flex items-center justify-between">
-          <label className="flex-1 input input-bordered flex items-center gap-2 text-slate-900">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 16 16"
-              fill="currentColor"
-              className="h-4 w-4 opacity-70"
-            >
-              <path
-                fillRule="evenodd"
-                d="M9.965 11.026a5 5 0 1 1 1.06-1.06l2.755 2.754a.75.75 0 1 1-1.06 1.06l-2.755-2.754ZM10.5 7a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Z"
-                clipRule="evenodd"
-              />
-            </svg>
-            <input
-              onChange={(event) => handleSearch(event.target.value.trim())}
-              type="text"
-              className="flex-1"
-              placeholder="Search for a profile..."
-            />
-          </label>
-        </div>
+
+        <label className="px-4 h-10 rounded-lg border bg-[rgba(0,0,0,0.04)] flex items-center gap-2 text-slate-900">
+          <div
+            onClick={() => { }}
+            className="w-4 h-4 bg-center bg-contain bg-no-repeat hover:cursor-pointer"
+            style={{ backgroundImage: 'url(/assets/search.png)' }}
+          ></div>
+          <input
+            ref={inputRef}
+            onChange={(event) => handleSearch(event.target.value.trim())}
+            type="text"
+            className="flex-1 bg-transparent active:border-none outline-none"
+            placeholder="Search for a profile"
+          />
+          <div
+            onClick={() => {
+              (inputRef as any)!.current!.value = ''
+              handleSearch('')
+            }}
+            className="w-4 h-4 bg-center bg-contain bg-no-repeat hover:cursor-pointer"
+            style={{ backgroundImage: 'url(/assets/clear.png)' }}
+          ></div>
+        </label>
         <div className="grow space-y-4 overflow-auto no-scrollbar">
           {currentArray.filter(item => item.show).map((item) => (
             <div key={item.id} className='mt-2 pb-2 overflow-x-auto no-scrollbar'>
@@ -115,7 +117,7 @@ export default function ChatLeft({ setPart, activeBot, setActiveBot, currentArra
                   <div className="w-12 h-12 rounded-full bg-top bg-cover bg-no-repeat" style={{ backgroundImage: `url(${item.image1})` }}></div>
                   <div className="grow space-y-2">
                     <div className="text-sm font-semibold">{item.name}</div>
-                    <div className="w-[60vw] text-sm overflow-hidden text-ellipsis whitespace-nowrap">
+                    <div className="w-[60vw] text-sm single-line-ellipsis font-light">
                       {item.description}
                     </div>
                   </div>

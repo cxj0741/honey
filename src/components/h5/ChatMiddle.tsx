@@ -162,8 +162,8 @@ export default function ChatMiddle({ setPart, activeBot, setActiveBot }: Props) 
               onClick={() => {
                 setPart(CHAT_PART.RIGHT)
               }}
-              className="w-6 h-6 bg-center bg-contain bg-no-repeat hover:cursor-pointer"
-              style={{ backgroundImage: 'url(/assets/arrowOut.png)' }}
+              className="-mr-4 w-10 h-10 bg-center bg-contain bg-no-repeat hover:cursor-pointer"
+              style={{ backgroundImage: 'url(/assets/rightContent.png)' }}
             ></div>
           </div>
           <div className="h-6" style={{ background: 'linear-gradient( 180deg, #FDFDFD 0%, rgba(253,253,253,0) 100%)' }}></div>
@@ -200,7 +200,7 @@ export default function ChatMiddle({ setPart, activeBot, setActiveBot }: Props) 
                     </div>
                   </div>)
                 }
-                
+
                 {item.dialog.image &&
                   (<div className="mt-4 flex items-start">
                     <div className="w-8 h-8 rounded-full bg-top bg-cover bg-no-repeat" style={{ backgroundImage: `url(${activeBot.image1})` }}></div>
@@ -263,7 +263,8 @@ export default function ChatMiddle({ setPart, activeBot, setActiveBot }: Props) 
                 onKeyDown={(event) => handleKeyDown(event.key)}
                 type="text"
                 placeholder="Type a message"
-                className="input input-bordered input-sm flex-1" />
+                // className="input input-bordered input-sm flex-1" />
+                className="px-1 flex-1 active:border-none outline-none" />
               <div className="dropdown dropdown-top dropdown-end">
                 <div
                   tabIndex={0}
@@ -285,6 +286,7 @@ export default function ChatMiddle({ setPart, activeBot, setActiveBot }: Props) 
                   ))}
                 </ul>
               </div>
+              <div className="w-[1px] h-4 bg-[rgba(0,0,0,0.08)]"></div>
               <div
                 onClick={() => handleSendMessage()}
                 className="w-8 h-8 bg-center bg-contain bg-no-repeat hover:cursor-pointer"

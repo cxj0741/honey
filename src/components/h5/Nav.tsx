@@ -51,7 +51,11 @@ export default function Nav() {
   return (
     <>
       {/* HEADER */}
-      <div className="z-10 fixed left-0 top-0 w-[100vw] px-4 h-12 flex items-center justify-between bg-bottom bg-cover bg-no-repeat" style={{ backgroundImage: 'url(/assets/chatMiddleBg.png)' }}>
+      {/* <div className="z-10 fixed left-0 top-0 w-[100vw] px-4 h-12 flex items-center justify-between bg-bottom bg-cover bg-no-repeat"
+         style={{ backgroundImage: 'url(/assets/chatMiddleBg.png)' }} */}
+      <div className="z-10 fixed left-0 top-0 w-[100vw] px-4 h-12 flex items-center justify-between"
+        style={{ background: 'linear-gradient( 180deg, rgba(255,255,255,0) 0%, #FFFFFF 100%)' }}
+      >
         <div className="flex items-center">
           {path === '/' &&
             <>
@@ -103,7 +107,7 @@ export default function Nav() {
               >
                 <div className="w-6 h-6 rounded-full bg-top bg-cover bg-no-repeat"
                   style={{ backgroundImage: `url(${session?.data?.user?.image})`, backgroundColor: session?.data?.user?.image ? 'transparent' : '#075985' }}></div>
-                <div className='max-w-[33vw] break-words'>{session?.data?.user?.name}</div>
+                <div className='max-w-[33vw] single-line-ellipsis'>{session?.data?.user?.name}</div>
               </div>
             }
             <Item
@@ -131,7 +135,7 @@ export default function Nav() {
               //   }
               //   window.Tawk_API.toggle();
               // }}
-              onClick={() => {setContactDialogShow(true)}}
+              onClick={() => { setContactDialogShow(true) }}
               className={`px-5 py-3 flex items-center space-x-4 hover:bg-[rgba(255,255,255,0.08)] hover:cursor-pointer`}
             >
               <div className="w-5 h-5 bg-center bg-no-repeat bg-contain" style={{ backgroundImage: 'url(/assets/contactUs.png)' }}></div>
@@ -157,7 +161,7 @@ export default function Nav() {
           <p className="pt-2">contact us: support@honeybun.ai</p>
           <div className="modal-action">
             <button
-              onClick={() => {setContactDialogShow(false)}}
+              onClick={() => { setContactDialogShow(false) }}
               className="w-20 btn btn-outline btn-success btn-sm">OK</button>
           </div>
         </div>

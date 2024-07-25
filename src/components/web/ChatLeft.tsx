@@ -1,4 +1,5 @@
 import { formatUnixTimestamp } from '@/utils/formatUnixTimestamp'
+import { useRef } from 'react'
 interface Props {
   activeBot: Record<string, any>
   setActiveBot: Function
@@ -8,6 +9,7 @@ interface Props {
 }
 
 export default function ChatLeft({ activeBot, setActiveBot, currentArray, setCurrentArray, timeArray }: Props) {
+  const inputRef = useRef(null)
   const handleSearch = (str: string) => {
     const arr = currentArray.map(item => {
       if (item.name.toLowerCase().includes(str.toLowerCase())) {
@@ -25,25 +27,27 @@ export default function ChatLeft({ activeBot, setActiveBot, currentArray, setCur
         className="w-[312px] px-4 py-8 bg-white text-black flex flex-col"
       >
         <div className="text-2xl font-semibold">Chat</div>
-        <label className="mt-4 input input-bordered input-md flex items-center gap-2 text-slate-900">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 16 16"
-            fill="currentColor"
-            className="h-4 w-4 opacity-70"
-          >
-            <path
-              fillRule="evenodd"
-              d="M9.965 11.026a5 5 0 1 1 1.06-1.06l2.755 2.754a.75.75 0 1 1-1.06 1.06l-2.755-2.754ZM10.5 7a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Z"
-              clipRule="evenodd"
-            />
-          </svg>
+        <label className="mt-4 px-2 h-10 rounded-lg border bg-[rgba(0,0,0,0.04)] flex items-center gap-2 text-slate-900">
+          <div
+            onClick={() => { }}
+            className="w-4 h-4 bg-center bg-contain bg-no-repeat hover:cursor-pointer"
+            style={{ backgroundImage: 'url(/assets/search.png)' }}
+          ></div>
           <input
+            ref={inputRef}
             onChange={(event) => handleSearch(event.target.value.trim())}
             type="text"
-            className="grow"
-            placeholder="Search for a profile..."
+            className="flex-1 bg-transparent active:border-none outline-none"
+            placeholder="Search for a profile"
           />
+          <div
+            onClick={() => {
+              (inputRef as any)!.current!.value = ''
+              handleSearch('')
+            }}
+            className="w-4 h-4 bg-center bg-contain bg-no-repeat hover:cursor-pointer"
+            style={{ backgroundImage: 'url(/assets/clear.png)' }}
+          ></div>
         </label>
         <div className="mt-6 flex-1 space-y-4 overflow-auto no-scrollbar">
           {currentArray.filter(item => item.show).map((item) => (
@@ -61,7 +65,7 @@ export default function ChatLeft({ activeBot, setActiveBot, currentArray, setCur
                     {formatUnixTimestamp((timeArray.find(relation => relation.botId === item.id) as any).timestamp)}
                   </div>
                 </div>
-                <div className="w-[200px] overflow-hidden text-ellipsis whitespace-nowrap">
+                <div className="w-[200px] single-line-ellipsis font-light">
                   {item.description}
                 </div>
               </div>

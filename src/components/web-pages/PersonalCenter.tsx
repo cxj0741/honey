@@ -140,7 +140,7 @@ export default function PersonalCenter({ user, orderArray }: { user: Record<stri
     <>
       <div className="flex-1 max-h-[100vh] overflow-y-scroll no-scrollbar">
         <div className="py-10 w-full flex justify-center">
-          <div className="max-w-[872px] min-w-[536px] space-y-8">
+          <div className="flex-1 max-w-[872px] min-w-[536px] space-y-8">
             <div className="text-4xl font-semibold text-left">
               <span className="text-[#F53276]">Personal</span>
               <span className="ml-4 text-black">Information</span>
@@ -182,7 +182,7 @@ export default function PersonalCenter({ user, orderArray }: { user: Record<stri
               <div className="flex items-center justify-between py-6 border-b">
                 <div className="w-60 text-base">Profile picture</div>
                 <div className="flex-1 text-base">Add a profile picture to personalize your account</div>
-                <div onClick={() => { window.document.getElementById('upload')?.click() }} className="w-16 h-16 rounded-full overflow-clip relative bg-top bg-cover bg-no-repeat hover:cursor-pointer"
+                <div onClick={() => { window.document.getElementById('upload')?.click() }} className="w-16 h-16 rounded-full overflow-hidden relative bg-top bg-cover bg-no-repeat hover:cursor-pointer"
                   style={{ backgroundImage: `url(${session?.data?.user?.image})`, backgroundColor: session?.data?.user?.image ? 'transparent' : '#075985' }}
                 >
                   <input id="upload" accept=".jpg, .jpeg, .png, .webp" onChange={event => handleUpload(event)} type="file" className='hidden' />
@@ -210,7 +210,7 @@ export default function PersonalCenter({ user, orderArray }: { user: Record<stri
                 <div onClick={() => { setName('Email'); setDialogShow(true) }} className="w-6 h-6 bg-center bg-contain bg-no-repeat hover:cursor-pointer" style={{ backgroundImage: 'url(/assets/arrowRight.png)' }}></div>
               </div>
 
-              <div className="flex items-center justify-between py-6 border-b">
+              <div className="flex items-center justify-between py-6 border-b border-transparent">
                 <div className="w-60 text-base">Password</div>
                 <div className="flex-1 text-base">*********</div>
                 <div onClick={() => { setName('Password'); setDialogShow(true) }} className="w-6 h-6 bg-center bg-contain bg-no-repeat hover:cursor-pointer" style={{ backgroundImage: 'url(/assets/arrowRight.png)' }}></div>

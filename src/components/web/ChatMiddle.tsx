@@ -295,13 +295,14 @@ export default function ChatMiddle({ fold, setFold, activeBot, setActiveBot, cur
           style={{ backgroundImage: 'url(/assets/chatMiddleBg.png)' }}
         >
           {inputShow ?
-            <div className='p-2 rounded-lg flex items-center space-x-2'>
+            <div className='rounded-lg flex items-center space-x-1 bg-white'>
               <input
                 ref={inputRef}
                 onKeyDown={(event) => handleKeyDown(event.key)}
                 type="text"
                 placeholder="Type a message"
-                className="input input-bordered flex-1" />
+                // className="input input-bordered flex-1" />
+                className="px-1 flex-1 h-10 active:border-none outline-none" />
               <div className="dropdown dropdown-top dropdown-end bg-[rgba(255,255,255,0.5)] rounded-lg">
                 <div
                   tabIndex={0}
@@ -323,6 +324,7 @@ export default function ChatMiddle({ fold, setFold, activeBot, setActiveBot, cur
                   ))}
                 </ul>
               </div>
+              <div className="w-[1px] h-4 bg-[rgba(0,0,0,0.08)]"></div>
               <div
                 onClick={() => handleSendMessage()}
                 className="w-8 h-8 bg-center bg-contain bg-no-repeat hover:cursor-pointer"

@@ -15,8 +15,8 @@ export default function Home() {
   }, [])
 
   return (
-    <>
-      <div className="mt-2 w-[100vw] h-8 px-4 border-b border-[rgba(255,255,255,0.16)] flex items-center justify-around">
+    <div className='bg-[#F4F4F5]' style={{height: 'calc(100vh - 6.5rem)'}}>
+      <div className="pt-2 w-[100vw] h-10 px-4 border-b border-[rgba(255,255,255,0.16)] bg-white flex items-center justify-around">
         <div
           onClick={() => { handler(TYPE.FEMALE) }}
           className="text-base text-white flex flex-col items-center relative">
@@ -37,6 +37,6 @@ export default function Home() {
         </div>
       </div>
       <ProfileArea botList={botList} type={type} />
-    </>
+    </div>
   )
 }
