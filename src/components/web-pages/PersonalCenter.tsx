@@ -6,10 +6,10 @@ import { useCallback, useRef, useState } from 'react'
 import ConfirmDialog from '@/components/web/ConfirmDialog'
 import { z } from 'zod'
 import Toast, { TOAST_TYPE, useToast } from '@/components/web/Toast'
-// import { formatDate } from '@/utils/formatUnixTimestamp'
+import { formatDate } from '@/utils/formatUnixTimestamp'
 
 export default function PersonalCenter({ user, orderArray }: { user: Record<string, any>, orderArray: Record<string, any> }) {
-  console.log('user info', user)
+  console.log('user info', user, orderArray)
   const { toast, handleToast } = useToast()
   const handleDeleteUser = async () => {
     try {
@@ -153,7 +153,7 @@ export default function PersonalCenter({ user, orderArray }: { user: Record<stri
               <div className="text-2xl font-semibold">
                 Subscription status
               </div>
-              {/* {user.vipLevel ?
+              {user.vipLevel ?
                 <>
                   <div className="mt-8 flex items-center">
                     <div className=" flex-1 text-[#F53276] font-semibold text-3xl">
@@ -174,7 +174,7 @@ export default function PersonalCenter({ user, orderArray }: { user: Record<stri
                   </div>
                   <div className='mt-4 text-base'>Subscription to: --</div>
                 </>
-              } */}
+              }
             </div>
             <div className="w-full p-6 border rounded-lg">
               <div className="text-2xl">Basic Infomation</div>
@@ -232,7 +232,7 @@ export default function PersonalCenter({ user, orderArray }: { user: Record<stri
               </div>
             </div>
 
-            {
+            {/* {
               orderArray.length !== 0 &&
               (<div className="w-full px-6 border rounded-lg">
                 <div className="py-6 border-b">
@@ -258,7 +258,7 @@ export default function PersonalCenter({ user, orderArray }: { user: Record<stri
                   ))}
                 </div>
               </div>)
-            }
+            } */}
           </div>
         </div>
       </div >
