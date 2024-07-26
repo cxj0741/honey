@@ -121,7 +121,7 @@ export default function ChatLeft({ setPart, activeBot, setActiveBot, currentArra
                       {item.description}
                     </div> */}
                     <div className="block w-[60vw] text-sm single-line-ellipsis font-light">
-                      {item.description.slice(0,30)}...
+                      {(timeArray.find(relation => relation.botId === item.id) as any).botStr}...
                     </div>
                   </div>
                   <div className="space-y-3 flex flex-col items-end">

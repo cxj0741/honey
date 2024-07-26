@@ -160,6 +160,7 @@ export const usersToBots = pgTable(
     userId: text("user_id").notNull().references(() => users.id,{ onDelete: "cascade" } ),
     botId: text("bot_id").notNull().references(() => bots.id),
     timestamp: bigint('timestamp', { mode: 'number'}).notNull(),
+    botStr: text("bot_str").notNull().default(''),
     conversationId: text('conversation_id').default(''),
   },
   (t)=>({

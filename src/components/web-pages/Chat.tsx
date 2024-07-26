@@ -13,10 +13,11 @@ export default function Chat({ userBotArray, usersToBotsArray, botId }: { userBo
   const [timeArray, setTimeArray] = useState(usersToBotsArray)
   const getDetail = async (item: any) => {
     try {
-      const { timestamp, conversationId } = await getUserToBotDetail(item.id)
+      const { timestamp,botStr, conversationId } = await getUserToBotDetail(item.id)
       const array = timeArray.map(relation => {
         if (relation.botId === item.id) {
           relation.timestamp = timestamp
+          relation.botStr = botStr
           // console.log('relation', relation)
         }
         return relation
