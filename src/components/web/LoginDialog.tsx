@@ -137,8 +137,8 @@ export default function LoginDialog({ type, setType, dialogShow, setDialogShow }
                     <a className="inline-block mt-3 text-transparent underline decoration-solid">Forget Password?</a>
                 }
               </div>
-              {type === ACCOUNT.SIGN_UP && <button onClick={() => handleConfirm(ACCOUNT.SIGN_UP)} className="btn btn-outline w-full">{ACCOUNT.SIGN_UP}</button>}
-              {type === ACCOUNT.SIGN_IN && <button onClick={() => handleConfirm(ACCOUNT.SIGN_IN)} className="btn btn-outline w-full">{ACCOUNT.SIGN_IN}</button>}
+              {type === ACCOUNT.SIGN_UP && <button onClick={() => handleConfirm(ACCOUNT.SIGN_UP)} className="btn w-full bg-[#E75275] hover:bg-[#E75275] text-white">{ACCOUNT.SIGN_UP}</button>}
+              {type === ACCOUNT.SIGN_IN && <button onClick={() => handleConfirm(ACCOUNT.SIGN_IN)} className="btn w-full bg-[#E75275] hover:bg-[#E75275] text-white">{ACCOUNT.SIGN_IN}</button>}
               <div className="flex flex-row items-center">
                 <div
                   className="flex-1 h-[1px]"

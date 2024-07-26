@@ -79,7 +79,7 @@ export default function LoginDialog({ type, setType, dialogShow, setDialogShow }
     <div className={`${dialogShow ? 'block' : 'hidden'}`}>
       <div className="z-50 fixed left-0 top-0 w-[100vw] h-[100vh] flex items-center justify-center bg-[rgba(0,0,0,0.8)]">
         <div className="overflow-scroll no-scrollbar p-4 rounded-3xl border border-[rgba(0,0,0,0.16)] relative flex flex-col justify-end bg-bottom bg-cover bg-no-repeat"
-          style={{ backgroundImage: 'url(/assets/chatMiddleBg.png)',width: 'calc(100vw - 2rem)' }}>
+          style={{ backgroundImage: 'url(/assets/chatMiddleBg.png)', width: 'calc(100vw - 2rem)' }}>
           <div onClick={() => {
             setDialogShow(false)
             router.push('/')
@@ -125,8 +125,8 @@ export default function LoginDialog({ type, setType, dialogShow, setDialogShow }
                   <a className="inline-block mt-3 text-black underline decoration-solid">Forget Password?</a>
               }
             </div>
-            {type === ACCOUNT.SIGN_UP && <button onClick={() => handleConfirm(ACCOUNT.SIGN_UP)} className="btn btn-outline w-full">{ACCOUNT.SIGN_UP}</button>}
-            {type === ACCOUNT.SIGN_IN && <button onClick={() => handleConfirm(ACCOUNT.SIGN_IN)} className="btn btn-outline w-full">{ACCOUNT.SIGN_IN}</button>}
+            {type === ACCOUNT.SIGN_UP && <button onClick={() => handleConfirm(ACCOUNT.SIGN_UP)} className="btn w-full bg-[#E75275] hover:bg-[#E75275] text-white">{ACCOUNT.SIGN_UP}</button>}
+            {type === ACCOUNT.SIGN_IN && <button onClick={() => handleConfirm(ACCOUNT.SIGN_IN)} className="btn w-full bg-[#E75275] hover:bg-[#E75275] text-white">{ACCOUNT.SIGN_IN}</button>}
             <div className="flex flex-row items-center">
               <div
                 className="flex-1 h-[1px]"
