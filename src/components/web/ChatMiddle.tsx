@@ -57,9 +57,9 @@ export default function ChatMiddle({ fold, setFold, activeBot, setActiveBot, cur
     if (!userStr) { return }
 
     try {
-      const { messages, tokens } = await getUserInfo()
+      const { vipLevel, messages, tokens } = await getUserInfo()
       console.log('messages, tokens', messages, tokens)
-      if (messages <= 0) {
+      if (vipLevel === 0 && messages <= 0) {
         setDialogShow(true)
         return
       }
