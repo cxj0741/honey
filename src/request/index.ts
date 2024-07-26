@@ -142,8 +142,8 @@ export async function uploadAvatarToCloud(formData: FormData) {
     method: 'POST',
     mode: 'cors',
     headers: {
-      // 'api_key': 'ABCPPOOO233ddWWW'
-      Authorization: `Bearer ${KEY}`, // 用于传递 API 密钥
+      // Authorization: `Bearer ${KEY}`, // 用于传递 API 密钥
+      'api-key': `${KEY}`, // 用于传递 API 密钥
     },
     body: formData,
   })
