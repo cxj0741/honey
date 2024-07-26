@@ -79,7 +79,7 @@ export default function ChatLeft({ setPart, activeBot, setActiveBot, currentArra
         style={{ height: 'calc(100vh - 6.5rem)' }}
       >
 
-        <label className="px-4 h-10 rounded-lg border bg-[rgba(0,0,0,0.04)] flex items-center gap-2 text-slate-900">
+        <label className="px-4 h-12 rounded-lg border bg-[rgba(0,0,0,0.04)] flex items-center gap-2 text-slate-900">
           <div
             onClick={() => { }}
             className="w-4 h-4 bg-center bg-contain bg-no-repeat hover:cursor-pointer"
