@@ -2,7 +2,12 @@
 const nextConfig = {
   images: {
     remotePatterns: [
-      // 这时google的图片
+      {
+        protocol: 'https',
+        hostname: 'honeybunai.s3.us-west-2.amazonaws.com',
+        port: '',
+        pathname: '/**',
+      },
       {
         protocol: 'https',
         hostname: 'www.honeybun.ai',
