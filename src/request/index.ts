@@ -135,20 +135,26 @@ export async function uploadAvatar(file: File) {
   return data
 }
 
-// const KEY = 'ABCPPOOO233ddWWW'
 export async function uploadAvatarToCloud(formData: FormData) {
   console.log('formData', formData)
-  const res = await fetch('https://honeybun-obejcts.vercel.app/upload', {
+  const res1 = await fetch('https://honeybun-obejcts.vercel.app/upload', {
     method: 'POST',
     mode: 'cors',
     headers: {
-      // Authorization: `Bearer ${KEY}`, // 用于传递 API 密钥
       'api-key': 'ABCPPOOO233ddWWW', // 用于传递 API 密钥
     },
     body: formData,
   })
-  console.log('res', res)
-  const data = await res.json()
-  console.log('data>>>>> userData', data)
-  return data
+  const data1 = await res1.json()
+  const res2 = await fetch(
+    `https://honeybun-obejcts.vercel.app/generate_presigned_url/?file_key=${data1.file_key}`,
+    {
+      mode: 'cors',
+      headers: {
+        'api-key': 'ABCPPOOO233ddWWW', // 用于传递 API 密钥
+      },
+    }
+  )
+  const data2 = await res2.json()
+  return data2
 }
