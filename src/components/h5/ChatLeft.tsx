@@ -120,8 +120,9 @@ export default function ChatLeft({ setPart, activeBot, setActiveBot, currentArra
                     {/* <div className="block w-[60vw] text-sm single-line-ellipsis font-light">
                       {item.description}
                     </div> */}
-                    <div className="block w-[60vw] text-sm single-line-ellipsis font-light">
-                      {((timeArray.find(relation => relation.botId === item.id) as any).botStr || item.description).slice(0, 30)}...
+                    <div className="h-5 w-[60vw] text-sm single-line-ellipsis font-light">
+                      {((timeArray.find(relation => relation.botId === item.id) as any).botStr).slice(0, 30)}
+                      {(timeArray.find(relation => relation.botId === item.id) as any).botStr && '...'}
                     </div>
                   </div>
                   <div className="space-y-3 flex flex-col items-end">

@@ -20,10 +20,13 @@ export async function POST(request: NextRequest) {
   await db
     .insert(chats)
     .values({ userId, botId, timestamp, dialog: JSON.stringify(dialog) })
-
+  const data = { timestamp }
+  if (dialog.botStr) {
+    (data as any).botStr = dialog.botStr
+  }
   await db
     .update(usersToBots)
-    .set({ timestamp, botStr: dialog.botStr })
+    .set(data)
     .where(
       sql`${usersToBots.userId} = ${userId} AND ${usersToBots.botId} = ${botId}`
     )

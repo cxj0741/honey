@@ -69,8 +69,8 @@ export default function ChatLeft({ activeBot, setActiveBot, currentArray, setCur
                     {formatUnixTimestamp((timeArray.find(relation => relation.botId === item.id) as any).timestamp)}
                   </div>
                 </div>
-                <div className="w-[200px] single-line-ellipsis font-light text-sm">
-                  {(timeArray.find(relation => relation.botId === item.id) as any).botStr || item.description}
+                <div className="w-[200px] h-5 single-line-ellipsis font-light text-sm">
+                  {(timeArray.find(relation => relation.botId === item.id) as any).botStr}
                 </div>
               </div>
             </div>
