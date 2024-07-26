@@ -29,6 +29,8 @@ export default function Chat({ userBotArray, usersToBotsArray, botId }: { userBo
         return relation
       })
       setTimeArray(array)
+      const filterArray = currentArray.filter(bot => (bot as any).id !== activeBot.id)
+      setCurrentArray([item, ...filterArray])
       if (conversationId) {
         localStorage.setItem(item.id, conversationId)
       } else {

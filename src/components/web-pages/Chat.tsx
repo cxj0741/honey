@@ -13,7 +13,7 @@ export default function Chat({ userBotArray, usersToBotsArray, botId }: { userBo
   const [timeArray, setTimeArray] = useState(usersToBotsArray)
   const getDetail = async (item: any) => {
     try {
-      const { timestamp,botStr, conversationId } = await getUserToBotDetail(item.id)
+      const { timestamp, botStr, conversationId } = await getUserToBotDetail(item.id)
       const array = timeArray.map(relation => {
         if (relation.botId === item.id) {
           relation.timestamp = timestamp
@@ -23,6 +23,8 @@ export default function Chat({ userBotArray, usersToBotsArray, botId }: { userBo
         return relation
       })
       setTimeArray(array)
+      const filterArray = currentArray.filter(bot => (bot as any).id !== activeBot.id)
+      setCurrentArray([item, ...filterArray])
       if (conversationId) {
         localStorage.setItem(item.id, conversationId)
       } else {
