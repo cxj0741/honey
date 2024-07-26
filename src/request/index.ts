@@ -156,5 +156,6 @@ export async function uploadAvatarToCloud(formData: FormData) {
     }
   )
   const data2 = await res2.json()
-  return data2
+  const data = await changeUserInfo('image', data2.presigned_url)
+  return data
 }
