@@ -52,7 +52,11 @@ export default function ChatLeft({ activeBot, setActiveBot, currentArray, setCur
         <div className="mt-6 flex-1 space-y-4 overflow-auto no-scrollbar">
           {currentArray.filter(item => item.show).map((item) => (
             <div
-              onClick={() => setActiveBot({ ...item })}
+              onClick={() => {
+                const arr = currentArray.filter(bot => bot !== item)
+                setCurrentArray([item, ...arr])
+                setActiveBot({ ...item })
+              }}
               key={item.id}
               className={`h-16 p-2 flex items-center justify-between space-x-3 rounded-lg hover:bg-[rgba(0,0,0,0.04)] hover:cursor-pointer group ${activeBot.id === item.id ? 'bg-[rgba(0,0,0,0.04)]' : 'bg-transparent'}`}
             >
@@ -65,7 +69,7 @@ export default function ChatLeft({ activeBot, setActiveBot, currentArray, setCur
                     {formatUnixTimestamp((timeArray.find(relation => relation.botId === item.id) as any).timestamp)}
                   </div>
                 </div>
-                <div className="w-[200px] single-line-ellipsis font-light">
+                <div className="w-[200px] single-line-ellipsis font-light text-sm">
                   {(timeArray.find(relation => relation.botId === item.id) as any).botStr}
                 </div>
               </div>

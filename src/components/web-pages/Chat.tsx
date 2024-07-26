@@ -12,6 +12,7 @@ export default function Chat({ userBotArray, usersToBotsArray, botId }: { userBo
   const [activeBot, setActiveBot] = useState(bot)
   const [timeArray, setTimeArray] = useState(usersToBotsArray)
   const getDetail = async (item: any) => {
+    if (!item) { return }
     try {
       const { timestamp, botStr, conversationId } = await getUserToBotDetail(item.id)
       const array = timeArray.map(relation => {
@@ -23,8 +24,6 @@ export default function Chat({ userBotArray, usersToBotsArray, botId }: { userBo
         return relation
       })
       setTimeArray(array)
-      const filterArray = currentArray.filter(bot => (bot as any).id !== activeBot.id)
-      setCurrentArray([item, ...filterArray])
       if (conversationId) {
         localStorage.setItem(item.id, conversationId)
       } else {
@@ -34,12 +33,10 @@ export default function Chat({ userBotArray, usersToBotsArray, botId }: { userBo
       console.error('getDetail error', error)
     }
   }
-
   useEffect(() => {
     getDetail(activeBot)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeBot])
-
 
   return (
     <div className="flex-1 flex">
