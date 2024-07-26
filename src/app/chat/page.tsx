@@ -40,7 +40,7 @@ export default async function Chat({ searchParams }: { searchParams: Record<stri
     if (!relation.length) {
       const timestamp = Date.now()
       await db.insert(usersToBots).values({ userId, botId: id, timestamp })
-      usersToBotsArray.push({ userId, botId: id, timestamp, conversationId: '' })
+      usersToBotsArray.push({ userId, botId: id, timestamp, botStr: '', conversationId: '' })
     }
 
     // 获取user所有bot的基本信息

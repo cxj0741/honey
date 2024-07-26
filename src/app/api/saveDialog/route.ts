@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { db } from '@/server/db'
-import { chats, users, usersToBots } from '@/server/db/schema'
+import { chats, usersToBots } from '@/server/db/schema'
 import { getUserId } from '@/utils/getUserId'
 import { sql } from 'drizzle-orm/sql'
 
