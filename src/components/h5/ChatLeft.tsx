@@ -89,7 +89,7 @@ export default function ChatLeft({ setPart, activeBot, setActiveBot, currentArra
             ref={inputRef}
             onChange={(event) => handleSearch(event.target.value.trim())}
             type="text"
-            className="flex-1 bg-transparent active:border-none outline-none"
+            className="flex-1 bg-transparent active:border-none outline-none h-[3rem]"
             placeholder="Search for a profile"
           />
           <div
