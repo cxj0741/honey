@@ -46,7 +46,7 @@ export default function ChatLeft({ activeBot, setActiveBot, currentArray, setCur
               handleSearch('')
             }}
             className="w-4 h-4 bg-center bg-contain bg-no-repeat hover:cursor-pointer"
-            style={{ backgroundImage: 'url(/assets/clear.png)', visibility: (inputRef as any)?.current?.value ? 'visible' : 'hidden' }}
+            style={{ backgroundImage: 'url(/assets/clear.png)', visibility: (inputRef as any)?.current?.value?.trim() ? 'visible' : 'hidden' }}
           ></div>
         </label>
         <div className="mt-6 flex-1 space-y-4 overflow-auto no-scrollbar">
