@@ -70,7 +70,7 @@ export default function ChatLeft({ activeBot, setActiveBot, currentArray, setCur
                   </div>
                 </div>
                 <div className="w-[200px] single-line-ellipsis font-light text-sm">
-                  {(timeArray.find(relation => relation.botId === item.id) as any).botStr}
+                  {(timeArray.find(relation => relation.botId === item.id) as any).botStr || item.description}
                 </div>
               </div>
             </div>
