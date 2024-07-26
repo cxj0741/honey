@@ -8,7 +8,7 @@ import { z } from 'zod'
 import Toast, { TOAST_TYPE, useToast } from '@/components/web/Toast'
 
 export default function PersonalCenter({ user, orderArray }: { user: Record<string, any>, orderArray: Record<string, any> }) {
-  console.log('user info', user, orderArray)
+  // console.log('user info', user, orderArray)
   const { toast, handleToast } = useToast()
   const handleDeleteUser = async () => {
     try {
