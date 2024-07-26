@@ -129,7 +129,8 @@ export default function PersonalCenter({ user, orderArray }: { user: Record<stri
         formData.append('file', file);
         // console.log('start upload form data', formData)
         const res = await uploadAvatarToCloud(formData)
-        handleToast(TOAST_TYPE.SUCCESS, res.message)
+        console.log('res>>>>>>,', res)
+        handleToast(TOAST_TYPE.SUCCESS, JSON.stringify(res))
         // const newSession = await getSession();
         // session.update(newSession)
       } catch (error) {
