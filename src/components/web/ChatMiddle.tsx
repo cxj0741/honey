@@ -5,9 +5,9 @@ import { deleteBotDialogs, deleteUserBot, getDialogs, getUserInfo, saveDialog, s
 import { formatUnixTimestamp } from '@/utils/formatUnixTimestamp'
 import ConfirmDialog from '@/components/web/ConfirmDialog'
 import { getSession, useSession } from 'next-auth/react'
-import { findUrlInString } from '@/utils/findUrlInString'
 import Toast, { TOAST_TYPE, useToast } from '@/components/web/Toast'
 import { useRouter } from 'next/navigation'
+import { findContent } from '@/utils/findContent'
 
 interface Props {
   fold: boolean
@@ -83,14 +83,29 @@ export default function ChatMiddle({ fold, setFold, activeBot, setActiveBot, cur
     try {
       let [botStr, images, conversationId] = (await sendMessage(activeBot.key, { user: (session.data?.user as any)?.id, userStr, conversationId: localStorage.getItem(activeBot.id) || '' })) as [string, string[], string]
       let image: string = ''
-      if (images.length) {
-        image = images[0]
-        console.log('>>>>>images', images)
-      } else {
-        image = findUrlInString(botStr)
-        console.log('image', image)
+      // if (images.length) {
+      //   image = images[0]
+      //   console.log('>>>>>images', images)
+      // } else {
+      //   image = findUrlInString(botStr)
+      //   console.log('image', image)
+      // }
+      // botStr = botStr.replace(image, '')
+      let res = findContent(botStr)
+      if (Array.isArray(res)) {
+        console.log('res', res)
+        image = res[1]
+        botStr = botStr.replace(res[0], '')
+      } else if (typeof res === 'string') {
+        console.log('res', res)
+        if (res !== '') {
+          image = res
+          botStr = botStr.replace(res, '')
+        } else if (images.length) {
+          image = images[0]
+          botStr = botStr.replace(image, '')
+        }
       }
-      botStr = botStr.replace(image, '')
       setResult({ timestamp, dialog: { userStr, botStr, image } })
       // console.log('succeed send message>>>>> set', botStr, image, conversationId)
       // console.log('conversationId>>>>> set', activeBot.id, conversationId)
