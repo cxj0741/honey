@@ -16,7 +16,7 @@ export default function Home() {
 
   return (
     <div className='bg-[#F4F4F5]' style={{height: 'calc(100vh - 6.5rem)'}}>
-      <div className="pt-2 w-[100vw] h-10 px-4 border-b border-[rgba(255,255,255,0.16)] bg-white flex items-center justify-around">
+      <div className="sticky top-12 left-0 pt-2 w-[100vw] h-10 px-4 border-b border-[rgba(255,255,255,0.16)] bg-white flex items-center justify-around">
         <div
           onClick={() => { handler(TYPE.FEMALE) }}
           className="text-base text-white flex flex-col items-center relative">
