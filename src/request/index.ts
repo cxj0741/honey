@@ -173,3 +173,9 @@ export async function subscribe(email: string, amount: number) {
   const data = await res.json()
   return data
 }
+
+export async function getUserVIPInfo() {
+  const res = await fetch('https://honeybun-pay.vercel.app/user/22/vip_info/')
+  const data = await res.json()
+  return data
+}

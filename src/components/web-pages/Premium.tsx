@@ -1,13 +1,15 @@
 'use client'
-import { subscribe } from '@/request'
-import { useSession } from 'next-auth/react'
+import { getUserVIPInfo } from '@/request'
+// import { getUserVIPInfo, subscribe } from '@/request'
+// import { useSession } from 'next-auth/react'
 import { useState } from 'react'
 export default function BecomePremium() {
   const [active, setActive] = useState(12)
-  const session = useSession()
+  // const session = useSession()
   const handlePay = async (type: number) => {
     console.log('handlePay type', type)
-    const res = await subscribe((session.data?.user as any)?.email, 9.9)
+    // const res = await subscribe((session.data?.user as any)?.email, 9.9)
+    const res = await getUserVIPInfo()
     console.log('subscribe', res)
   }
   return (
