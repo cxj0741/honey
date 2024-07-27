@@ -114,7 +114,7 @@ export async function changeUserInfo(name: string, str: string) {
   // console.log('data>>>>> userData', data)
   return data
 }
-
+// 这个是nextjs的上传图片
 export async function uploadAvatar(file: File) {
   // console.log('file', file)
   // console.log('file.name', file.name)
@@ -157,5 +157,19 @@ export async function uploadAvatarToCloud(formData: FormData) {
   )
   const data2 = await res2.json()
   const data = await changeUserInfo('image', data2.presigned_url)
+  return data
+}
+
+export async function subscribe(email: string, amount: number) {
+  const res = await fetch('https://honeybun-pay.vercel.app/subscribe/', {
+    method: 'POST',
+    mode: 'cors',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ email, amount }),
+  })
+  console.log('res>>>>>> subscribe', res)
+  const data = await res.json()
   return data
 }

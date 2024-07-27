@@ -1,7 +1,15 @@
 'use client'
+import { subscribe } from '@/request'
+import { useSession } from 'next-auth/react'
 import { useState } from 'react'
 export default function BecomePremium() {
   const [active, setActive] = useState(12)
+  const session = useSession()
+  const handlePay = async (type: number) => {
+    console.log('handlePay type', type)
+    const res = await subscribe((session.data?.user as any)?.email, 9.9)
+    console.log('subscribe', res)
+  }
   return (
     <div className='flex-1 flex flex-col'>
       <div
@@ -21,7 +29,7 @@ export default function BecomePremium() {
           </div>
           <div className='mt-2 text-xs line-through text-black text-center'>was $11.9/month</div>
           <div className='mt-10 text-sm text-center'>Annual payment billed as $11.99</div>
-          <div className="mt-24 w-full py-3 rounded-lg bg-[#FE387F] flex items-center justify-center space-x-2 hover:cursor-pointer">
+          <div onClick={() => handlePay(1)} className="mt-24 w-full py-3 rounded-lg bg-[#FE387F] flex items-center justify-center space-x-2 hover:cursor-pointer">
             <div className="w-6 h-5 bg-center bg-no-repeat bg-contain" style={{ backgroundImage: 'url(/assets/card.png)' }}></div>
             <div className='text-sm text-white'>
               pay with creadit /debit Card
@@ -39,7 +47,7 @@ export default function BecomePremium() {
           </div>
           <div className='mt-2 text-xs line-through text-black text-center'>was $11.9/month</div>
           <div className='mt-10 text-sm text-center'>Annual payment billed as $71.88</div>
-          <div className="mt-24 w-full py-3 rounded-lg bg-[#FE387F] flex items-center justify-center space-x-2 hover:cursor-pointer">
+          <div onClick={() => handlePay(12)} className="mt-24 w-full py-3 rounded-lg bg-[#FE387F] flex items-center justify-center space-x-2 hover:cursor-pointer">
             <div className="w-6 h-5 bg-center bg-no-repeat bg-contain" style={{ backgroundImage: 'url(/assets/card.png)' }}></div>
             <div className='text-sm text-white'>
               pay with creadit /debit Card
@@ -57,7 +65,7 @@ export default function BecomePremium() {
           </div>
           <div className='mt-2 text-xs line-through text-black text-center'>was $11.9/month</div>
           <div className='mt-10 text-sm text-center'>Annual payment billed as $29.97</div>
-          <div className="mt-24 w-full py-3 rounded-lg bg-[#FE387F] flex items-center justify-center space-x-2 hover:cursor-pointer">
+          <div onClick={() => handlePay(3)} className="mt-24 w-full py-3 rounded-lg bg-[#FE387F] flex items-center justify-center space-x-2 hover:cursor-pointer">
             <div className="w-6 h-5 bg-center bg-no-repeat bg-contain" style={{ backgroundImage: 'url(/assets/card.png)' }}></div>
             <div className='text-sm text-white'>
               pay with creadit /debit Card
