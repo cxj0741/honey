@@ -14,7 +14,7 @@ let counter = 0
 export default function Success() {
   const router = useRouter()
   const searchParams = useSearchParams()
-  const orderId = searchParams.get('order_id') || 'f7d8daba-c5f8-4eff-b1ab-ad29165cc5ac'
+  const orderId = searchParams.get('order_id')
 
   const [status, setStauts] = useState(PAY_STATUS.PROGRESS)
   const getOrder = useCallback(async (orderId: string) => {
@@ -29,7 +29,7 @@ export default function Success() {
       } else {
         console.log('counter', counter)
         counter += 1
-        setTimeout(async () => await getOrder(orderId), 5000)
+        setTimeout(async () => await getOrder(orderId), 10000)
         return
       }
     }
