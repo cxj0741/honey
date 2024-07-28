@@ -9,7 +9,7 @@ const PAY_STATUS = {
   FAILURE: 'failure',
   PROGRESS: 'progress'
 }
-const MAX_TRiES = 10
+const MAX_TRiES = 20
 let counter = 0
 export default function Success() {
   const router = useRouter()
@@ -29,7 +29,7 @@ export default function Success() {
       } else {
         console.log('counter', counter)
         counter += 1
-        setTimeout(async () => await getOrder(orderId), 3000)
+        setTimeout(async () => await getOrder(orderId), 5000)
         return
       }
     }
