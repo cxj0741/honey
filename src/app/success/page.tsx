@@ -9,7 +9,7 @@ const PAY_STATUS = {
   FAILURE: 'failure',
   PROGRESS: 'progress'
 }
-const MAX_TRiES = 20
+const MAX_TRiES = 10
 let counter = 0
 export default function Success() {
   const router = useRouter()
@@ -24,12 +24,12 @@ export default function Success() {
         setStauts(PAY_STATUS.FAILURE)
         setTimeout(() => {
           router.replace('/')
-        }, 3000)
+        }, 5000)
         return
       } else {
         console.log('counter', counter)
         counter += 1
-        setTimeout(async () => await getOrder(orderId), 10000)
+        setTimeout(async () => await getOrder(orderId), 3000)
         return
       }
     }
@@ -37,14 +37,14 @@ export default function Success() {
       setStauts(PAY_STATUS.SUCCESS)
       setTimeout(() => {
         router.replace('/')
-      }, 3000)
+      }, 5000)
       return
     }
     if (status === PAY_STATUS.FAILURE) {
       setStauts(PAY_STATUS.FAILURE)
       setTimeout(() => {
         router.replace('/')
-      }, 3000)
+      }, 5000)
       return
     }
   }, [router])
@@ -57,12 +57,12 @@ export default function Success() {
   return (
     <div className="z-50 fixed left-0 top-0 w-[100vw] h-[100vh] flex items-center justify-center bg-[rgba(0,0,0,0.8)]">
       <div className="w-80 h-32 rounded-lg bg-white flex items-center justify-center text-lg font-semibold text-center">
-        {status === PAY_STATUS.PROGRESS && <div>Please wait a moment!</div>}
+        {status === PAY_STATUS.PROGRESS && <div>please wait for a moment!</div>}
         {status !== PAY_STATUS.PROGRESS &&
           <div>
-            {status === PAY_STATUS.SUCCESS && <div>Order Success!</div>}
-            {status === PAY_STATUS.FAILURE && <div>Order Failure!</div>}
-            <div>Navigate To Home after 3 seconds!</div>
+            {status === PAY_STATUS.SUCCESS && <div>order success!</div>}
+            {status === PAY_STATUS.FAILURE && <div>order failure!</div>}
+            <div>navigate to home page after 5 seconds!</div>
           </div>
         }
       </div>

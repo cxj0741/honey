@@ -12,7 +12,7 @@ export default function BecomePremium() {
   const session = useSession()
   const handlePay = async (type: 1 | 3 | 12) => {
     const res = await subscribe((session.data?.user as any)?.email, type * (priceMap[type]))
-    console.log('subscribe', res)
+    // console.log('subscribe', res)
     window.open(res.checkout_url, '_blank')
   }
   return (
