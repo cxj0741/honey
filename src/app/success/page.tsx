@@ -2,7 +2,7 @@
 'use client'
 import { getOrderInfo } from '@/request'
 import { useSearchParams, useRouter } from 'next/navigation'
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 
 const PAY_STATUS = {
   SUCCESS: 'success',
@@ -10,15 +10,14 @@ const PAY_STATUS = {
   PROGRESS: 'progress'
 }
 const MAX_TRiES = 10
-
+let counter = 0
 export default function Success() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const orderId = searchParams.get('order_id') || 'f7d8daba-c5f8-4eff-b1ab-ad29165cc5ac'
 
   const [status, setStauts] = useState(PAY_STATUS.PROGRESS)
-  const [counter, setCounter] = useState(0)
-  const getOrder = async (orderId: string) => {
+  const getOrder = useCallback(async (orderId: string) => {
     const { status } = await getOrderInfo(orderId)
     if (status === PAY_STATUS.PROGRESS) {
       if (counter >= MAX_TRiES) {
@@ -29,7 +28,7 @@ export default function Success() {
         return
       } else {
         console.log('counter', counter)
-        setCounter(counter + 1)
+        counter += 1
         setTimeout(async () => await getOrder(orderId), 3000)
         return
       }
@@ -48,7 +47,7 @@ export default function Success() {
       }, 3000)
       return
     }
-  }
+  }, [router])
 
   useEffect(() => {
     if (!orderId) { return }
