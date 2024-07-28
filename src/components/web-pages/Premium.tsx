@@ -1,16 +1,19 @@
 'use client'
-import { getUserVIPInfo } from '@/request'
-// import { getUserVIPInfo, subscribe } from '@/request'
-// import { useSession } from 'next-auth/react'
+import { subscribe } from '@/request'
+import { useSession } from 'next-auth/react'
 import { useState } from 'react'
+const priceMap = {
+  1: 11.99,
+  3: 9.99,
+  12: 5.99
+}
 export default function BecomePremium() {
   const [active, setActive] = useState(12)
-  // const session = useSession()
-  const handlePay = async (type: number) => {
-    console.log('handlePay type', type)
-    // const res = await subscribe((session.data?.user as any)?.email, 9.9)
-    const res = await getUserVIPInfo()
+  const session = useSession()
+  const handlePay = async (type: 1 | 3 | 12) => {
+    const res = await subscribe((session.data?.user as any)?.email, type * (priceMap[type]))
     console.log('subscribe', res)
+    window.open(res.checkout_url, '_blank')
   }
   return (
     <div className='flex-1 flex flex-col'>
