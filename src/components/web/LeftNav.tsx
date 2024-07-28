@@ -60,7 +60,7 @@ export default function LeftNav() {
         <div className="w-full h-full py-8 border-r border-[rgba(0,0,0,0.16)] flex flex-col">
           <div className="px-4 flex-1 flex flex-col">
             <div className="h-6 flex items-center justify-center gap-2">
-              <div className="h-6 bg-center bg-no-repeat bg-contain" style={{ width: fold ? 0 : '152px', backgroundImage: `url(assets/${fold ? '' : 'Honeybun'}.png)` }}></div>
+              <div onClick={() => router.push('/')} className="h-6 bg-center bg-no-repeat bg-contain hover:cursor-pointer" style={{ width: fold ? 0 : '152px', backgroundImage: `url(assets/${fold ? '' : 'Honeybun'}.png)` }}></div>
               <div
                 onClick={() => {
                   setFold(!fold)
@@ -90,7 +90,7 @@ export default function LeftNav() {
                 //   }
                 //   window.Tawk_API.toggle();
                 // }}
-                onClick={() => {setContactDialogShow(true)}}
+                onClick={() => { setContactDialogShow(true) }}
                 className={`flex ${fold ? 'justify-center' : 'justify-start'}`}
               >
                 <div className={`px-4 py-3 rounded-lg flex items-center space-x-4 hover:bg-[rgba(0,0,0,0.04)] hover:cursor-pointer ${fold ? '' : 'flex-1'}`}>
@@ -155,7 +155,7 @@ export default function LeftNav() {
           <p className="pt-2">contact us: support@honeybun.ai</p>
           <div className="modal-action">
             <button
-              onClick={() => {setContactDialogShow(false)}}
+              onClick={() => { setContactDialogShow(false) }}
               className="w-20 btn btn-outline btn-success btn-sm">OK</button>
           </div>
         </div>

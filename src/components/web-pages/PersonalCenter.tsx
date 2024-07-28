@@ -233,7 +233,7 @@ export default function PersonalCenter({ user, orderArray }: { user: Record<stri
               </div>
             </div>
 
-            {/* {
+            {
               orderArray.length !== 0 &&
               (<div className="w-full px-6 border rounded-lg">
                 <div className="py-6 border-b">
@@ -259,7 +259,7 @@ export default function PersonalCenter({ user, orderArray }: { user: Record<stri
                   ))}
                 </div>
               </div>)
-            } */}
+            }
           </div>
         </div>
       </div >
