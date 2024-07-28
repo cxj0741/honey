@@ -170,7 +170,7 @@ export default function PersonalCenter({ user, orderArray }: { user: Record<stri
           </div> */}
         </div>
         <div className="w-full p-6 border rounded-lg">
-          <div className="text-2xl">Basic Infomation</div>
+          <div className="text-2xl font-semibold">Basic Info</div>
           <div className="flex items-center justify-between py-6 border-b">
             <div className="flex-1">
               <div className="text-base">Profile picture</div>
@@ -241,7 +241,7 @@ export default function PersonalCenter({ user, orderArray }: { user: Record<stri
           orderArray.length !== 0 &&
           (<div className="w-full px-6 border rounded-lg">
             <div className="py-6 border-b">
-              <div className="text-2xl font-semibold">Billing Records</div>
+              <div className="text-2xl font-semibold pb-6 border-b">Billing Records</div>
               {orderArray.map((item: { id: string, createdAt: string, type: string }) => (
                 <div key={item.id} className="h-12 flex items-center justify-center text-black text-center">
                   <div className="w-1/4">
