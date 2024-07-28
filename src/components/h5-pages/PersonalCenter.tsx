@@ -243,7 +243,7 @@ export default function PersonalCenter({ user, orderArray }: { user: Record<stri
             <div className="py-6 border-b">
               <div className="text-2xl font-semibold">Billing Records</div>
               {orderArray.map((item: { id: string, createdAt: string, type: string }) => (
-                <div key={item.id} className="h-12 flex items-center justify-center text-white">
+                <div key={item.id} className="h-12 flex items-center justify-center text-black text-center">
                   <div className="w-1/4">
                     {item.createdAt}
                   </div>
