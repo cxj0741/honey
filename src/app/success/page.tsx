@@ -26,9 +26,12 @@ export default function Success() {
         setTimeout(() => {
           router.replace('/')
         }, 3000)
+        return
       } else {
+        console.log('counter', counter)
         setCounter(counter + 1)
-        setTimeout(() => getOrder(orderId), 1000)
+        setTimeout(async () => await getOrder(orderId), 3000)
+        return
       }
     }
     if (status === PAY_STATUS.SUCCESS) {
@@ -36,12 +39,14 @@ export default function Success() {
       setTimeout(() => {
         router.replace('/')
       }, 3000)
+      return
     }
     if (status === PAY_STATUS.FAILURE) {
       setStauts(PAY_STATUS.FAILURE)
       setTimeout(() => {
         router.replace('/')
       }, 3000)
+      return
     }
   }
 
