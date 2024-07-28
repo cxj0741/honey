@@ -35,13 +35,13 @@ export default function Premium() {
         </div>
       </div >
       {/* 使用这种方式可以加快图片加载 */}
-      < div className="fixed left-[100vw] top-0 w-[100vw] h-[100vh]" >
+      <div className="fixed left-[100vw] top-0 w-[100vw] h-[100vh]" >
         <div className="flex gap-2">
           <div className="flex-1 aspect-[109/162] bg-center bg-contain bg-no-repeat" style={{ backgroundImage: active === 1 ? 'url(/h5Assets/one.png)' : 'url(/h5Assets/oneActive.png)' }}></div>
           <div className="flex-1 aspect-[109/162] bg-center bg-contain bg-no-repeat" style={{ backgroundImage: active === 12 ? 'url(/h5Assets/twelve.png)' : 'url(/h5Assets/twelveActive.png)' }}></div>
           <div className="flex-1 aspect-[109/162] bg-center bg-contain bg-no-repeat" style={{ backgroundImage: active === 3 ? 'url(/h5Assets/three.png)' : 'url(/h5Assets/threeActive.png)' }}></div>
         </div>
-      </ >
+      </div>
     </>
   )
 }
