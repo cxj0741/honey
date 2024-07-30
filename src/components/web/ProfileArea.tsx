@@ -8,7 +8,7 @@ export default function ProfileArea({ girlList, guyList }: { girlList: any[], gu
   const [activeId, setActiveId] = useState(0)
   girlList = [...girlList]
   guyList = [...guyList]
-  
+
   return (
     girlList.length &&
     <>
@@ -18,9 +18,9 @@ export default function ProfileArea({ girlList, guyList }: { girlList: any[], gu
           <div className="text-black font-semibold">Girls</div>
         </div>
         <div className="flex flex-wrap">
-          {girlList.map((item, index) => (
+          {girlList.map((item) => (
             <div
-              key={item.id + index}
+              key={item.id}
               className="w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/5 p-2 border-transparent"
             >
               <div className="w-full aspect-[3/4] rounded-lg relative">
@@ -43,7 +43,7 @@ export default function ProfileArea({ girlList, guyList }: { girlList: any[], gu
                     <div className="w-full h-full rounded-full bg-top bg-no-repeat bg-cover" style={{ backgroundImage: `url(${item.image1})` }}></div>
                   </div>
                   <div className="ml-[72px] flex items-baseline space-x-2">
-                    <div className="flex-1 text-base lg:text-xl xl:text-xl font-semibold single-line-ellipsis">{item.name}</div>
+                    <div className="flex-1 text-base lg:text-xl xl:text-xl font-semibold single-line-ellipsis">{item.name.split(' ')[0]}</div>
                     <div className="text-xs text-[rgba(0,0,0,0.64)]">{item.age} years</div>
                   </div>
                   <div className="mt-2 text-sm">
@@ -87,7 +87,7 @@ export default function ProfileArea({ girlList, guyList }: { girlList: any[], gu
                     <div className="w-full h-full rounded-full bg-top bg-no-repeat bg-cover" style={{ backgroundImage: `url(${item.image1})` }}></div>
                   </div>
                   <div className="ml-[72px] flex items-baseline space-x-2">
-                    <div className="flex-1 text-base lg:text-xl xl:text-2xl font-semibold single-line-ellipsis">{item.name}</div>
+                    <div className="flex-1 text-base lg:text-xl xl:text-2xl font-semibold single-line-ellipsis">{item.name.split(' ')[0]}</div>
                     <div className="text-xs text-[rgba(0,0,0,0.64)]">{item.age} years</div>
                   </div>
                   <div className="mt-2 text-sm">

@@ -42,6 +42,7 @@ export const users = pgTable("user", {
   messages: integer('messages').default(10), //每天开始定时更新 普通用户10条，vip用户如果低于10条更新为10条
   tokens: integer('tokens').default(5), //每月首日定时更新 普通用户5个
   vipDeadline: timestamp('vip_deadline', { mode: 'date' }).defaultNow(),
+  isAdult: boolean("is_adult").default(false),
 })
 
 // export const users = pgTable("user", {

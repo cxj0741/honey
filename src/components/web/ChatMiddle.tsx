@@ -156,7 +156,7 @@ export default function ChatMiddle({ fold, setFold, activeBot, setActiveBot, cur
   const [title, setTitle] = useState('')
   const handleOpenDialog = (str: string) => {
     if (str === 'REFRESH') {
-      setTitle('Are you sure you want to refresh dialogs?')
+      setTitle('Do you really want to refresh the chat? The chat history will be lost.')
     }
     if (str === 'DELETE') {
       setTitle('Are you sure you want to delete bot?')
@@ -206,19 +206,28 @@ export default function ChatMiddle({ fold, setFold, activeBot, setActiveBot, cur
             <div className="flex-1 flex justify-end items-center space-x-4">
               <div
                 onClick={() => handleOpenDialog('DELETE')}
-                className="w-6 h-6 bg-center bg-contain bg-no-repeat hover:cursor-pointer"
-                style={{ backgroundImage: 'url(/assets/delete.png)' }}
-              ></div>
+                className="w-10 h-10 p-2 rounded-lg flex items-center justify-center  hover:cursor-pointer hover:bg-[rgba(0,0,0,0.04)]">
+                <div
+                  className="w-6 h-6 bg-center bg-contain bg-no-repeat"
+                  style={{ backgroundImage: 'url(/assets/delete.png)' }}
+                ></div>
+              </div>
               <div
                 onClick={() => handleOpenDialog('REFRESH')}
-                className="w-6 h-6 bg-center bg-contain bg-no-repeat hover:cursor-pointer"
-                style={{ backgroundImage: 'url(/assets/refresh.png)' }}
-              ></div>
+                className="w-10 h-10 p-2 rounded-lg flex items-center justify-center  hover:cursor-pointer hover:bg-[rgba(0,0,0,0.04)]">
+                <div
+                  className="w-6 h-6 bg-center bg-contain bg-no-repeat"
+                  style={{ backgroundImage: 'url(/assets/refresh.png)' }}
+                ></div>
+              </div>
               <div
                 onClick={() => setFold(!fold)}
-                className="w-6 h-6 bg-center bg-contain bg-no-repeat hover:cursor-pointer"
-                style={{ backgroundImage: fold ? "url(/assets/arrowIn.png)" : "url(/assets/arrowOut.png)" }}
-              ></div>
+                className="w-10 h-10 p-2 rounded-lg flex items-center justify-center  hover:cursor-pointer hover:bg-[rgba(0,0,0,0.04)]">
+                <div
+                  className="w-6 h-6 bg-center bg-contain bg-no-repeat"
+                  style={{ backgroundImage: fold ? "url(/assets/arrowIn.png)" : "url(/assets/arrowOut.png)" }}
+                ></div>
+              </div>
             </div>
           </div>
           <div className='w-full h-6' style={{ background: 'linear-gradient( 180deg, #FCFCFA 0%, rgba(251,250,249,0) 100%)' }}></div>
@@ -310,7 +319,7 @@ export default function ChatMiddle({ fold, setFold, activeBot, setActiveBot, cur
           style={{ backgroundImage: 'url(/assets/chatMiddleBg.png)' }}
         >
           {inputShow ?
-            <div className='rounded-lg flex items-center space-x-1 bg-white'>
+            <div className='px-2 py-1 rounded-lg flex items-center space-x-1 bg-white'>
               <input
                 ref={inputRef}
                 onKeyDown={(event) => handleKeyDown(event.key)}
@@ -318,13 +327,13 @@ export default function ChatMiddle({ fold, setFold, activeBot, setActiveBot, cur
                 placeholder="Type a message"
                 // className="input input-bordered flex-1" />
                 className="px-1 flex-1 h-10 active:border-none outline-none" />
-              <div className="dropdown dropdown-top dropdown-end bg-[rgba(255,255,255,0.5)] rounded-lg">
+              <div className="dropdown dropdown-top dropdown-end">
                 <div
                   tabIndex={0}
                   className="text-white flex items-center justify-between"
                 >
                   <div
-                    className="w-20 h-12 bg-center bg-contain bg-no-repeat hover:cursor-pointer"
+                    className="w-20 h-10 rounded-lg bg-center bg-contain bg-no-repeat hover:cursor-pointer hover:bg-[rgba(0,0,0,0.04)]"
                     style={{ backgroundImage: "url(/assets/ask.png)" }}
                   ></div>
                 </div>
@@ -342,7 +351,7 @@ export default function ChatMiddle({ fold, setFold, activeBot, setActiveBot, cur
               <div className="w-[1px] h-4 bg-[rgba(0,0,0,0.08)]"></div>
               <div
                 onClick={() => handleSendMessage()}
-                className="w-8 h-8 bg-center bg-contain bg-no-repeat hover:cursor-pointer"
+                className="w-8 h-8 rounded-lg bg-center bg-contain bg-no-repeat hover:cursor-pointer hover:bg-[rgba(0,0,0,0.04)]"
                 style={{ backgroundImage: "url(/assets/send.png)" }}
               ></div>
             </div>

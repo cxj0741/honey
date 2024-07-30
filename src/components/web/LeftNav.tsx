@@ -45,7 +45,7 @@ export default function LeftNav() {
       >
         <div
           className={`px-4 py-3 rounded-lg flex items-center space-x-4 hover:bg-[rgba(0,0,0,0.04)] hover:cursor-pointer ${fold ? '' : 'flex-1'}`}
-          style={{ backgroundColor: (path === `/${title.toLowerCase()}` || (path === '/' && title === 'Explore')) ? 'rgba(0,0,0,0.04)' : 'transparent' }}
+          style={{ backgroundColor: (path === `/${title.toLowerCase()}` || (path === '/' && title === 'Explore')) ? 'rgba(0,0,0,0.04)' : '' }}
         >
           <div className="w-6 h-6 bg-center bg-no-repeat bg-contain" style={{ backgroundImage: `url(${src})` }}></div>
           <div className={`font-medium ${fold ? 'hidden' : 'block'}`}>{title}</div>
@@ -140,7 +140,7 @@ export default function LeftNav() {
                       setType(ACCOUNT.SIGN_IN)
                       setDialogShow(true)
                     }}
-                    className="w-full h-10 border border-[#ED5088] rounded-lg text-[#ED5088] flex items-center justify-center hover:cursor-pointer">
+                    className="w-full h-10 rounded-lg bg-[#ED5088] text-white flex items-center justify-center hover:cursor-pointer hover:bg-[#EC1661]">
                     Login
                   </div>
                 </>

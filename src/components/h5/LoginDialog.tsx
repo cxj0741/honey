@@ -21,6 +21,7 @@ export default function LoginDialog({ type, setType, dialogShow, setDialogShow }
   const { toast, handleToast } = useToast()
   const emailRef = useRef(null)
   const passwordRef = useRef(null)
+  const confirmPasswordRef = useRef(null)
   const handleConfirm = async (type: string) => {
     const email = (emailRef?.current as any)?.value?.trim() || ''
     const emailCheck = z.string().email().safeParse(email)
@@ -50,6 +51,11 @@ export default function LoginDialog({ type, setType, dialogShow, setDialogShow }
       }
     }
     if (type === ACCOUNT.SIGN_UP) {
+      const confirmPassword = (confirmPasswordRef?.current as any)?.value?.trim() || ''
+      if (password !== confirmPassword) {
+        handleToast(TOAST_TYPE.ERROR, 'password and confirm password are different!')
+        return
+      }
       try {
         const res = await signUp({ email, password })
         // console.log('sign up>>>>>', res)
@@ -120,11 +126,31 @@ export default function LoginDialog({ type, setType, dialogShow, setDialogShow }
               </label>
               {
                 type === ACCOUNT.SIGN_UP ?
-                  <div className="mt-3 text-black">Minimum 6 characters</div>
+                  <div className="mt-1 text-black text-sm">Minimum 6 characters</div>
                   :
-                  <a className="inline-block mt-3 text-black underline decoration-solid">Forget Password?</a>
+                  <a className="inline-block mt-1 text-transparent text-sm underline decoration-solid">Forget Password?</a>
               }
             </div>
+            {
+              type === ACCOUNT.SIGN_UP &&
+              <div>
+                <label className="input input-bordered flex items-center gap-2">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 16 16"
+                    fill="currentColor"
+                    className="h-4 w-4 opacity-70"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M14 6a4 4 0 0 1-4.899 3.899l-1.955 1.955a.5.5 0 0 1-.353.146H5v1.5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1-.5-.5v-2.293a.5.5 0 0 1 .146-.353l3.955-3.955A4 4 0 1 1 14 6Zm-4-2a.75.75 0 0 0 0 1.5.5.5 0 0 1 .5.5.75.75 0 0 0 1.5 0 2 2 0 0 0-2-2Z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                  <input ref={confirmPasswordRef} type="password" className="flex-1" placeholder="ConfrimPassword" />
+                </label>
+              </div>
+            }
             {type === ACCOUNT.SIGN_UP && <button onClick={() => handleConfirm(ACCOUNT.SIGN_UP)} className="btn w-full bg-[#E75275] hover:bg-[#E75275] text-white">{ACCOUNT.SIGN_UP}</button>}
             {type === ACCOUNT.SIGN_IN && <button onClick={() => handleConfirm(ACCOUNT.SIGN_IN)} className="btn w-full bg-[#E75275] hover:bg-[#E75275] text-white">{ACCOUNT.SIGN_IN}</button>}
             <div className="flex flex-row items-center">
@@ -154,14 +180,14 @@ export default function LoginDialog({ type, setType, dialogShow, setDialogShow }
               ></div>
               <div className="font-normal text-[#344054]">Google</div>
             </div>
-            <div className="text-xs font-medium text-black text-center" style={{ visibility: type === ACCOUNT.SIGN_UP ? "hidden" : 'hidden' }}>
+            <div className="text-xs font-medium text-black text-center hidden">
               By signing up, you agree to{' '}
               <a className="underline" href="/legal-information">
                 Terms of Service
               </a>
             </div>
           </div>
-          <div className="pt-6 border-t border-[rgba(0,0,0,0.32)] font-medium text-sm text-black flex justify-center items-center">
+          <div className="py-4 border-t border-[rgba(0,0,0,0.32)] font-medium text-sm text-black flex justify-center items-center">
             {type === ACCOUNT.SIGN_UP &&
               <span>
                 Already have an account yet? &nbsp;

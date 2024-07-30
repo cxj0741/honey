@@ -28,7 +28,7 @@ export default function Premium() {
           <div onClick={() => handlePay(active as 1 | 3 | 12)} className="mt-6 w-full py-3 rounded-lg bg-[#F53276] flex items-center justify-center space-x-2 hover:cursor-pointer">
             <div className="w-6 h-4 bg-center bg-no-repeat bg-contain" style={{ backgroundImage: 'url(/assets/card.png)' }}></div>
             <div className='text-white'>
-              pay with creadit /debit Card
+              Pay with Credit / Debit Card
             </div>
           </div>
           <div className="mt-6 w-[62vw] aspect-[232/169] bg-center bg-no-repeat bg-contain" style={{ backgroundImage: 'url(/h5Assets/premiumDesc.png)' }}></div>

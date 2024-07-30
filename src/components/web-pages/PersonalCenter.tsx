@@ -4,6 +4,7 @@ import { signOut, useSession, getSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import { useCallback, useRef, useState } from 'react'
 import ConfirmDialog from '@/components/web/ConfirmDialog'
+import sha256 from 'crypto-js/sha256'
 import { z } from 'zod'
 import Toast, { TOAST_TYPE, useToast } from '@/components/web/Toast'
 
@@ -30,12 +31,14 @@ export default function PersonalCenter({ user, orderArray }: { user: Record<stri
   const session = useSession()
   function EditDialog() {
     const inputRef = useRef(null)
+    const oldPasswordRef = useRef(null)
+    const confirmPasswordRef = useRef(null)
     const [gender, setGender] = useState('Male')
     const handleConfirm = async () => {
       if (name === 'Gender') {
         setDialogShow(false)
         try {
-          const res = await changeUserInfo(name.toLocaleLowerCase(), gender)
+          const res = await changeUserInfo(name.toLowerCase(), gender)
           handleToast(TOAST_TYPE.SUCCESS, res.message)
           router.refresh()
         } catch (error) {
@@ -44,25 +47,40 @@ export default function PersonalCenter({ user, orderArray }: { user: Record<stri
         return
       }
       const str = (inputRef?.current as any)?.value.trim() || ''
-      if (!str) { return }
-      if (name.toLocaleLowerCase() === 'email') {
+      if (name === 'Email') {
+        if (!str) { return }
         const emailCheck = z.string().email().safeParse(str)
         if (!emailCheck.success) {
           handleToast(TOAST_TYPE.ERROR, 'email error!')
           return
         }
       }
-      if (name.toLocaleLowerCase() === 'password') {
+      if (name === 'Password') {
+        if (user.hashPassword) {
+          const oldPassword = (oldPasswordRef?.current as any)?.value.trim() || ''
+          const hashPassword = sha256(oldPassword).toString()
+          if (hashPassword !== user.hashPassword) {
+            handleToast(TOAST_TYPE.ERROR, 'old password error!')
+            return
+          }
+        }
+
         const passwordCheck = z.string().min(6).safeParse(str)
         if (!passwordCheck.success) {
           handleToast(TOAST_TYPE.ERROR, 'password error, minimum 6 characters!')
+          return
+        }
+
+        const confirmPassword = (confirmPasswordRef?.current as any)?.value.trim() || ''
+        if (confirmPassword !== str) {
+          handleToast(TOAST_TYPE.ERROR, 'password and confirm password are different!')
           return
         }
       }
       (inputRef!.current as any).value = ''
       setDialogShow(false)
       try {
-        const res = await changeUserInfo(name.toLocaleLowerCase(), str)
+        const res = await changeUserInfo(name.toLowerCase(), str)
         handleToast(TOAST_TYPE.SUCCESS, res.message)
         const newSession = await getSession();
         session.update(newSession)
@@ -80,8 +98,7 @@ export default function PersonalCenter({ user, orderArray }: { user: Record<stri
             style={{ backgroundImage: "url(/assets/close.png)" }}
           ></div>
           <h3 className="font-bold text-black text-lg">Edit {name}</h3>
-          <div className="mt-8 flex flex-col space-y-4">
-            {name !== 'Gender' && <input ref={inputRef} type="text" placeholder={name} className="input input-bordered w-full text-black" />}
+          <div className="mt-4 flex flex-col space-y-8">
             {name === 'Gender' &&
               <div className="flex items-center justify-center space-x-4">
                 <label onClick={() => setGender('Male')} className="space-x-2 font-semibold label cursor-pointer">
@@ -94,9 +111,64 @@ export default function PersonalCenter({ user, orderArray }: { user: Record<stri
                 </label>
               </div>
             }
-            <button
+            {name === 'Password' &&
+              <div className="space-y-3">
+                {
+                  user.hashPassword &&
+                  <label className="input input-bordered flex items-center gap-2 mb-8">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 16 16"
+                      fill="currentColor"
+                      className="h-4 w-4 opacity-70"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        d="M14 6a4 4 0 0 1-4.899 3.899l-1.955 1.955a.5.5 0 0 1-.353.146H5v1.5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1-.5-.5v-2.293a.5.5 0 0 1 .146-.353l3.955-3.955A4 4 0 1 1 14 6Zm-4-2a.75.75 0 0 0 0 1.5.5.5 0 0 1 .5.5.75.75 0 0 0 1.5 0 2 2 0 0 0-2-2Z"
+                        clipRule="evenodd"
+                      />
+                    </svg>
+                    <input ref={oldPasswordRef} type="password" className="flex-1" placeholder="Old Password" />
+                  </label>
+                }
+                <label className="input input-bordered flex items-center gap-2">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 16 16"
+                    fill="currentColor"
+                    className="h-4 w-4 opacity-70"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M14 6a4 4 0 0 1-4.899 3.899l-1.955 1.955a.5.5 0 0 1-.353.146H5v1.5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1-.5-.5v-2.293a.5.5 0 0 1 .146-.353l3.955-3.955A4 4 0 1 1 14 6Zm-4-2a.75.75 0 0 0 0 1.5.5.5 0 0 1 .5.5.75.75 0 0 0 1.5 0 2 2 0 0 0-2-2Z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                  <input ref={inputRef} type="password" className="flex-1" placeholder={user.hashPassword ? 'New Password' : 'Password'} />
+                </label>
+                <label className="input input-bordered flex items-center gap-2">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 16 16"
+                    fill="currentColor"
+                    className="h-4 w-4 opacity-70"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M14 6a4 4 0 0 1-4.899 3.899l-1.955 1.955a.5.5 0 0 1-.353.146H5v1.5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1-.5-.5v-2.293a.5.5 0 0 1 .146-.353l3.955-3.955A4 4 0 1 1 14 6Zm-4-2a.75.75 0 0 0 0 1.5.5.5 0 0 1 .5.5.75.75 0 0 0 1.5 0 2 2 0 0 0-2-2Z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                  <input ref={confirmPasswordRef} type="password" className="flex-1" placeholder="Confirm Password" />
+                </label>
+              </div>
+            }
+            {name !== 'Gender' && name !== 'Password' && <input ref={inputRef} type="text" placeholder={name} className="input input-bordered w-full text-black" />}
+            <div
               onClick={() => handleConfirm()}
-              className="btn text-black">Confirm</button>
+              className="w-full h-12 border rounded-lg border-[#F53276] text-[#F53276] flex items-center justify-center hover:cursor-pointer hover:bg-[#F53276] hover:text-white">
+              Confirm
+            </div>
           </div>
         </div>
       </dialog>
@@ -160,7 +232,9 @@ export default function PersonalCenter({ user, orderArray }: { user: Record<stri
                     <div className=" flex-1 text-[#F53276] font-semibold text-3xl">
                       Premium Member
                     </div>
-                    <div onClick={() => { router.push('/premium') }} className="w-[178px] h-8 bg-center bg-contain bg-no-repeat hover:cursor-pointer" style={{ backgroundImage: 'url(/assets/renew.png)' }}></div>
+                    <div onClick={() => { router.push('/premium') }} className="w-[178px] h-8 border rounded-lg border-[#F53276] text-[#F53276] text-sm flex items-center justify-center hover:cursor-pointer hover:bg-[#F53276] hover:text-white">
+                      Renew your subscription
+                    </div>
 
                   </div>
                   <div className='mt-4 text-base'>Subscription to: {user.vipDeadline}</div>
@@ -171,7 +245,9 @@ export default function PersonalCenter({ user, orderArray }: { user: Record<stri
                     <div className="flex-1 text-black font-semibold text-3xl">
                       Free Member
                     </div>
-                    <div onClick={() => { router.push('/premium') }} className="w-[178px] h-8 bg-center bg-contain bg-no-repeat hover:cursor-pointer" style={{ backgroundImage: 'url(/assets/sub.png)' }}></div>
+                    <div onClick={() => { router.push('/premium') }} className="w-[178px] h-8 border rounded-lg border-[#F53276] text-[#F53276] text-sm flex items-center justify-center hover:cursor-pointer hover:bg-[#F53276] hover:text-white">
+                      subscription
+                    </div>
                   </div>
                   <div className='mt-4 text-base'>Subscription to: --</div>
                 </>
@@ -204,11 +280,11 @@ export default function PersonalCenter({ user, orderArray }: { user: Record<stri
                 <div onClick={() => { setName('Gender'); setDialogShow(true) }} className="w-6 h-6 bg-center bg-contain bg-no-repeat hover:cursor-pointer" style={{ backgroundImage: 'url(/assets/arrowRight.png)' }}></div>
               </div>
 
-              <div className="flex items-center justify-between py-6 border-b">
+              {/* <div className="flex items-center justify-between py-6 border-b">
                 <div className="w-60 text-base">Email</div>
                 <div className="flex-1 text-base">{user.email}</div>
                 <div onClick={() => { setName('Email'); setDialogShow(true) }} className="w-6 h-6 bg-center bg-contain bg-no-repeat hover:cursor-pointer" style={{ backgroundImage: 'url(/assets/arrowRight.png)' }}></div>
-              </div>
+              </div> */}
 
               <div className="flex items-center justify-between py-6 border-b border-transparent">
                 <div className="w-60 text-base">Password</div>
@@ -224,13 +300,13 @@ export default function PersonalCenter({ user, orderArray }: { user: Record<stri
             </div>
 
             <div className="w-full px-6 border rounded-lg">
-              <div className="flex items-center justify-between py-7 border-b">
+              <div className="flex items-center justify-between py-7">
                 <div className="flex-1 text-base">Danger Zone If you want to permanently delete this account and all of its data.</div>
                 <div onClick={() => { handleOpenDialog() }} className="w-[170px] h-8 bg-center bg-contain bg-no-repeat hover:cursor-pointer" style={{ backgroundImage: 'url(/assets/deleteAccount.png)' }}></div>
               </div>
-              <div className="py-7 flex items-center justify-center">
+              {/* <div className="py-7 flex items-center justify-center">
                 <div onClick={() => { signOut({ callbackUrl: '/' }) }} className="w-[324px] h-8 bg-center bg-contain bg-no-repeat hover:cursor-pointer" style={{ backgroundImage: 'url(/assets/logout.png)' }}></div>
-              </div>
+              </div> */}
             </div>
 
             {

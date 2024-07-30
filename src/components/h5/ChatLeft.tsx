@@ -23,7 +23,7 @@ export default function ChatLeft({ setPart, activeBot, setActiveBot, currentArra
   const [title, setTitle] = useState('')
   const handleOpenDialog = (str: string) => {
     if (str === 'REFRESH') {
-      setTitle('Are you sure you want to refresh dialogs?')
+      setTitle('Do you really want to refresh the chat? The chat history will be lost.')
     }
     if (str === 'DELETE') {
       setTitle('Are you sure you want to delete bot?')
