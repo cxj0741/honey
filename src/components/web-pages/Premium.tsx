@@ -34,7 +34,7 @@ export default function BecomePremium() {
           </div>
           <div className='mt-2 text-xs line-through text-black text-center invisible'>was $11.9/month</div>
           <div className='mt-10 text-sm text-center'>Total price $11.99</div>
-          <div onClick={() => handlePay(1)} className="mt-24 w-full py-3 rounded-lg bg-[#FE387F] flex items-center justify-center space-x-2 hover:cursor-pointer">
+          <div onClick={() => handlePay(1)} className="mt-24 w-full py-3 rounded-lg bg-[#FE387F] flex items-center justify-center space-x-2 hover:cursor-pointer hover:bg-[#EC1661]">
             <div className="w-6 h-5 bg-center bg-no-repeat bg-contain" style={{ backgroundImage: 'url(/assets/card.png)' }}></div>
             <div className='text-sm text-white'>
               Pay with Credit / Debit Card
@@ -52,7 +52,7 @@ export default function BecomePremium() {
           </div>
           <div className='mt-2 text-xs line-through text-black text-center'>was $11.9/month</div>
           <div className='mt-10 text-sm text-center'>Annual payment billed as $71.88</div>
-          <div onClick={() => handlePay(12)} className="mt-24 w-full py-3 rounded-lg bg-[#FE387F] flex items-center justify-center space-x-2 hover:cursor-pointer">
+          <div onClick={() => handlePay(12)} className="mt-24 w-full py-3 rounded-lg bg-[#FE387F] flex items-center justify-center space-x-2 hover:cursor-pointer hover:bg-[#EC1661]">
             <div className="w-6 h-5 bg-center bg-no-repeat bg-contain" style={{ backgroundImage: 'url(/assets/card.png)' }}></div>
             <div className='text-sm text-white'>
               Pay with Credit / Debit Card
@@ -70,7 +70,7 @@ export default function BecomePremium() {
           </div>
           <div className='mt-2 text-xs line-through text-black text-center'>was $11.9/month</div>
           <div className='mt-10 text-sm text-center'>Quarterly payment billed as $29.97</div>
-          <div onClick={() => handlePay(3)} className="mt-24 w-full py-3 rounded-lg bg-[#FE387F] flex items-center justify-center space-x-2 hover:cursor-pointer">
+          <div onClick={() => handlePay(3)} className="mt-24 w-full py-3 rounded-lg bg-[#FE387F] flex items-center justify-center space-x-2 hover:cursor-pointer hover:bg-[#EC1661]">
             <div className="w-6 h-5 bg-center bg-no-repeat bg-contain" style={{ backgroundImage: 'url(/assets/card.png)' }}></div>
             <div className='text-sm text-white'>
               Pay with Credit / Debit Card
