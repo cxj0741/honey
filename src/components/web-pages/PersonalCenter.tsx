@@ -314,7 +314,7 @@ export default function PersonalCenter({ user, orderArray }: { user: Record<stri
               (<div className="w-full px-6 border rounded-lg">
                 <div className="py-6 border-b">
                   <div className="text-2xl font-semibold pb-6 border-b">Billing Records</div>
-                  {orderArray.map((item: { id: string, createdAt: string, type: string }) => (
+                  {orderArray.map((item: { id: string, createdAt: string, type: string, status: string }) => (
                     <div key={item.id} className="h-12 flex items-center justify-center text-black text-center">
                       <div className="w-1/5">
                         {item.createdAt}
@@ -325,8 +325,8 @@ export default function PersonalCenter({ user, orderArray }: { user: Record<stri
                       <div className="w-1/5">
                         Bill
                       </div>
-                      <div className="w-1/5 text-[#2DBB55]">
-                        Paid
+                      <div className={`w-1/5 ${item.status === 'success' && 'text-[#2DBB55]'} ${item.status === 'failure' && 'text-[#EC1661]'} ${item.status === 'progress' && 'text-[rgba(0,0,0,0.32)]'}`}>
+                        {item.status}
                       </div>
                       <div className="w-1/5">
                         Subscription
