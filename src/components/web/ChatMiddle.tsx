@@ -222,7 +222,7 @@ export default function ChatMiddle({ fold, setFold, activeBot, setActiveBot, cur
                 ></div>
               </div>
               {
-                windowWidth > 1024 &&
+                windowWidth > 1280 &&
                 <div
                   onClick={() => setFold(!fold)}
                   className="w-10 h-10 p-2 rounded-lg flex items-center justify-center  hover:cursor-pointer hover:bg-[rgba(0,0,0,0.04)]">

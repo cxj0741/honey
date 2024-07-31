@@ -54,7 +54,7 @@ export default function Chat({ userBotArray, usersToBotsArray, botId }: { userBo
       <ChatLeft activeBot={activeBot} setActiveBot={setActiveBot} currentArray={currentArray} setCurrentArray={setCurrentArray} timeArray={timeArray} />
       <ChatMiddle fold={fold} setFold={setFold} activeBot={activeBot} setActiveBot={setActiveBot} currentArray={currentArray} setCurrentArray={setCurrentArray} windowWidth={windowWidth} />
       {
-        windowWidth > 1024 &&
+        windowWidth > 1280 &&
         <ChatRight fold={fold} activeBot={activeBot} />
       }
     </div>
