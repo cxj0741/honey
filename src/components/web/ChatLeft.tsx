@@ -64,13 +64,13 @@ export default function ChatLeft({ activeBot, setActiveBot, currentArray, setCur
               </div>
               <div className="flex-1 space-y-1">
                 <div className="flex items-center">
-                  <div className="flex-1 font-medium">{item.name}</div>
+                  <div className="flex-1 font-medium">{item.name.split(' ')[0]}</div>
                   <div className="text-xs text-right">
                     {formatUnixTimestamp((timeArray.find(relation => relation.botId === item.id) as any).timestamp)}
                   </div>
                 </div>
                 <div className="w-[200px] h-5 single-line-ellipsis font-light text-sm">
-                  {(timeArray.find(relation => relation.botId === item.id) as any).botStr}
+                  {(timeArray.find(relation => relation.botId === item.id) as any).botStr || item.start}
                 </div>
               </div>
             </div>

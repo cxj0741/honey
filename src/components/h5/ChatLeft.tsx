@@ -116,12 +116,12 @@ export default function ChatLeft({ setPart, activeBot, setActiveBot, currentArra
                 >
                   <div className="w-12 h-12 rounded-full bg-top bg-cover bg-no-repeat" style={{ backgroundImage: `url(${item.image1})` }}></div>
                   <div className="flex-1 space-y-2">
-                    <div className="text-sm font-semibold">{item.name}</div>
+                    <div className="text-sm font-semibold">{item.name.split(' ')[0]}</div>
                     {/* <div className="block w-[60vw] text-sm single-line-ellipsis font-light">
                       {item.description}
                     </div> */}
                     <div className="h-5 w-[60vw] text-sm single-line-ellipsis font-light">
-                      {((timeArray.find(relation => relation.botId === item.id) as any).botStr).slice(0, 30)}
+                      {((timeArray.find(relation => relation.botId === item.id) as any).botStr || item.start).slice(0, 30)}
                       {(timeArray.find(relation => relation.botId === item.id) as any).botStr && '...'}
                     </div>
                   </div>
