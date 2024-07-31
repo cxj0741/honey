@@ -194,7 +194,7 @@ export default function ChatMiddle({ fold, setFold, activeBot, setActiveBot, cur
   }
   return (
     <>
-      <div className="flex-1 h-[100vh] relative bg-center bg-cover bg-no-repeat" style={{ backgroundImage: 'url(/assets/chatMiddleBg.png)' }}>
+      <div className="flex-1 min-w-[400px] h-[100vh] relative bg-center bg-cover bg-no-repeat no-scrollbar" style={{ backgroundImage: 'url(/assets/chatMiddleBg.png)' }}>
         {/* HEADER */}
         <div className='z-10 absolute left-0 top-0 w-full'>
           <div className="px-6 py-4 text-black bg-[#FCFBFA] flex items-center">
