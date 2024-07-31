@@ -27,8 +27,10 @@ export default function LeftNav() {
     try {
       await changeUserInfo('isAdult', true)
       handleToast(TOAST_TYPE.SUCCESS, 'confirm age success!')
-      const newSession = await getSession();
-      session.update(newSession)
+      setTimeout(async () => {
+        const newSession = await getSession();
+        session.update(newSession)
+      }, 2100)
     } catch (error) {
       handleToast(TOAST_TYPE.ERROR, 'confirm age failure!')
     }
