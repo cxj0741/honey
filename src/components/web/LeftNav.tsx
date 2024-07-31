@@ -130,7 +130,7 @@ export default function LeftNav() {
                     <div className={`flex-1 max-w-[86px] single-line-ellipsis ${fold ? 'hidden' : 'block'}`}>{session?.data?.user?.name}</div>
                     {/* <div className={`w-4 h-4 bg-center bg-contain bg-no-repeat ${fold ? 'hidden' : 'block'}`} style={{ backgroundImage: 'url(/assets/arrowUp.png)' }}></div> */}
                     <details onClick={event => event.stopPropagation()} className={`${fold ? 'hidden' : 'block'} dropdown dropdown-top dropdown-end`}>
-                      <summary className='btn p-2 rounded-lg hover:bg-[rgba(0,0,0,0.08)] flex items-center justify-center'>
+                      <summary className='p-2 rounded-lg hover:bg-[rgba(0,0,0,0.08)] flex items-center justify-center'>
                         <div className="w-4 h-4 bg-center bg-contain bg-no-repeat" style={{ backgroundImage: 'url(/assets/arrowUp.png)' }}></div>
                       </summary>
                       <ul tabIndex={0} className="dropdown-content menu bg-base-100 rounded-lg z-[1] w-32 p-2 shadow">
