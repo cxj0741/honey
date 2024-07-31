@@ -311,11 +311,11 @@ export default function PersonalCenter({ user, orderArray }: { user: Record<stri
         </div>
 
         {
-          orderArray.length !== 0 &&
+          orderArray.filter((item: { status: string }) => item.status !== 'expired').length !== 0 &&
           (<div className="w-full px-6 border rounded-lg">
             <div className="py-6 border-b">
               <div className="text-2xl font-semibold pb-6 border-b">Billing Records</div>
-              {orderArray.map((item: { id: string, createdAt: string, type: string, status: string }) => (
+              {orderArray.filter((item: { status: string }) => item.status !== 'expired').map((item: { id: string, createdAt: string, type: string, status: string }) => (
                 <div key={item.id} className="h-12 flex items-center justify-center text-black text-center">
                   <div className="w-1/4">
                     {item.createdAt}
