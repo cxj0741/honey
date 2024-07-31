@@ -43,10 +43,10 @@ export default function Chat({ userBotArray, usersToBotsArray, botId }: { userBo
     const handleResize = () => {
       setWindowWidth(window.innerWidth)
     }
-    window.addEventListener('resize', handleResize);
+    window.addEventListener('resize', handleResize)
     return () => {
-      window.removeEventListener('resize', handleResize);
-    };
+      window.removeEventListener('resize', handleResize)
+    }
   }, [])
 
   return (
