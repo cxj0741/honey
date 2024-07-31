@@ -53,8 +53,8 @@ export default function ChatLeft({ activeBot, setActiveBot, currentArray, setCur
           {currentArray.filter(item => item.show).map((item) => (
             <div
               onClick={() => {
-                const arr = currentArray.filter(bot => bot !== item)
-                setCurrentArray([item, ...arr])
+                // const arr = currentArray.filter(bot => bot !== item)
+                // setCurrentArray([item, ...arr])
                 setActiveBot({ ...item })
               }}
               key={item.id}
