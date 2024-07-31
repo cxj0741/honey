@@ -147,22 +147,20 @@ export default function LeftNav() {
                   </div>
 
                   {/* 监听是否满足18岁 */}
-                  <div className={`${(session?.data?.user as any).isAdult ? 'hidden' : 'block'}`}>
-                    <div className="z-50 fixed left-0 top-0 w-[100vw] h-[100vh] bg-[rgba(0,0,0,0.32)] flex items-center justify-center">
-                      <div className="relative w-80 p-8 rounded-lg bg-white">
-                        <div className="text-base font-semibold text-center">Are you over 18 years old?</div>
-                        <div className="mt-8 flex items-center justify-center space-x-10">
-                          <button
-                            onClick={() => handleConfirmAge()}
-                            className="btn btn-outline btn-success btn-sm w-20">Yes</button>
-                          <button
-                            onClick={() => signOut({ callbackUrl: '/' })}
-                            className="btn btn-outline btn-error btn-sm w-20">No</button>
-                        </div>
+                  <div className={`z-50 fixed left-0 top-0 w-[100vw] h-[100vh] bg-[rgba(0,0,0,0.32)] flex items-center justify-center ${(session?.data?.user as any)?.isAdult ? 'hidden' : 'block'}`}>
+                    <div className="relative w-80 p-8 rounded-lg bg-white">
+                      <div className="text-base font-semibold text-center">Are you over 18 years old?</div>
+                      <div className="mt-8 flex items-center justify-center space-x-10">
+                        <button
+                          onClick={() => handleConfirmAge()}
+                          className="btn btn-outline btn-success btn-sm w-20">Yes</button>
+                        <button
+                          onClick={() => signOut({ callbackUrl: '/' })}
+                          className="btn btn-outline btn-error btn-sm w-20">No</button>
                       </div>
                     </div>
-                    {toast.show && <Toast type={toast.type} message={toast.message} />}
                   </div>
+                  {toast.show && <Toast type={toast.type} message={toast.message} />}
                 </>
               ) : (
                 <>
