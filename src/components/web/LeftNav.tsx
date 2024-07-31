@@ -4,7 +4,9 @@ import { useRouter, usePathname } from 'next/navigation'
 import LoginDialog from './LoginDialog'
 import { ACCOUNT } from '@/utils'
 // 获取session信息
-import { signOut, useSession } from 'next-auth/react'
+import { getSession, signOut, useSession } from 'next-auth/react'
+import Toast, { TOAST_TYPE, useToast } from './Toast'
+import { changeUserInfo } from '@/request'
 
 function formatURL(title: string) {
   const url = `/${title.toLocaleLowerCase().split(' ').join('-')}`
@@ -20,6 +22,17 @@ export default function LeftNav() {
   const [contactDialogShow, setContactDialogShow] = useState(false)
   // 三种状态 authenticated unauthenticated loading
   const session = useSession()
+  const { toast, handleToast } = useToast()
+  const handleConfirmAge = async () => {
+    try {
+      await changeUserInfo('isAdult', true)
+      handleToast(TOAST_TYPE.SUCCESS, 'confirm age success!')
+      const newSession = await getSession();
+      session.update(newSession)
+    } catch (error) {
+      handleToast(TOAST_TYPE.ERROR, 'confirm age failure!')
+    }
+  }
 
   function Item({
     src,
@@ -131,6 +144,24 @@ export default function LeftNav() {
                     <div className="w-6 h-6 bg-center bg-contain bg-no-repeat" style={{ backgroundImage: 'url(/assets/token.png)' }}></div>
                     <div className="text-black text-center">{(session?.data?.user as any)?.tokens || 0}</div>
                     <div className="w-6 h-6 bg-center bg-contain bg-no-repeat" style={{ backgroundImage: 'url(/assets/plus.png)' }}></div>
+                  </div>
+
+                  {/* 监听是否满足18岁 */}
+                  <div className={`${(session?.data?.user as any).isAdult ? 'hidden' : 'block'}`}>
+                    <div className="z-50 fixed left-0 top-0 w-[100vw] h-[100vh] bg-[rgba(0,0,0,0.32)] flex items-center justify-center">
+                      <div className="relative w-80 p-8 rounded-lg bg-white">
+                        <div className="text-base font-semibold text-center">Are you over 18 years old?</div>
+                        <div className="mt-8 flex items-center justify-center space-x-10">
+                          <button
+                            onClick={() => handleConfirmAge()}
+                            className="btn btn-outline btn-success btn-sm w-20">Yes</button>
+                          <button
+                            onClick={() => signOut({ callbackUrl: '/' })}
+                            className="btn btn-outline btn-error btn-sm w-20">No</button>
+                        </div>
+                      </div>
+                    </div>
+                    {toast.show && <Toast type={toast.type} message={toast.message} />}
                   </div>
                 </>
               ) : (

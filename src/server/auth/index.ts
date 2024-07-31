@@ -22,6 +22,7 @@ export const authOptions: AuthOptions = {
         (session.user as any).image = user.image;
         (session.user as any).email = user.email;
         (session.user as any).tokens = user.tokens;
+        (session.user as any).isAdult = user.isAdult;
       }
       return session;
     },

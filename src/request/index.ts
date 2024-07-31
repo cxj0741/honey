@@ -100,7 +100,7 @@ export async function getUserInfo() {
   return data
 }
 
-export async function changeUserInfo(name: string, str: string) {
+export async function changeUserInfo(name: string, str: string | boolean) {
   const res = await fetch(`${baseURL}/api/changeUserInfo`, {
     method: 'POST',
     mode: 'cors',
@@ -175,7 +175,9 @@ export async function subscribe(email: string, amount: number) {
 }
 
 export async function getOrderInfo(orderId: string) {
-  const res = await fetch(`https://honeybun-pay.vercel.app/order_status/${orderId}`)
+  const res = await fetch(
+    `https://honeybun-pay.vercel.app/order_status/${orderId}`
+  )
   const data = await res.json()
   return data
 }
