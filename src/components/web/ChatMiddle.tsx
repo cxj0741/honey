@@ -238,7 +238,7 @@ export default function ChatMiddle({ fold, setFold, activeBot, setActiveBot, cur
         </div>
         {/* CHAT WINDOW */}
         <div ref={chatContainer} className="px-6 py-32 h-full overflow-y-scroll no-scrollbar">
-          <div className="space-y-4">
+          <div className="space-y-6">
             {/* START */}
             <div className="flex items-start">
               <div className="w-8 h-8 rounded-full bg-top bg-cover bg-no-repeat" style={{ backgroundImage: `url(${activeBot.image1})` }}></div>
@@ -249,7 +249,7 @@ export default function ChatMiddle({ fold, setFold, activeBot, setActiveBot, cur
             </div>
             {/* DIALOG */}
             {chatArray.map(item => (
-              <div key={item.timestamp} className="w-full">
+              <div key={item.timestamp} className="w-full space-y-2">
                 <div className="flex flex-row-reverse items-start">
                   <div className="w-8 h-8 rounded-full bg-top bg-cover bg-no-repeat" style={{ backgroundImage: `url(${session?.data?.user?.image})`, backgroundColor: session?.data?.user?.image ? 'transparent' : '#075985' }}></div>
                   <div className='mr-2 max-w-[70%]'>
@@ -285,7 +285,7 @@ export default function ChatMiddle({ fold, setFold, activeBot, setActiveBot, cur
               </div>
             ))}
             {/* CURRENT DIANLOG */}
-            <div className="w-full">
+            <div className="w-full space-y-2">
               {result.dialog.userStr &&
                 (<div className="flex flex-row-reverse items-start">
                   <div className="w-8 h-8 rounded-full bg-top bg-cover bg-no-repeat" style={{ backgroundImage: `url(${session?.data?.user?.image})`, backgroundColor: session?.data?.user?.image ? 'transparent' : '#075985' }}></div>
