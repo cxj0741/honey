@@ -38,11 +38,25 @@ export default function Chat({ userBotArray, usersToBotsArray, botId }: { userBo
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeBot])
 
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth)
+  useEffect(() => {
+    const handleResize = () => {
+      setWindowWidth(window.innerWidth)
+    }
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, [])
+
   return (
     <div className="flex-1 flex">
       <ChatLeft activeBot={activeBot} setActiveBot={setActiveBot} currentArray={currentArray} setCurrentArray={setCurrentArray} timeArray={timeArray} />
-      <ChatMiddle fold={fold} setFold={setFold} activeBot={activeBot} setActiveBot={setActiveBot} currentArray={currentArray} setCurrentArray={setCurrentArray} />
-      <ChatRight fold={fold} activeBot={activeBot} />
+      <ChatMiddle fold={fold} setFold={setFold} activeBot={activeBot} setActiveBot={setActiveBot} currentArray={currentArray} setCurrentArray={setCurrentArray} windowWidth={windowWidth} />
+      {
+        windowWidth > 1024 &&
+        <ChatRight fold={fold} activeBot={activeBot} />
+      }
     </div>
   )
 }

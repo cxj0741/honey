@@ -16,9 +16,10 @@ interface Props {
   setActiveBot: Function
   currentArray: Record<string, any>[]
   setCurrentArray: Function
+  windowWidth: number
 }
 
-export default function ChatMiddle({ fold, setFold, activeBot, setActiveBot, currentArray, setCurrentArray }: Props) {
+export default function ChatMiddle({ fold, setFold, activeBot, setActiveBot, currentArray, setCurrentArray, windowWidth }: Props) {
   const { toast, handleToast } = useToast()
   const router = useRouter()
   const [chatArray, setChatArray] = useState([] as ({
@@ -220,14 +221,17 @@ export default function ChatMiddle({ fold, setFold, activeBot, setActiveBot, cur
                   style={{ backgroundImage: 'url(/assets/refresh.png)' }}
                 ></div>
               </div>
-              <div
-                onClick={() => setFold(!fold)}
-                className="w-10 h-10 p-2 rounded-lg flex items-center justify-center  hover:cursor-pointer hover:bg-[rgba(0,0,0,0.04)]">
+              {
+                windowWidth > 1024 &&
                 <div
-                  className="w-6 h-6 bg-center bg-contain bg-no-repeat"
-                  style={{ backgroundImage: fold ? "url(/assets/arrowIn.png)" : "url(/assets/arrowOut.png)" }}
-                ></div>
-              </div>
+                  onClick={() => setFold(!fold)}
+                  className="w-10 h-10 p-2 rounded-lg flex items-center justify-center  hover:cursor-pointer hover:bg-[rgba(0,0,0,0.04)]">
+                  <div
+                    className="w-6 h-6 bg-center bg-contain bg-no-repeat"
+                    style={{ backgroundImage: fold ? "url(/assets/arrowIn.png)" : "url(/assets/arrowOut.png)" }}
+                  ></div>
+                </div>
+              }
             </div>
           </div>
           <div className='w-full h-6' style={{ background: 'linear-gradient( 180deg, #FCFCFA 0%, rgba(251,250,249,0) 100%)' }}></div>
