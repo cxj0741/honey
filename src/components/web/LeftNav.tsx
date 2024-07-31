@@ -124,13 +124,15 @@ export default function LeftNav() {
                 <>
                   <div className="h-[1px] bg-[rgba(0,0,0,0.16)]"></div>
                   <div onClick={() => router.push('/personal-center')}
-                    className={`px-2 flex items-center space-x-4 text-black hover:cursor-pointer ${fold ? 'justify-center' : 'justify-start'}`}
+                    className={`p-2 rounded-lg flex items-center space-x-4 text-black hover:cursor-pointer hover:bg-[rgba(0,0,0,0.32)] ${fold ? 'justify-center' : 'justify-start'}`}
                   >
                     <div className="w-8 h-8 rounded-full bg-top bg-cover bg-no-repeat" style={{ backgroundImage: `url(${session?.data?.user?.image})`, backgroundColor: session?.data?.user?.image ? 'transparent' : '#075985' }}></div>
                     <div className={`flex-1 max-w-[86px] single-line-ellipsis ${fold ? 'hidden' : 'block'}`}>{session?.data?.user?.name}</div>
                     {/* <div className={`w-4 h-4 bg-center bg-contain bg-no-repeat ${fold ? 'hidden' : 'block'}`} style={{ backgroundImage: 'url(/assets/arrowUp.png)' }}></div> */}
                     <div onClick={event => event.stopPropagation()} className={`${fold ? 'hidden' : 'block'} dropdown dropdown-top dropdown-end`}>
-                      <div tabIndex={0} role="button" className='w-4 h-4 bg-center bg-contain bg-no-repeat' style={{ backgroundImage: 'url(/assets/arrowUp.png)' }}></div>
+                      <div tabIndex={0} role="button" className='p-2 rounded-sm hover:bg-[rgba(0,0,0,0.64)] flex items-center justify-center'>
+                        <div className="w-4 h-4 bg-center bg-contain bg-no-repeat" style={{ backgroundImage: 'url(/assets/arrowUp.png)' }}></div>
+                      </div>
                       <ul tabIndex={0} className="dropdown-content menu bg-base-100 rounded-lg z-[1] w-32 p-2 shadow">
                         <li><span onClick={() => router.push('/premium')}>Subscription</span></li>
                         <li><span onClick={() => router.push('/personal-center')}>Settings</span></li>
