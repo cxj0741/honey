@@ -242,7 +242,7 @@ export default function ChatMiddle({ fold, setFold, activeBot, setActiveBot, cur
             {/* START */}
             <div className="flex items-start">
               <div className="w-8 h-8 rounded-full bg-top bg-cover bg-no-repeat" style={{ backgroundImage: `url(${activeBot.image1})` }}></div>
-              <div className='ml-2 max-w-[40%]'>
+              <div className='ml-2 max-w-[80%]'>
                 <div className="px-2 py-3 rounded-lg rounded-tl-sm bg-[#F86C9E] text-white">{activeBot.start || 'hello world'}</div>
                 {/* <div className="mt-1 ml-1 text-[rgba(0,0,0,0.64)]">00:00</div> */}
               </div>
@@ -252,7 +252,7 @@ export default function ChatMiddle({ fold, setFold, activeBot, setActiveBot, cur
               <div key={item.timestamp} className="w-full">
                 <div className="flex flex-row-reverse items-start">
                   <div className="w-8 h-8 rounded-full bg-top bg-cover bg-no-repeat" style={{ backgroundImage: `url(${session?.data?.user?.image})`, backgroundColor: session?.data?.user?.image ? 'transparent' : '#075985' }}></div>
-                  <div className='mr-2 max-w-[40%]'>
+                  <div className='mr-2 max-w-[80%]'>
                     <div className="px-2 py-3 rounded-lg rounded-tr-sm bg-[rgba(0,0,0,0.08)] text-black">{item.dialog.userStr}</div>
                     <div className="mt-1 ml-1 text-[rgba(0,0,0,0.64)] text-sm text-right">{formatUnixTimestamp(item.timestamp)}</div>
                   </div>
@@ -261,7 +261,7 @@ export default function ChatMiddle({ fold, setFold, activeBot, setActiveBot, cur
                 {item.dialog.botStr &&
                   (<div className="flex items-start">
                     <div className="w-8 h-8 rounded-full bg-top bg-cover bg-no-repeat" style={{ backgroundImage: `url(${activeBot.image1})` }}></div>
-                    <div className='ml-2 max-w-[40%]'>
+                    <div className='ml-2 max-w-[80%]'>
                       <div className="px-2 py-3 rounded-lg rounded-tl-sm bg-[#F86C9E] text-white">{item.dialog.botStr}</div>
                       {/* <div className="mt-1 ml-1 text-[rgba(0,0,0,0.64)]">00:00</div> */}
                     </div>
@@ -289,7 +289,7 @@ export default function ChatMiddle({ fold, setFold, activeBot, setActiveBot, cur
               {result.dialog.userStr &&
                 (<div className="flex flex-row-reverse items-start">
                   <div className="w-8 h-8 rounded-full bg-top bg-cover bg-no-repeat" style={{ backgroundImage: `url(${session?.data?.user?.image})`, backgroundColor: session?.data?.user?.image ? 'transparent' : '#075985' }}></div>
-                  <div className='mr-2 max-w-[40%]'>
+                  <div className='mr-2 max-w-[80%]'>
                     <div className="px-2 py-3 rounded-lg rounded-tr-sm bg-[rgba(0,0,0,0.08)] text-black">{result.dialog.userStr}</div>
                     <div className="mt-1 ml-1 text-[rgba(0,0,0,0.64)] text-sm text-right">{formatUnixTimestamp(result.timestamp)}</div>
                   </div>
@@ -299,7 +299,7 @@ export default function ChatMiddle({ fold, setFold, activeBot, setActiveBot, cur
                 (result.dialog.botStr ?
                   (<div className="flex items-start">
                     <div className="w-8 h-8 rounded-full bg-top bg-cover bg-no-repeat" style={{ backgroundImage: `url(${activeBot.image1})` }}></div>
-                    <div className='ml-2 max-w-[40%]'>
+                    <div className='ml-2 max-w-[80%]'>
                       <div className="px-2 py-3 rounded-lg rounded-tl-sm bg-[#F86C9E] text-white">{result.dialog.botStr}</div>
                       {/* <div className="mt-1 ml-1 text-[rgba(0,0,0,0.64)]">00:00</div> */}
                     </div>
