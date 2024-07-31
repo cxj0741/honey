@@ -50,7 +50,10 @@ export default function Success() {
   }, [router])
 
   useEffect(() => {
-    if (!orderId) { return }
+    if (!orderId) {
+      router.replace('/')
+      return
+    }
     getOrder(orderId)
   })
 
