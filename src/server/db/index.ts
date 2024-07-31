@@ -1,5 +1,5 @@
 import { drizzle } from 'drizzle-orm/node-postgres'
-import { Client } from 'pg'
+import { Pool } from 'pg'
 import * as schema from './schema' //获取schema的信息
 
 const proConfig = {
@@ -28,9 +28,12 @@ if (process.env.NODE_ENV === 'development') {
   config = proConfig
 }
 
-const client = new Client(config)
-await client.connect()
-export const db = drizzle(client, { schema })
+// const client = new Client(config)
+// await client.connect()
+// export const db = drizzle(client, { schema })
+// 使用数据库连接池
+const pool = new Pool(config)
+export const db = drizzle(pool, { schema })
 
 // drizzle使用node-progress/pg和postgres交互
 // 不使用orm框架直接与数据库交互
