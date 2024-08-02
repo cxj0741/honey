@@ -40,6 +40,7 @@ export default function Provider({
       <Script id="google-analytics" strategy="afterInteractive" onLoad={() => {
         window.dataLayer = window.dataLayer || [];
         function gtag(...args: any) { window.dataLayer.push(args); }
+        window.gtag = gtag;
         gtag('js', new Date());
         gtag('config', 'G-Z2FXJJ25MJ');
       }}>
