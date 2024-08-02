@@ -16,10 +16,9 @@ interface Props {
   setActiveBot: Function
   currentArray: Record<string, any>[]
   setCurrentArray: Function
-  windowWidth: number
 }
 
-export default function ChatMiddle({ fold, setFold, activeBot, setActiveBot, currentArray, setCurrentArray, windowWidth }: Props) {
+export default function ChatMiddle({ fold, setFold, activeBot, setActiveBot, currentArray, setCurrentArray }: Props) {
   const { toast, handleToast } = useToast()
   const router = useRouter()
   const [chatArray, setChatArray] = useState([] as ({

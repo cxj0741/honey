@@ -12,7 +12,8 @@ export default async function Chat({ searchParams }: { searchParams: Record<stri
   console.log('searchParams', searchParams)
   let id = searchParams?.botId?.trim()
   const userId = await getUserId()
-  console.log('userId', userId, id)
+  // console.log('userId', userId, id)
+
   let usersToBotsArray = await db
     .select()
     .from(usersToBots)
@@ -43,22 +44,17 @@ export default async function Chat({ searchParams }: { searchParams: Record<stri
       usersToBotsArray.push({ userId, botId: id, timestamp, botStr: '', conversationId: '' })
     }
 
-    // 获取user所有bot的基本信息
-    const arr = await db
-      .select()
-      .from(usersToBots)
-      .where(sql`${usersToBots.userId} = ${userId}`)
-    // console.log('>>>>>>arr', arr)
+
     let userBotArray = []
-    for (const item of arr) {
+    for (const item of usersToBotsArray) {
       const [bot] = await db
         .select()
         .from(bots)
         .where(sql`${bots.id} = ${item.botId}`)
-      userBotArray.push(bot)
+      userBotArray.push({ ...bot, lastTime: item.timestamp, botStr: item.botStr, conversationId: item.conversationId, show: true })
     }
-
-    return isMobile() ? <H5Chat userBotArray={userBotArray} usersToBotsArray={usersToBotsArray} botId={id} /> : <WebChat userBotArray={userBotArray} usersToBotsArray={usersToBotsArray} botId={id} />
+    userBotArray.sort((pre, cur) => cur.lastTime - pre.lastTime)
+    return isMobile() ? <H5Chat userBotArray={userBotArray} botId={id} /> : <WebChat userBotArray={userBotArray} botId={id} />
   } else {
     redirect('/')
   }

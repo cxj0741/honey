@@ -13,9 +13,8 @@ interface Props {
   setActiveBot: Function
   currentArray: Record<string, any>[]
   setCurrentArray: Function
-  timeArray: Record<string, any>[]
 }
-export default function ChatLeft({ setPart, activeBot, setActiveBot, currentArray, setCurrentArray, timeArray }: Props) {
+export default function ChatLeft({ setPart, activeBot, setActiveBot, currentArray, setCurrentArray, }: Props) {
   const { toast, handleToast } = useToast()
   const router = useRouter()
   const [open, setOpen] = useState(false)
@@ -121,13 +120,13 @@ export default function ChatLeft({ setPart, activeBot, setActiveBot, currentArra
                       {item.description}
                     </div> */}
                     <div className="h-5 w-[60vw] text-sm single-line-ellipsis font-light">
-                      {((timeArray.find(relation => relation.botId === item.id) as any).botStr || item.start).slice(0, 30)}
-                      {(timeArray.find(relation => relation.botId === item.id) as any).botStr && '...'}
+                      {(item.botStr || item.start).slice(0, 30)}
+                      {(item.botStr || item.start) && '...'}
                     </div>
                   </div>
                   <div className="space-y-3 flex flex-col items-end">
                     <div className="text-xs text-[rgba(0,0,0,0.64)]">
-                      {formatUnixTimestamp((timeArray.find(relation => relation.botId === item.id) as any).timestamp)}
+                      {formatUnixTimestamp(item.lastTime)}
                     </div>
                     <div
                       className="w-3 h-3"
