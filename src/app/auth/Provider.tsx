@@ -1,8 +1,6 @@
 'use client'
 import { SessionProvider } from 'next-auth/react'
-import { ReactNode } from 'react'
-import Script from 'next/script'
-// import { ReactNode, useEffect } from 'react'
+import { ReactNode, useEffect } from 'react'
 
 export default function Provider({
   children,
@@ -30,25 +28,29 @@ export default function Provider({
     }
   }, [])
   */
+  useEffect(() => {
+    const handleGtagLoad = () => {
+      // console.log('Google Analytics script loaded.');
+      window.dataLayer = window.dataLayer || [];
+      function gtag(...args: any) {
+        window.dataLayer.push(args);
+      }
+      window.gtag = gtag;
+      // console.log('gtag function assigned to window:', window.gtag);
+      gtag('js', new Date());
+      gtag('config', 'G-Z2FXJJ25MJ');
+    };
+
+    const script = document.createElement('script');
+    script.src = 'https://www.googletagmanager.com/gtag/js?id=G-Z2FXJJ25MJ';
+    script.async = true;
+    script.onload = handleGtagLoad;
+    document.head.appendChild(script);
+  }, []);
   return (
-    <>
-      <Script
-        src="https://www.googletagmanager.com/gtag/js?id=G-Z2FXJJ25MJ"
-        strategy="afterInteractive"
-        async
-      />
-      <Script id="google-analytics" strategy="afterInteractive" onLoad={() => {
-        window.dataLayer = window.dataLayer || [];
-        function gtag(...args: any) { window.dataLayer.push(args); }
-        window.gtag = gtag;
-        gtag('js', new Date());
-        gtag('config', 'G-Z2FXJJ25MJ');
-      }}>
-      </Script>
-      <SessionProvider>
-        {children}
-      </SessionProvider>
-    </>
+    <SessionProvider>
+      {children}
+    </SessionProvider>
   )
 }
 // SessionProvider是一个context，使用SessionProvider并提供useSession可以获得jwt信息
