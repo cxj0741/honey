@@ -5,10 +5,9 @@ interface Props {
   setActiveBot: Function
   currentArray: Record<string, any>[]
   setCurrentArray: Function
-  timeArray: Record<string, any>[]
 }
 
-export default function ChatLeft({ activeBot, setActiveBot, currentArray, setCurrentArray, timeArray }: Props) {
+export default function ChatLeft({ activeBot, setActiveBot, currentArray, setCurrentArray }: Props) {
   const inputRef = useRef(null)
   const handleSearch = (str: string) => {
     const arr = currentArray.map(item => {
@@ -53,8 +52,6 @@ export default function ChatLeft({ activeBot, setActiveBot, currentArray, setCur
           {currentArray.filter(item => item.show).map((item) => (
             <div
               onClick={() => {
-                // const arr = currentArray.filter(bot => bot !== item)
-                // setCurrentArray([item, ...arr])
                 setActiveBot({ ...item })
               }}
               key={item.id}
@@ -66,11 +63,11 @@ export default function ChatLeft({ activeBot, setActiveBot, currentArray, setCur
                 <div className="flex items-center">
                   <div className="flex-1 font-medium">{item.name.split(' ')[0]}</div>
                   <div className="text-xs text-right">
-                    {formatUnixTimestamp((timeArray.find(relation => relation.botId === item.id) as any).timestamp)}
+                    {formatUnixTimestamp(item.lastTime)}
                   </div>
                 </div>
                 <div className="w-[200px] h-5 single-line-ellipsis font-light text-sm">
-                  {(timeArray.find(relation => relation.botId === item.id) as any).botStr || item.start}
+                  {item.botStr || item.start}
                 </div>
               </div>
             </div>
