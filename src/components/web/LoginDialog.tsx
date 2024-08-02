@@ -17,12 +17,6 @@ interface Props {
   setDialogShow: Function
 }
 
-// function getImageName() {
-//   const botArray = ['Ashley1', 'Ashley2', 'Ashley3', 'Derek1', 'Derek2', 'Derek3', 'Keisha', 'Megan1', 'Megan2', 'Megan3', 'Olivia1', 'Olivia2', 'Robert1', 'Robert2', 'Sarah', 'William1', 'William2']
-//   const randomIndex = Math.floor(Math.random() * botArray.length);
-//   return botArray[randomIndex] || 'Ashley1'
-// }
-
 export default function LoginDialog({ type, setType, dialogShow, setDialogShow }: Props) {
   const { toast, handleToast } = useToast()
   const emailRef = useRef(null)
@@ -45,10 +39,16 @@ export default function LoginDialog({ type, setType, dialogShow, setDialogShow }
     if (type === ACCOUNT.SIGN_IN) {
       try {
         const res = await signIn('credentials', { redirect: false, email, password })
-        // console.log('sign in result', res)
         if (res?.ok) {
           handleToast(TOAST_TYPE.SUCCESS, 'sign in success!')
           setDialogShow(false)
+          // 发送 Google Analytics 事件
+          if (typeof window.gtag === 'function') {
+            window.gtag('event', 'login', {
+              event_category: 'engagement',
+              event_label: 'Web Login',
+            });
+          }
         } else {
           handleToast(TOAST_TYPE.ERROR, 'email or password error!')
         }
@@ -64,7 +64,6 @@ export default function LoginDialog({ type, setType, dialogShow, setDialogShow }
       }
       try {
         const res = await signUp({ email, password })
-        // console.log('sign up>>>>>', res)
         if (res.ok) {
           setDialogShow(false)
           await signIn('credentials', { email, password })
@@ -78,10 +77,15 @@ export default function LoginDialog({ type, setType, dialogShow, setDialogShow }
   }
   const handleProviderSignIn = async () => {
     try {
-      // const res = await signIn('google')
-      // console.log('sign in result', res)
       await signIn('google')
       setDialogShow(false)
+      // 发送 Google Analytics 事件
+      if (typeof window.gtag === 'function') {
+        window.gtag('event', 'login', {
+          event_category: 'engagement',
+          event_label: 'Google Login',
+        });
+      }
     } catch (error) {
       handleToast(TOAST_TYPE.ERROR, 'google account sign in error!')
     }
