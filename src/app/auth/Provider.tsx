@@ -1,6 +1,7 @@
 'use client'
 import { SessionProvider } from 'next-auth/react'
 import { ReactNode } from 'react'
+import Script from 'next/script'
 // import { ReactNode, useEffect } from 'react'
 
 export default function Provider({
@@ -29,8 +30,24 @@ export default function Provider({
     }
   }, [])
   */
-  return <SessionProvider>
-    {children}
-  </SessionProvider>
+  return (
+    <>
+      <Script
+        src="https://www.googletagmanager.com/gtag/js?id=G-Z2FXJJ25MJ"
+        strategy="afterInteractive"
+        async
+      />
+      <Script id="google-analytics" strategy="afterInteractive" onLoad={() => {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(...args: any) { window.dataLayer.push(args); }
+        gtag('js', new Date());
+        gtag('config', 'G-Z2FXJJ25MJ');
+      }}>
+      </Script>
+      <SessionProvider>
+        {children}
+      </SessionProvider>
+    </>
+  )
 }
 // SessionProvider是一个context，使用SessionProvider并提供useSession可以获得jwt信息

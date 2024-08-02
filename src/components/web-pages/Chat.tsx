@@ -57,6 +57,23 @@ export default function Chat({ userBotArray, usersToBotsArray, botId }: { userBo
         windowWidth > 1280 &&
         <ChatRight fold={fold} activeBot={activeBot} />
       }
+      {
+        windowWidth < 1280 &&
+        <div className={`${fold ? 'hidden' : 'block'}`}>
+          <div className="z-50 fixed left-0 top-0 w-[100vw] h-[100vh] flex items-center justify-center bg-[rgba(0,0,0,0.8)]">
+            {/* <div className="relative"> */}
+            <div
+              onClick={() => {
+                setFold(true)
+              }}
+              className="z-50 absolute top-7 right-7 w-7 h-7 bg-center bg-contain bg-no-repeat bg-white rounded-full hover:cursor-pointer"
+              style={{ backgroundImage: "url(/assets/close.png)" }}
+            ></div>
+            <ChatRight fold={fold} activeBot={activeBot} />
+            {/* </div> */}
+          </div>
+        </div>
+      }
     </div>
   )
 }
