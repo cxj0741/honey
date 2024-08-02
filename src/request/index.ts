@@ -147,7 +147,9 @@ export async function uploadAvatarToCloud(formData: FormData) {
   })
   const data1 = await res1.json()
   const res2 = await fetch(
-    `https://honeybun-obejcts.vercel.app/generate_presigned_url/?file_key=${data1.file_key}`,
+    `https://honeybun-obejcts.vercel.app/generate_presigned_url/?file_key=${
+      data1.file_key
+    }&expiration=${3 * 365 * 24 * 60 * 60}`,
     {
       mode: 'cors',
       headers: {
