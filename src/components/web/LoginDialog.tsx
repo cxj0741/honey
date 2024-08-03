@@ -1,6 +1,6 @@
 import { signUp } from '@/request'
 import { signIn } from 'next-auth/react'
-import { useRef } from 'react'
+import { useRef, useEffect, useState } from 'react'
 import { z } from 'zod'
 import Toast, { TOAST_TYPE, useToast } from './Toast'
 import { useRouter } from 'next/navigation'
@@ -22,6 +22,27 @@ export default function LoginDialog({ type, setType, dialogShow, setDialogShow }
   const emailRef = useRef(null)
   const passwordRef = useRef(null)
   const confirmPasswordRef = useRef(null)
+  const [gtagLoaded, setGtagLoaded] = useState(false)
+
+  useEffect(() => {
+    const onLoad = () => {
+      setGtagLoaded(true)
+    }
+    window.addEventListener('load', onLoad)
+    return () => {
+      window.removeEventListener('load', onLoad)
+    }
+  }, [])
+
+  const sendGtagEvent = (event: string, category: string, label: string) => {
+    if (gtagLoaded && typeof window.gtag === 'function') {
+      window.gtag('event', event, {
+        event_category: category,
+        event_label: label,
+      })
+    }
+  }
+
   const handleConfirm = async (type: string) => {
     const email = (emailRef?.current as any)?.value?.trim() || ''
     const emailCheck = z.string().email().safeParse(email)
@@ -43,12 +64,7 @@ export default function LoginDialog({ type, setType, dialogShow, setDialogShow }
           handleToast(TOAST_TYPE.SUCCESS, 'sign in success!')
           setDialogShow(false)
           // 发送 Google Analytics 事件
-          if (typeof window.gtag === 'function') {
-            window.gtag('event', 'login', {
-              event_category: 'engagement',
-              event_label: 'Web Login',
-            });
-          }
+          sendGtagEvent('login', 'engagement', 'Web Login')
         } else {
           handleToast(TOAST_TYPE.ERROR, 'email or password error!')
         }
@@ -75,21 +91,18 @@ export default function LoginDialog({ type, setType, dialogShow, setDialogShow }
       }
     }
   }
+
   const handleProviderSignIn = async () => {
     try {
       await signIn('google')
       setDialogShow(false)
       // 发送 Google Analytics 事件
-      if (typeof window.gtag === 'function') {
-        window.gtag('event', 'login', {
-          event_category: 'engagement',
-          event_label: 'Google Login',
-        });
-      }
+      sendGtagEvent('login', 'engagement', 'Google Login')
     } catch (error) {
       handleToast(TOAST_TYPE.ERROR, 'google account sign in error!')
     }
   }
+
   const router = useRouter()
   return (
     <div className={`${dialogShow ? 'block' : 'hidden'}`}>
