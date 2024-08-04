@@ -1,6 +1,6 @@
 import { signUp } from '@/request'
 import { signIn } from 'next-auth/react'
-import { useRef, useEffect, useState } from 'react'
+import { useRef, useState } from 'react'
 import { z } from 'zod'
 import Toast, { TOAST_TYPE, useToast } from './Toast'
 import { useRouter } from 'next/navigation'
@@ -22,26 +22,6 @@ export default function LoginDialog({ type, setType, dialogShow, setDialogShow }
   const emailRef = useRef(null)
   const passwordRef = useRef(null)
   const confirmPasswordRef = useRef(null)
-  const [gtagLoaded, setGtagLoaded] = useState(false)
-
-  useEffect(() => {
-    const onLoad = () => {
-      setGtagLoaded(true)
-    }
-    window.addEventListener('load', onLoad)
-    return () => {
-      window.removeEventListener('load', onLoad)
-    }
-  }, [])
-
-  const sendGtagEvent = (event: string, category: string, label: string) => {
-    if (gtagLoaded && typeof window.gtag === 'function') {
-      window.gtag('event', event, {
-        event_category: category,
-        event_label: label,
-      })
-    }
-  }
 
   const handleConfirm = async (type: string) => {
     const email = (emailRef?.current as any)?.value?.trim() || ''
@@ -63,8 +43,6 @@ export default function LoginDialog({ type, setType, dialogShow, setDialogShow }
         if (res?.ok) {
           handleToast(TOAST_TYPE.SUCCESS, 'sign in success!')
           setDialogShow(false)
-          // 发送 Google Analytics 事件
-          sendGtagEvent('login', 'engagement', 'Web Login')
         } else {
           handleToast(TOAST_TYPE.ERROR, 'email or password error!')
         }
@@ -96,8 +74,12 @@ export default function LoginDialog({ type, setType, dialogShow, setDialogShow }
     try {
       await signIn('google')
       setDialogShow(false)
-      // 发送 Google Analytics 事件
-      sendGtagEvent('login', 'engagement', 'Google Login')
+      // 发送 Google Analytics 登录事件
+      if (typeof window.gtag === 'function') {
+        window.gtag('event', 'login', {
+          method: 'Google'
+        })
+      }
     } catch (error) {
       handleToast(TOAST_TYPE.ERROR, 'google account sign in error!')
     }
@@ -172,11 +154,11 @@ export default function LoginDialog({ type, setType, dialogShow, setDialogShow }
                     >
                       <path
                         fillRule="evenodd"
-                        d="M14 6a4 4 0 0 1-4.899 3.899l-1.955 1.955a.5.5 0 0 1-.353.146H5v1.5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1-.5-.5v-2.293a.5.5 0 0 1 .146-.353l3.955-3.955A4 4 0 1 1 14 6Zm-4-2a.75.75 0 0 0 0 1.5.5.5 0 0 1 .5.5.75.75 0 0 0 1.5 0 2 2 0 0 0-2-2Z"
+                        d="M14 6a4 4 0 0 1-4.899 3.899l-1.955 1.955a.5.5 0 0 1-.353.146H5v1.5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1-.5-.5v-2.293a.5.5 0 0 1 .146-.353l3.955-3.955A4 4 1 1 1 14 6Zm-4-2a.75.75 0 0 0 0 1.5.5.5 0 0 1 .5.5.75.75 0 0 0 1.5 0 2 2 0 0 0-2-2Z"
                         clipRule="evenodd"
                       />
                     </svg>
-                    <input ref={confirmPasswordRef} type="password" className="flex-1" placeholder="ConfrimPassword" />
+                    <input ref={confirmPasswordRef} type="password" className="flex-1" placeholder="Confirm Password" />
                   </label>
                 </div>
               }
