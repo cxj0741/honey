@@ -177,15 +177,7 @@ export default function LoginDialog({ type, setType, dialogShow, setDialogShow }
                   }}
                 ></div>
               </div>
-              <div onClick={() => {
-                // 发送 Google Analytics 登录事件
-                if (typeof window.gtag === 'function') {
-                  window.gtag('event', 'login', {
-                    method: 'Google'
-                  });
-                }
-                handleProviderSignIn();
-              }}
+              <div onClick={handleProviderSignIn}
                 className="inline-flex items-center justify-center w-full rounded-[10px] px-4 py-2.5 mb-2.5 bg-white hover:cursor-pointer"
               >
                 <div className="w-6 h-6 bg-center bg-contain bg-no-repeat"

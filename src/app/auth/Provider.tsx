@@ -28,24 +28,21 @@ export default function Provider({
   }, [])
   */
   useEffect(() => {
-    const handleGtagLoad = () => {
-      // console.log('Google Analytics script loaded.');
-      window.dataLayer = window.dataLayer || []
-      function gtag(...args: any) {
-        window.dataLayer.push(args)
-      }
-      window.gtag = gtag
-      // console.log('gtag function assigned to window:', window.gtag);
-      gtag('js', new Date())
-      gtag('config', 'G-Z2FXJJ25MJ', { debug_mode: true })
-    }
+    // Add Google Tag Manager script to head
+    const gtmScript = document.createElement('script')
+    gtmScript.innerHTML = `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+      new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+      j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+      'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+      })(window,document,'script','dataLayer','GTM-PG67DMPS');`
+    document.head.appendChild(gtmScript)
 
-    const script = document.createElement('script')
-    script.src = 'https://www.googletagmanager.com/gtag/js?id=G-Z2FXJJ25MJ'
-    script.async = true
-    script.onload = handleGtagLoad
-    document.head.appendChild(script)
+    // Add Google Tag Manager noscript to body
+    const gtmNoScript = document.createElement('noscript')
+    gtmNoScript.innerHTML = `<iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PG67DMPS"
+      height="0" width="0" style="display:none;visibility:hidden"></iframe>`
+    document.body.insertBefore(gtmNoScript, document.body.firstChild)
   }, [])
+
   return <SessionProvider>{children}</SessionProvider>
 }
-// SessionProvider是一个context，使用SessionProvider并提供useSession可以获得jwt信息
