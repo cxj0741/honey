@@ -74,22 +74,10 @@ export default function LoginDialog({ type, setType, dialogShow, setDialogShow }
     try {
       await signIn('google');
       setDialogShow(false);
-      console.log('Google SignIn successful'); // 添加日志
-      // 发送 Google Analytics 登录事件
-      if (typeof window.gtag === 'function') {
-        console.log('Sending Google Analytics event'); // 添加日志
-        window.gtag('event', 'login', {
-          method: 'Google'
-        });
-      } else {
-        console.log('window.gtag is not a function'); // 添加日志
-      }
     } catch (error) {
-      console.log('Error during Google SignIn', error); // 添加日志
       handleToast(TOAST_TYPE.ERROR, 'google account sign in error!');
     }
   };
-  
 
   const router = useRouter()
   return (
@@ -189,7 +177,15 @@ export default function LoginDialog({ type, setType, dialogShow, setDialogShow }
                   }}
                 ></div>
               </div>
-              <div onClick={() => handleProviderSignIn()}
+              <div onClick={() => {
+                // 发送 Google Analytics 登录事件
+                if (typeof window.gtag === 'function') {
+                  window.gtag('event', 'login', {
+                    method: 'Google'
+                  });
+                }
+                handleProviderSignIn();
+              }}
                 className="inline-flex items-center justify-center w-full rounded-[10px] px-4 py-2.5 mb-2.5 bg-white hover:cursor-pointer"
               >
                 <div className="w-6 h-6 bg-center bg-contain bg-no-repeat"
