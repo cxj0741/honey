@@ -72,18 +72,24 @@ export default function LoginDialog({ type, setType, dialogShow, setDialogShow }
 
   const handleProviderSignIn = async () => {
     try {
-      await signIn('google')
-      setDialogShow(false)
+      await signIn('google');
+      setDialogShow(false);
+      console.log('Google SignIn successful'); // 添加日志
       // 发送 Google Analytics 登录事件
       if (typeof window.gtag === 'function') {
+        console.log('Sending Google Analytics event'); // 添加日志
         window.gtag('event', 'login', {
           method: 'Google'
-        })
+        });
+      } else {
+        console.log('window.gtag is not a function'); // 添加日志
       }
     } catch (error) {
-      handleToast(TOAST_TYPE.ERROR, 'google account sign in error!')
+      console.log('Error during Google SignIn', error); // 添加日志
+      handleToast(TOAST_TYPE.ERROR, 'google account sign in error!');
     }
-  }
+  };
+  
 
   const router = useRouter()
   return (
