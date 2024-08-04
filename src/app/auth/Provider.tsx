@@ -7,7 +7,6 @@ export default function Provider({
 }: Readonly<{
   children: ReactNode,
 }>) {
-
   // var Tawk_API = Tawk_API || {}, Tawk_LoadStart = new Date();
   /**
   useEffect(() => {
@@ -31,26 +30,22 @@ export default function Provider({
   useEffect(() => {
     const handleGtagLoad = () => {
       // console.log('Google Analytics script loaded.');
-      window.dataLayer = window.dataLayer || [];
+      window.dataLayer = window.dataLayer || []
       function gtag(...args: any) {
-        window.dataLayer.push(args);
+        window.dataLayer.push(args)
       }
-      window.gtag = gtag;
+      window.gtag = gtag
       // console.log('gtag function assigned to window:', window.gtag);
-      gtag('js', new Date());
-      gtag('config', 'G-Z2FXJJ25MJ');
-    };
+      gtag('js', new Date())
+      gtag('config', 'G-Z2FXJJ25MJ', { debug_mode: true })
+    }
 
-    const script = document.createElement('script');
-    script.src = 'https://www.googletagmanager.com/gtag/js?id=G-Z2FXJJ25MJ';
-    script.async = true;
-    script.onload = handleGtagLoad;
-    document.head.appendChild(script);
-  }, []);
-  return (
-    <SessionProvider>
-      {children}
-    </SessionProvider>
-  )
+    const script = document.createElement('script')
+    script.src = 'https://www.googletagmanager.com/gtag/js?id=G-Z2FXJJ25MJ'
+    script.async = true
+    script.onload = handleGtagLoad
+    document.head.appendChild(script)
+  }, [])
+  return <SessionProvider>{children}</SessionProvider>
 }
 // SessionProvider是一个context，使用SessionProvider并提供useSession可以获得jwt信息
