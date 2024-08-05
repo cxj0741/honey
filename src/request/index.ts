@@ -183,3 +183,9 @@ export async function getOrderInfo(orderId: string) {
   const data = await res.json()
   return data
 }
+
+export async function getUsersToBots() {
+  const res = await fetch(`${baseURL}/api/getUserToBots`)
+  const data = await res.json()
+  return data
+}
