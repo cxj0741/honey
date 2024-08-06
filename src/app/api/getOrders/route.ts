@@ -5,6 +5,7 @@ import { sql } from 'drizzle-orm/sql'
 import { getUserId } from '@/utils/getUserId'
 
 export async function GET(request: NextRequest) {
+  console.log('>>>>>> why')
   const userId = await getUserId()
   // console.log('id>>>', id)
   let orderArray = await db
