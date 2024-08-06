@@ -4,8 +4,6 @@ import { useRef } from 'react'
 import { z } from 'zod'
 import Toast, { TOAST_TYPE, useToast } from './Toast'
 import { useRouter } from 'next/navigation'
-
-
 import { getUserInfo } from '@/request'
 
 const ACCOUNT = {
@@ -27,13 +25,15 @@ export default function LoginDialog({ type, setType, dialogShow, setDialogShow }
   const confirmPasswordRef = useRef(null)
 
   // 发送数据到 GTM
-  const sendToGTM = (userId: number, name: string, gender: string) => {
+  const sendToGTM = (userId: number, name: string, gender: string, loginMethod: string) => {
     window.dataLayer = window.dataLayer || [];
     window.dataLayer.push({
       event: 'userLogin',
       userId,
       name,
-      gender
+      gender,
+      loginMethod,
+      loginTime: new Date().toISOString()
     });
   };
 
@@ -56,7 +56,7 @@ export default function LoginDialog({ type, setType, dialogShow, setDialogShow }
         const res = await signIn('credentials', { redirect: false, email, password })
         if (res?.ok) {
           const userInfo = await getUserInfo(); // 获取用户信息
-          sendToGTM(userInfo.userId, userInfo.name, userInfo.gender); // 发送到 GTM
+          sendToGTM(userInfo.userId, userInfo.name, userInfo.gender, 'password'); // 发送到 GTM
           handleToast(TOAST_TYPE.SUCCESS, 'sign in success!')
           setDialogShow(false)
         } else {
@@ -77,8 +77,6 @@ export default function LoginDialog({ type, setType, dialogShow, setDialogShow }
         const res = await signUp({ email, password })
         if (res.ok) {
           await signIn('credentials', { email, password })
-          const userInfo = await getUserInfo(); // 获取用户信息
-          sendToGTM(userInfo.userId, userInfo.name, userInfo.gender); // 发送到 GTM
           setDialogShow(false)
         } else {
           handleToast(TOAST_TYPE.ERROR, res.error)
@@ -93,7 +91,7 @@ export default function LoginDialog({ type, setType, dialogShow, setDialogShow }
     try {
       await signIn('google');
       const userInfo = await getUserInfo(); // 获取用户信息
-      sendToGTM(userInfo.userId, userInfo.name, userInfo.gender); // 发送到 GTM
+      sendToGTM(userInfo.userId, userInfo.name, userInfo.gender, 'thirdParty'); // 发送到 GTM
       setDialogShow(false);
     } catch (error) {
       handleToast(TOAST_TYPE.ERROR, 'google account sign in error!');
