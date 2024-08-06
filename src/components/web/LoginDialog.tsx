@@ -89,10 +89,14 @@ export default function LoginDialog({ type, setType, dialogShow, setDialogShow }
 
   const handleProviderSignIn = async () => {
     try {
-      await signIn('google');
-      const userInfo = await getUserInfo(); // 获取用户信息
-      sendToGTM(userInfo.userId, userInfo.name, userInfo.gender, 'thirdParty'); // 发送到 GTM
-      setDialogShow(false);
+      const res = await signIn('google', { redirect: false });
+      if (res?.ok) {
+        const userInfo = await getUserInfo(); // 获取用户信息
+        sendToGTM(userInfo.userId, userInfo.name, userInfo.gender, 'thirdParty'); // 发送到 GTM
+        setDialogShow(false);
+      } else {
+        handleToast(TOAST_TYPE.ERROR, 'google account sign in error!');
+      }
     } catch (error) {
       handleToast(TOAST_TYPE.ERROR, 'google account sign in error!');
     }
