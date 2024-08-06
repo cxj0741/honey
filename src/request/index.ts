@@ -189,3 +189,9 @@ export async function getUsersToBots() {
   const data = await res.json()
   return data
 }
+
+export async function getOrders() {
+  const res = await fetch(`${baseURL}/api/getOrders`)
+  const data = await res.json()
+  return data
+}
