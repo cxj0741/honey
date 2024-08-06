@@ -5,6 +5,9 @@ import { z } from 'zod'
 import Toast, { TOAST_TYPE, useToast } from './Toast'
 import { useRouter } from 'next/navigation'
 
+
+import { getUserInfo } from '@/request'
+
 const ACCOUNT = {
   SIGN_IN: 'Sign In',
   SIGN_UP: 'Sign Up'
@@ -22,6 +25,17 @@ export default function LoginDialog({ type, setType, dialogShow, setDialogShow }
   const emailRef = useRef(null)
   const passwordRef = useRef(null)
   const confirmPasswordRef = useRef(null)
+
+  // 发送数据到 GTM
+  const sendToGTM = (userId: number, name: string, gender: string) => {
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+      event: 'userLogin',
+      userId,
+      name,
+      gender
+    });
+  };
 
   const handleConfirm = async (type: string) => {
     const email = (emailRef?.current as any)?.value?.trim() || ''
@@ -41,6 +55,8 @@ export default function LoginDialog({ type, setType, dialogShow, setDialogShow }
       try {
         const res = await signIn('credentials', { redirect: false, email, password })
         if (res?.ok) {
+          const userInfo = await getUserInfo(); // 获取用户信息
+          sendToGTM(userInfo.userId, userInfo.name, userInfo.gender); // 发送到 GTM
           handleToast(TOAST_TYPE.SUCCESS, 'sign in success!')
           setDialogShow(false)
         } else {
@@ -50,6 +66,7 @@ export default function LoginDialog({ type, setType, dialogShow, setDialogShow }
         handleToast(TOAST_TYPE.ERROR, 'email or password error!')
       }
     }
+
     if (type === ACCOUNT.SIGN_UP) {
       const confirmPassword = (confirmPasswordRef?.current as any)?.value?.trim() || ''
       if (password !== confirmPassword) {
@@ -59,8 +76,10 @@ export default function LoginDialog({ type, setType, dialogShow, setDialogShow }
       try {
         const res = await signUp({ email, password })
         if (res.ok) {
-          setDialogShow(false)
           await signIn('credentials', { email, password })
+          const userInfo = await getUserInfo(); // 获取用户信息
+          sendToGTM(userInfo.userId, userInfo.name, userInfo.gender); // 发送到 GTM
+          setDialogShow(false)
         } else {
           handleToast(TOAST_TYPE.ERROR, res.error)
         }
@@ -73,6 +92,8 @@ export default function LoginDialog({ type, setType, dialogShow, setDialogShow }
   const handleProviderSignIn = async () => {
     try {
       await signIn('google');
+      const userInfo = await getUserInfo(); // 获取用户信息
+      sendToGTM(userInfo.userId, userInfo.name, userInfo.gender); // 发送到 GTM
       setDialogShow(false);
     } catch (error) {
       handleToast(TOAST_TYPE.ERROR, 'google account sign in error!');
