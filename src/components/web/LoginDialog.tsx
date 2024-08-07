@@ -95,13 +95,19 @@ export default function LoginDialog({ type, setType, dialogShow, setDialogShow }
 
   const handleProviderSignIn = async () => {
     try {
-        signIn('google')
+      const result = await signIn('google', { redirect: false });
+      
+      if (result?.ok) {
         setLoginMethod('thirdParty');       
         setDialogShow(false);
+      } else {
+        throw new Error(result?.error || 'Sign in failed');
+      }
     } catch (error) {
       handleToast(TOAST_TYPE.ERROR, 'Google account sign in error!');
     }
   };
+  
 
   useEffect(() => {
     if (status==="authenticated" && session?.user && loginMethod) {  
