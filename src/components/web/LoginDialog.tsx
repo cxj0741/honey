@@ -95,9 +95,10 @@ export default function LoginDialog({ type, setType, dialogShow, setDialogShow }
 
   const handleProviderSignIn = async () => {
     try {
-      setLoginMethod('thirdParty');
-      console.log(loginMethod);      
-      await signIn('google');
+      await signIn('google').then(()=>{
+        setLoginMethod('thirdParty'); 
+        console.log(loginMethod);        
+      });
       setDialogShow(false);
     } catch (error) {
       handleToast(TOAST_TYPE.ERROR, 'Google account sign in error!');
