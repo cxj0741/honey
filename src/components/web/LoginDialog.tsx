@@ -1,31 +1,34 @@
-import { signUp } from '@/request'
-import { signIn } from 'next-auth/react'
-import { useRef } from 'react'
-import { z } from 'zod'
-import Toast, { TOAST_TYPE, useToast } from './Toast'
-import { useRouter } from 'next/navigation'
-import { getUserInfo } from '@/request'
+import { signUp } from '@/request';
+import { signIn } from 'next-auth/react';
+import { useRef } from 'react';
+import { z } from 'zod';
+import Toast, { TOAST_TYPE, useToast } from './Toast';
+import { useRouter } from 'next/navigation';
+import { useSession } from 'next-auth/react';
 
 const ACCOUNT = {
   SIGN_IN: 'Sign In',
   SIGN_UP: 'Sign Up'
-}
+};
 
 interface Props {
-  type: typeof ACCOUNT.SIGN_IN | typeof ACCOUNT.SIGN_UP
-  setType: Function
-  dialogShow: boolean
-  setDialogShow: Function
+  type: typeof ACCOUNT.SIGN_IN | typeof ACCOUNT.SIGN_UP;
+  setType: Function;
+  dialogShow: boolean;
+  setDialogShow: Function;
 }
 
 export default function LoginDialog({ type, setType, dialogShow, setDialogShow }: Props) {
-  const { toast, handleToast } = useToast()
-  const emailRef = useRef(null)
-  const passwordRef = useRef(null)
-  const confirmPasswordRef = useRef(null)
+  const { toast, handleToast } = useToast();
+  const emailRef = useRef(null);
+  const passwordRef = useRef(null);
+  const confirmPasswordRef = useRef(null);
+
+  // 使用 useSession Hook
+  const { data: session, status } = useSession();
 
   // 发送数据到 GTM
-  const sendToGTM = (userId: number, name: string, gender: string, loginMethod: string) => {
+  const sendToGTM = (userId: string, name: string, gender: string, loginMethod: string) => {
     window.dataLayer = window.dataLayer || [];
     window.dataLayer.push({
       event: 'userLogin',
@@ -38,79 +41,94 @@ export default function LoginDialog({ type, setType, dialogShow, setDialogShow }
   };
 
   const handleConfirm = async (type: string) => {
-    const email = (emailRef?.current as any)?.value?.trim() || ''
-    const emailCheck = z.string().email().safeParse(email)
+    const email = (emailRef?.current as any)?.value?.trim() || '';
+    const emailCheck = z.string().email().safeParse(email);
     if (!emailCheck.success) {
-      handleToast(TOAST_TYPE.ERROR, 'email error!')
-      return
+      handleToast(TOAST_TYPE.ERROR, 'email error!');
+      return;
     }
-    const password = (passwordRef?.current as any)?.value?.trim() || ''
-    const passwordCheck = z.string().min(6).safeParse(password)
+    const password = (passwordRef?.current as any)?.value?.trim() || '';
+    const passwordCheck = z.string().min(6).safeParse(password);
     if (!passwordCheck.success) {
-      handleToast(TOAST_TYPE.ERROR, 'password error!')
-      return
+      handleToast(TOAST_TYPE.ERROR, 'password error!');
+      return;
     }
 
     if (type === ACCOUNT.SIGN_IN) {
       try {
-        const res = await signIn('credentials', { redirect: false, email, password })
+        const res = await signIn('credentials', { redirect: false, email, password });
+    
         if (res?.ok) {
-          const userInfo = await getUserInfo(); // 获取用户信息
-          sendToGTM(userInfo.userId, userInfo.name, userInfo.gender, 'password'); // 发送到 GTM
-          handleToast(TOAST_TYPE.SUCCESS, 'sign in success!')
-          setDialogShow(false)
+          if (status === 'authenticated' && session?.user) {
+            let { name,id,gender} = session.user;
+            name = name ?? 'defaultName';
+            id = id ?? '0'
+            gender = gender ?? 'male'
+            // 发送到 GTM
+            sendToGTM(id, name, gender, 'password');
+          }
+          handleToast(TOAST_TYPE.SUCCESS, 'sign in success!');
+          setDialogShow(false);
         } else {
-          handleToast(TOAST_TYPE.ERROR, 'email or password error!')
+          handleToast(TOAST_TYPE.ERROR, 'email or password error!');
         }
       } catch (error) {
-        handleToast(TOAST_TYPE.ERROR, 'email or password error!')
+        handleToast(TOAST_TYPE.ERROR, 'email or password error!');
       }
     }
+    
+    
 
     if (type === ACCOUNT.SIGN_UP) {
-      const confirmPassword = (confirmPasswordRef?.current as any)?.value?.trim() || ''
+      const confirmPassword = (confirmPasswordRef?.current as any)?.value?.trim() || '';
       if (password !== confirmPassword) {
-        handleToast(TOAST_TYPE.ERROR, 'password and confirm password are different!')
-        return
+        handleToast(TOAST_TYPE.ERROR, 'password and confirm password are different!');
+        return;
       }
       try {
-        const res = await signUp({ email, password })
+        const res = await signUp({ email, password });
         if (res.ok) {
-          await signIn('credentials', { email, password })
-          setDialogShow(false)
+          await signIn('credentials', { email, password });
+          setDialogShow(false);
         } else {
-          handleToast(TOAST_TYPE.ERROR, res.error)
+          handleToast(TOAST_TYPE.ERROR, res.error);
         }
       } catch (error) {
-        handleToast(TOAST_TYPE.ERROR, 'sign up error!')
+        handleToast(TOAST_TYPE.ERROR, 'sign up error!');
       }
-    }
-  }
-
-  const handleProviderSignIn = async () => {
-    try {
-      const res = await signIn('google', { redirect: false });
-      if (res?.ok) {
-        const userInfo = await getUserInfo(); // 获取用户信息
-        sendToGTM(userInfo.userId, userInfo.name, userInfo.gender, 'thirdParty'); // 发送到 GTM
-        setDialogShow(false);
-      } else {
-        handleToast(TOAST_TYPE.ERROR, 'google account sign in error!');
-      }
-    } catch (error) {
-      handleToast(TOAST_TYPE.ERROR, 'google account sign in error!');
     }
   };
 
-  const router = useRouter()
+  const handleProviderSignIn = async () => {
+    try {
+      await signIn('google');
+      setDialogShow(false);
+  
+      if (status === 'authenticated' && session?.user) {
+        let { name,id,gender} = session.user;
+        name = name ?? 'defaultName';
+        id = id ?? '0'
+        gender = gender ?? 'male'
+        // 发送到 GTM
+        sendToGTM(id, name, gender, 'thirdParty');
+      } else {
+        handleToast(TOAST_TYPE.ERROR, 'User not authenticated');
+      }
+    } catch (error) {
+      handleToast(TOAST_TYPE.ERROR, 'Google account sign in error!');
+    }
+  };
+  
+
+  const router = useRouter();
   return (
     <div className={`${dialogShow ? 'block' : 'hidden'}`}>
       <div className="z-50 fixed left-0 top-0 w-[100vw] h-[100vh] flex items-center justify-center bg-[rgba(0,0,0,0.8)]">
         <div className="w-[810px] rounded-lg flex relative bg-bottom bg-cover bg-no-repeat"
           style={{ backgroundImage: 'url(/assets/chatMiddleBg.png)' }}>
           <div onClick={() => {
-            setDialogShow(false)
-            router.push('/')
+            setDialogShow(false);
+            router.push('/');
           }} className="w-14 h-14 bg-center bg-contain bg-no-repeat absolute top-0 right-0 hover:cursor-pointer"
             style={{ backgroundImage: "url(/assets/close.png)" }}
           ></div>
@@ -238,5 +256,5 @@ export default function LoginDialog({ type, setType, dialogShow, setDialogShow }
       </div>
       {toast.show && <Toast type={toast.type} message={toast.message} />}
     </div>
-  )
+  );
 }

@@ -2,5 +2,13 @@
   "extends": ["next/core-web-vitals", "eslint:recommended"],
   "rules": {
     "no-unused-vars": ["error", { "args": "none", "ignoreRestSiblings": true }]
-  }
+  },
+  "overrides": [
+    {
+      "files": ["src/next-auth.d.ts"],
+      "rules": {
+        "no-unused-vars": "off"
+      }
+    }
+  ]
 }

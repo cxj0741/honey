@@ -23,6 +23,7 @@ export const authOptions: AuthOptions = {
         (session.user as any).email = user.email;
         (session.user as any).tokens = user.tokens;
         (session.user as any).isAdult = user.isAdult;
+        (session.user as any).gender = user.gender;
       }
       return session;
     },
