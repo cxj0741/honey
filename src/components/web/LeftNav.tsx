@@ -1,9 +1,8 @@
 'use client'
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useRouter, usePathname } from 'next/navigation'
 import LoginDialog from './LoginDialog'
 import { ACCOUNT } from '@/utils'
-// 获取session信息
 import { getSession, signOut, useSession } from 'next-auth/react'
 import Toast, { TOAST_TYPE, useToast } from './Toast'
 import { changeUserInfo } from '@/request'
@@ -20,9 +19,39 @@ export default function LeftNav() {
   const [type, setType] = useState(ACCOUNT.SIGN_UP)
   const [dialogShow, setDialogShow] = useState(false)
   const [contactDialogShow, setContactDialogShow] = useState(false)
-  // 三种状态 authenticated unauthenticated loading
   const session = useSession()
   const { toast, handleToast } = useToast()
+  const hasSentToGTM = useRef(false) // 用于跟踪是否已经发送过事件
+
+  // 发送数据到 GTM
+  const sendToGTM = (userId: string | null | undefined, name: string | null| undefined, gender: string | null| undefined, loginMethod: string) => {
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+      event: 'userLogin',
+      userId,
+      name,
+      gender,
+      loginMethod,
+      loginTime: new Date().toISOString()
+    });
+  };
+
+
+useEffect(() => {
+  console.log('useEffect triggered');
+  console.log('Session status:', session.status);
+  console.log('Has sent to GTM:', hasSentToGTM.current);
+
+  if (session.status === 'authenticated' && session.data?.user && !hasSentToGTM.current) {
+    const { id, name, gender } = session.data.user;
+    console.log('User data:', { id, name, gender });
+    sendToGTM(id, name, gender, "待定");
+    hasSentToGTM.current = true;
+    console.log('Data sent to GTM',id, name, gender);
+  }
+}, [session.status, session.data]);
+
+
   const handleConfirmAge = async () => {
     try {
       await changeUserInfo('isAdult', true)
