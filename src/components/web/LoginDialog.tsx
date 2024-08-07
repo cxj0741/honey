@@ -96,7 +96,6 @@ export default function LoginDialog({ type, setType, dialogShow, setDialogShow }
   const handleProviderSignIn = async () => {
     try {
       signIn('google');
-      loginMethodRef.current = 'thirdParty'; // 设置登录方法为第三方
       setDialogShow(false);
     } catch (error) {
       handleToast(TOAST_TYPE.ERROR, 'Google account sign in error!');
@@ -106,19 +105,21 @@ export default function LoginDialog({ type, setType, dialogShow, setDialogShow }
   useEffect(() => {
     console.log('useEffect triggered:', { status, session, loginMethod: loginMethodRef.current });
 
-    if (status === "authenticated" && session?.user && loginMethodRef.current) {
+    if (status === "authenticated" && session?.user) {
       let { name, id, gender } = session.user;
       name = name ?? 'defaultName';
       id = id ?? '0';
       gender = gender ?? 'male';
 
+      const loginMethod = loginMethodRef.current ?? 'thirdParty';
+
       // 发送到 GTM
-      sendToGTM(id, name, gender, loginMethodRef.current);
+      sendToGTM(id, name, gender, loginMethod);
       console.log('Sent data to GTM:', { id, name, gender, loginMethod: loginMethodRef.current });
     } else {
       console.log('Conditions not met for sending data to GTM');
     }
-  }, [status,loginMethodRef]);
+  }, [status]);
 
   const router = useRouter();
   return (
