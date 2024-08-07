@@ -94,8 +94,6 @@ export default function LoginDialog({ type, setType, dialogShow, setDialogShow }
   };
 
   const handleProviderSignIn = async () => {
-    console.log('Google logining');
-    
     try {
       setLoginMethod('thirdParty');
       await signIn('google');
