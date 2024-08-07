@@ -95,33 +95,29 @@ export default function LoginDialog({ type, setType, dialogShow, setDialogShow }
 
   const handleProviderSignIn = async () => {
     try {
-        signIn('google').then(()=>{
-        setLoginMethod('thirdParty'); 
-        console.log(loginMethod);        
-      });
-      setDialogShow(false);
+        signIn('google')
+        setLoginMethod('thirdParty');       
+        setDialogShow(false);
     } catch (error) {
       handleToast(TOAST_TYPE.ERROR, 'Google account sign in error!');
     }
   };
 
   useEffect(() => {
-    if (session?.user) {  
+    if (status==="authenticated" && session?.user && loginMethod) {  
       let { name, id, gender } = session.user;
       name = name ?? 'defaultName';
       id = id ?? '0';
       gender = gender ?? 'male';
   
       // 发送到 GTM
-      if(loginMethod) {
-        sendToGTM(id, name, gender, loginMethod);
-      }
+      sendToGTM(id, name, gender, loginMethod);
       console.log('Sent data to GTM:', { id, name, gender, loginMethod });
-  
     } else {
       console.log('Conditions not met for sending data to GTM');
     }
-  }, [status === 'authenticated']);
+  }, [loginMethod]);
+  
   // useEffect(() => {
   //   console.log('useEffect triggered');
   //   console.log('status:', status);
