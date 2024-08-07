@@ -1,6 +1,6 @@
 import { signUp } from '@/request';
 import { signIn } from 'next-auth/react';
-import { useRef, useEffect} from 'react';
+import { useRef} from 'react';
 import { z } from 'zod';
 import Toast, { TOAST_TYPE, useToast } from './Toast';
 import { useRouter } from 'next/navigation';
@@ -25,10 +25,10 @@ export default function LoginDialog({ type, setType, dialogShow, setDialogShow }
   const confirmPasswordRef = useRef(null);
 
   // 使用 useSession Hook
-  const { data: session, status } = useSession();
+  const { data: session} = useSession();
 
-  // 使用 useRef 来存储 loginMethod
-  const loginMethodRef = useRef<string | null>(null);
+  // // 使用 useRef 来存储 loginMethod
+  // const loginMethodRef = useRef<string | null>(null);
 
   // 发送数据到 GTM
   const sendToGTM = (userId: string, name: string, gender: string, loginMethod: string) => {
@@ -63,7 +63,7 @@ export default function LoginDialog({ type, setType, dialogShow, setDialogShow }
 
         if (res?.ok) {
           handleToast(TOAST_TYPE.SUCCESS, 'sign in success!');
-          loginMethodRef.current = 'password'; // 设置登录方法为密码
+          //loginMethodRef.current = 'password'; // 设置登录方法为密码
           setDialogShow(false);
         } else {
           handleToast(TOAST_TYPE.ERROR, 'email or password error!');
@@ -94,32 +94,51 @@ export default function LoginDialog({ type, setType, dialogShow, setDialogShow }
   };
 
   const handleProviderSignIn = async () => {
+    console.log('handleProviderSignIn called');
     try {
-      signIn('google');
+      console.log('Attempting to sign in with Google');
+      await signIn('google');
+
+      if (session?.user) {
+        console.log('User session found:', session.user);
+        let { name, id, gender } = session.user;
+        name = name ?? 'defaultName';
+        id = id ?? '0';
+        gender = gender ?? 'male';
+
+        // 发送到 GTM
+        sendToGTM(id, name, gender, 'thirdParty');
+        console.log('Sent data to GTM:', { id, name, gender});
+      } else {
+        console.log('No user session found after sign in');
+      }
+
+      console.log('Hiding dialog');
       setDialogShow(false);
     } catch (error) {
+      console.error('Google account sign in error:', error);
       handleToast(TOAST_TYPE.ERROR, 'Google account sign in error!');
     }
   };
 
-  useEffect(() => {
-    console.log('useEffect triggered:', { status, session, loginMethod: loginMethodRef.current });
+  // useEffect(() => {
+  //   console.log('useEffect triggered:', { status, session, loginMethod: loginMethodRef.current });
 
-    if (status === "authenticated" && session?.user) {
-      let { name, id, gender } = session.user;
-      name = name ?? 'defaultName';
-      id = id ?? '0';
-      gender = gender ?? 'male';
+  //   if (status === "authenticated" && session?.user) {
+  //     let { name, id, gender } = session.user;
+  //     name = name ?? 'defaultName';
+  //     id = id ?? '0';
+  //     gender = gender ?? 'male';
 
-      const loginMethod = loginMethodRef.current ?? 'thirdParty';
+  //     const loginMethod = loginMethodRef.current ?? 'thirdParty';
 
-      // 发送到 GTM
-      sendToGTM(id, name, gender, loginMethod);
-      console.log('Sent data to GTM:', { id, name, gender, loginMethod: loginMethodRef.current });
-    } else {
-      console.log('Conditions not met for sending data to GTM');
-    }
-  }, [status]);
+  //     // 发送到 GTM
+  //     sendToGTM(id, name, gender, loginMethod);
+  //     console.log('Sent data to GTM:', { id, name, gender, loginMethod: loginMethod });
+  //   } else {
+  //     console.log('Conditions not met for sending data to GTM');
+  //   }
+  // }, [status]);
 
   const router = useRouter();
   return (
