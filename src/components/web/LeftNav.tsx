@@ -24,7 +24,7 @@ export default function LeftNav() {
   const hasSentToGTM = useRef(false) // 用于跟踪是否已经发送过事件
 
   // 发送数据到 GTM
-  const sendToGTM = (userId: string | null | undefined, name: string | null| undefined, gender: string | null| undefined, loginMethod: string) => {
+  const sendToGTM =  (userId: string | null | undefined, name: string | null| undefined, gender: string | null| undefined, loginMethod: string) => {
     window.dataLayer = window.dataLayer || [];
     window.dataLayer.push({
       event: 'userLogin',
@@ -36,20 +36,21 @@ export default function LeftNav() {
     });
   };
 
+  useEffect(() => {
+    // 检查 localStorage 中是否存在标记
+    const localStorageFlag = localStorage.getItem('hasSentToGTM');
 
-useEffect(() => {
-  console.log('useEffect triggered');
-  console.log('Session status:', session.status);
-  console.log('Has sent to GTM:', hasSentToGTM.current);
+    if (!localStorageFlag && session.status === 'authenticated' && session.data?.user && !hasSentToGTM.current) {
+      const { id, name, gender } = session.data.user;
+      console.log('User data:', { id, name, gender });
+      sendToGTM(id, name, gender, "待定");
 
-  if (session.status === 'authenticated' && session.data?.user && !hasSentToGTM.current) {
-    const { id, name, gender } = session.data.user;
-    console.log('User data:', { id, name, gender });
-    sendToGTM(id, name, gender, "待定");
-    hasSentToGTM.current = true;
-    console.log('Data sent to GTM',id, name, gender);
-  }
-}, [session.status, session.data]);
+      // 设置标记，表示已经发送过
+      localStorage.setItem('hasSentToGTM', 'true');
+      hasSentToGTM.current = true;
+      console.log('Data sent to GTM', id, name, gender);
+    }
+  }, [session.status, session.data]);
 
 
   const handleConfirmAge = async () => {
