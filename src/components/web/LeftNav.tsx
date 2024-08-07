@@ -37,20 +37,18 @@ export default function LeftNav() {
   };
 
   useEffect(() => {
-    // 检查 localStorage 中是否存在标记
     const localStorageFlag = localStorage.getItem('hasSentToGTM');
-
     if (!localStorageFlag && session.status === 'authenticated' && session.data?.user && !hasSentToGTM.current) {
-      const { id, name, gender } = session.data.user;
+      const { id, name, gender, email } = session.data.user;
+      const loginMethod = (email === name) ? "password" : "thirdParty";
+      sendToGTM(id, name, gender, loginMethod);
       console.log('User data:', { id, name, gender });
-      sendToGTM(id, name, gender, "待定");
-
-      // 设置标记，表示已经发送过
       localStorage.setItem('hasSentToGTM', 'true');
       hasSentToGTM.current = true;
       console.log('Data sent to GTM', id, name, gender);
     }
   }, [session.status, session.data]);
+  
 
 
   const handleConfirmAge = async () => {
