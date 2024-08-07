@@ -95,18 +95,14 @@ export default function LoginDialog({ type, setType, dialogShow, setDialogShow }
 
   const handleProviderSignIn = async () => {
     try {
-      const result = await signIn('google', { redirect: false });
-      
-      if (result?.ok) {
-        setLoginMethod('thirdParty');       
-        setDialogShow(false);
-      } else {
-        throw new Error(result?.error || 'Sign in failed');
-      }
+      signIn('google');
+      setLoginMethod('thirdParty');
+      setDialogShow(false);
     } catch (error) {
       handleToast(TOAST_TYPE.ERROR, 'Google account sign in error!');
     }
   };
+  
   
 
   useEffect(() => {
@@ -122,7 +118,7 @@ export default function LoginDialog({ type, setType, dialogShow, setDialogShow }
     } else {
       console.log('Conditions not met for sending data to GTM');
     }
-  }, [loginMethod]);
+  }, [status]);
   
   // useEffect(() => {
   //   console.log('useEffect triggered');
