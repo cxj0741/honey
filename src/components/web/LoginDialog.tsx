@@ -125,13 +125,39 @@ export default function LoginDialog({ type, setType, dialogShow, setDialogShow }
       sendToGTM(id, name, gender, loginMethod);
       console.log('Sent data to GTM:', { id, name, gender, loginMethod });
   
-      // 重置登录方法
-      setLoginMethod(null);
-      console.log('Reset loginMethod');
     } else {
       console.log('Conditions not met for sending data to GTM');
     }
-  }, [status, session, loginMethod]);
+  }, [status === "authenticated"]);
+  // useEffect(() => {
+  //   console.log('useEffect triggered');
+  //   console.log('status:', status);
+  //   console.log('session:', session);
+  //   console.log('loginMethod:', loginMethod);
+  
+  //   if (status === 'authenticated' && session?.user && loginMethod) {
+  //     console.log('User is authenticated and loginMethod is set');
+  
+  //     let { name, id, gender } = session.user;
+  //     console.log('Original session.user:', session.user);
+  
+  //     name = name ?? 'defaultName';
+  //     id = id ?? '0';
+  //     gender = gender ?? 'male';
+  
+  //     console.log('Processed user details:', { name, id, gender });
+  
+  //     // 发送到 GTM
+  //     sendToGTM(id, name, gender, loginMethod);
+  //     console.log('Sent data to GTM:', { id, name, gender, loginMethod });
+  
+  //     // 重置登录方法
+  //     setLoginMethod(null);
+  //     console.log('Reset loginMethod');
+  //   } else {
+  //     console.log('Conditions not met for sending data to GTM');
+  //   }
+  // }, [status, session, loginMethod]);
   
 
   const router = useRouter();
