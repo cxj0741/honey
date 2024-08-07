@@ -24,10 +24,6 @@ export default function LoginDialog({ type, setType, dialogShow, setDialogShow }
   const passwordRef = useRef(null);
   const confirmPasswordRef = useRef(null);
 
-
-
-
-
   const handleConfirm = async (type: string) => {
     const email = (emailRef?.current as any)?.value?.trim() || '';
     const emailCheck = z.string().email().safeParse(email);

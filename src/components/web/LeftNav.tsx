@@ -42,10 +42,8 @@ export default function LeftNav() {
       const { id, name, gender, email } = session.data.user;
       const loginMethod = (email === name) ? "password" : "thirdParty";
       sendToGTM(id, name, gender, loginMethod);
-      console.log('User data:', { id, name, gender });
       localStorage.setItem('hasSentToGTM', 'true');
       hasSentToGTM.current = true;
-      console.log('Data sent to GTM', id, name, gender);
     }
   }, [session.status, session.data]);
   
