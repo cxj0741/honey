@@ -1,6 +1,6 @@
 import { signUp } from '@/request';
 import { signIn } from 'next-auth/react';
-import { useRef, useEffect, useState } from 'react';
+import { useRef, useEffect} from 'react';
 import { z } from 'zod';
 import Toast, { TOAST_TYPE, useToast } from './Toast';
 import { useRouter } from 'next/navigation';
@@ -27,8 +27,8 @@ export default function LoginDialog({ type, setType, dialogShow, setDialogShow }
   // 使用 useSession Hook
   const { data: session, status } = useSession();
 
-  // 添加一个状态变量来保存当前的登录方法
-  const [loginMethod, setLoginMethod] = useState<string | null>(null);
+  // 使用 useRef 来存储 loginMethod
+  const loginMethodRef = useRef<string | null>(null);
 
   // 发送数据到 GTM
   const sendToGTM = (userId: string, name: string, gender: string, loginMethod: string) => {
@@ -63,7 +63,7 @@ export default function LoginDialog({ type, setType, dialogShow, setDialogShow }
 
         if (res?.ok) {
           handleToast(TOAST_TYPE.SUCCESS, 'sign in success!');
-          setLoginMethod('password');
+          loginMethodRef.current = 'password'; // 设置登录方法为密码
           setDialogShow(false);
         } else {
           handleToast(TOAST_TYPE.ERROR, 'email or password error!');
@@ -95,61 +95,33 @@ export default function LoginDialog({ type, setType, dialogShow, setDialogShow }
 
   const handleProviderSignIn = async () => {
     try {
-      signIn('google');
-      setLoginMethod('thirdParty');
+      await signIn('google');
+      loginMethodRef.current = 'thirdParty'; // 设置登录方法为第三方
       setDialogShow(false);
     } catch (error) {
       handleToast(TOAST_TYPE.ERROR, 'Google account sign in error!');
     }
   };
-  
-  
 
   useEffect(() => {
-    if (status==="authenticated" && session?.user && loginMethod) {  
+    console.log('useEffect triggered:', { status, session, loginMethod: loginMethodRef.current });
+
+    if (status === "authenticated" && session?.user && loginMethodRef.current) {
       let { name, id, gender } = session.user;
       name = name ?? 'defaultName';
       id = id ?? '0';
       gender = gender ?? 'male';
-  
+
       // 发送到 GTM
-      sendToGTM(id, name, gender, loginMethod);
-      console.log('Sent data to GTM:', { id, name, gender, loginMethod });
+      sendToGTM(id, name, gender, loginMethodRef.current);
+      console.log('Sent data to GTM:', { id, name, gender, loginMethod: loginMethodRef.current });
+
+      // 重置登录方法
+      loginMethodRef.current = null;
     } else {
       console.log('Conditions not met for sending data to GTM');
     }
-  }, [status,loginMethod,session]);
-  
-  // useEffect(() => {
-  //   console.log('useEffect triggered');
-  //   console.log('status:', status);
-  //   console.log('session:', session);
-  //   console.log('loginMethod:', loginMethod);
-  
-  //   if (status === 'authenticated' && session?.user && loginMethod) {
-  //     console.log('User is authenticated and loginMethod is set');
-  
-  //     let { name, id, gender } = session.user;
-  //     console.log('Original session.user:', session.user);
-  
-  //     name = name ?? 'defaultName';
-  //     id = id ?? '0';
-  //     gender = gender ?? 'male';
-  
-  //     console.log('Processed user details:', { name, id, gender });
-  
-  //     // 发送到 GTM
-  //     sendToGTM(id, name, gender, loginMethod);
-  //     console.log('Sent data to GTM:', { id, name, gender, loginMethod });
-  
-  //     // 重置登录方法
-  //     setLoginMethod(null);
-  //     console.log('Reset loginMethod');
-  //   } else {
-  //     console.log('Conditions not met for sending data to GTM');
-  //   }
-  // }, [status, session, loginMethod]);
-  
+  }, [status, session]);
 
   const router = useRouter();
   return (
