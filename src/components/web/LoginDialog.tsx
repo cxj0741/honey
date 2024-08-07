@@ -95,7 +95,7 @@ export default function LoginDialog({ type, setType, dialogShow, setDialogShow }
 
   const handleProviderSignIn = async () => {
     try {
-      await signIn('google').then(()=>{
+        signIn('google').then(()=>{
         setLoginMethod('thirdParty'); 
         console.log(loginMethod);        
       });
@@ -108,7 +108,6 @@ export default function LoginDialog({ type, setType, dialogShow, setDialogShow }
   useEffect(() => {
     if (session?.user) {  
       let { name, id, gender } = session.user;
-  
       name = name ?? 'defaultName';
       id = id ?? '0';
       gender = gender ?? 'male';
