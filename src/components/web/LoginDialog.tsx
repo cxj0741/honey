@@ -104,7 +104,7 @@ export default function LoginDialog({ type, setType, dialogShow, setDialogShow }
   };
 
   useEffect(() => {
-    if (status === 'authenticated' && session?.user && loginMethod) {
+    if (session?.user) {
       console.log('useEffect triggered');
       console.log('status:', status);
       console.log('session:', session);
@@ -121,13 +121,15 @@ export default function LoginDialog({ type, setType, dialogShow, setDialogShow }
       console.log('Processed user details:', { name, id, gender });
   
       // 发送到 GTM
-      sendToGTM(id, name, gender, loginMethod);
+      if(loginMethod) {
+        sendToGTM(id, name, gender, loginMethod);
+      }
       console.log('Sent data to GTM:', { id, name, gender, loginMethod });
   
     } else {
       console.log('Conditions not met for sending data to GTM');
     }
-  }, [status]);
+  }, [status === 'authenticated']);
   // useEffect(() => {
   //   console.log('useEffect triggered');
   //   console.log('status:', status);
