@@ -1,6 +1,6 @@
 import { signUp } from '@/request';
 import { signIn } from 'next-auth/react';
-import { useRef } from 'react';
+import { useRef, useEffect, useState } from 'react';
 import { z } from 'zod';
 import Toast, { TOAST_TYPE, useToast } from './Toast';
 import { useRouter } from 'next/navigation';
@@ -26,6 +26,9 @@ export default function LoginDialog({ type, setType, dialogShow, setDialogShow }
 
   // 使用 useSession Hook
   const { data: session, status } = useSession();
+
+  // 添加一个状态变量来保存当前的登录方法
+  const [loginMethod, setLoginMethod] = useState<string | null>(null);
 
   // 发送数据到 GTM
   const sendToGTM = (userId: string, name: string, gender: string, loginMethod: string) => {
@@ -57,17 +60,10 @@ export default function LoginDialog({ type, setType, dialogShow, setDialogShow }
     if (type === ACCOUNT.SIGN_IN) {
       try {
         const res = await signIn('credentials', { redirect: false, email, password });
-    
+
         if (res?.ok) {
-          if (status === 'authenticated' && session?.user) {
-            let { name,id,gender} = session.user;
-            name = name ?? 'defaultName';
-            id = id ?? '0'
-            gender = gender ?? 'male'
-            // 发送到 GTM
-            sendToGTM(id, name, gender, 'password');
-          }
           handleToast(TOAST_TYPE.SUCCESS, 'sign in success!');
+          setLoginMethod('password');
           setDialogShow(false);
         } else {
           handleToast(TOAST_TYPE.ERROR, 'email or password error!');
@@ -76,8 +72,6 @@ export default function LoginDialog({ type, setType, dialogShow, setDialogShow }
         handleToast(TOAST_TYPE.ERROR, 'email or password error!');
       }
     }
-    
-    
 
     if (type === ACCOUNT.SIGN_UP) {
       const confirmPassword = (confirmPasswordRef?.current as any)?.value?.trim() || '';
@@ -102,23 +96,25 @@ export default function LoginDialog({ type, setType, dialogShow, setDialogShow }
   const handleProviderSignIn = async () => {
     try {
       await signIn('google');
+      setLoginMethod('thirdParty');
       setDialogShow(false);
-  
-      if (status === 'authenticated' && session?.user) {
-        let { name,id,gender} = session.user;
-        name = name ?? 'defaultName';
-        id = id ?? '0'
-        gender = gender ?? 'male'
-        // 发送到 GTM
-        sendToGTM(id, name, gender, 'thirdParty');
-      } else {
-        handleToast(TOAST_TYPE.ERROR, 'User not authenticated');
-      }
     } catch (error) {
       handleToast(TOAST_TYPE.ERROR, 'Google account sign in error!');
     }
   };
-  
+
+  useEffect(() => {
+    if (status === 'authenticated' && session?.user && loginMethod) {
+      let { name, id, gender } = session.user;
+      name = name ?? 'defaultName';
+      id = id ?? '0';
+      gender = gender ?? 'male';
+      // 发送到 GTM
+      sendToGTM(id, name, gender, loginMethod);
+      // 重置登录方法
+      setLoginMethod(null);
+    }
+  }, [status, session, loginMethod]);
 
   const router = useRouter();
   return (
