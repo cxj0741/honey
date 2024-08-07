@@ -4,7 +4,8 @@ import { useRef} from 'react';
 import { z } from 'zod';
 import Toast, { TOAST_TYPE, useToast } from './Toast';
 import { useRouter } from 'next/navigation';
-import { useSession } from 'next-auth/react';
+//import { useSession } from 'next-auth/react';
+import { getUserInfo } from '@/request'
 
 const ACCOUNT = {
   SIGN_IN: 'Sign In',
@@ -24,8 +25,8 @@ export default function LoginDialog({ type, setType, dialogShow, setDialogShow }
   const passwordRef = useRef(null);
   const confirmPasswordRef = useRef(null);
 
-  // 使用 useSession Hook
-  const { data: session} = useSession();
+  // // 使用 useSession Hook
+  // const { data: session} = useSession();
 
   // // 使用 useRef 来存储 loginMethod
   // const loginMethodRef = useRef<string | null>(null);
@@ -98,28 +99,28 @@ export default function LoginDialog({ type, setType, dialogShow, setDialogShow }
     try {
       console.log('Attempting to sign in with Google');
       await signIn('google');
-
-      if (session?.user) {
-        console.log('User session found:', session.user);
-        let { name, id, gender } = session.user;
-        name = name ?? 'defaultName';
-        id = id ?? '0';
-        gender = gender ?? 'male';
-
-        // 发送到 GTM
-        sendToGTM(id, name, gender, 'thirdParty');
-        console.log('Sent data to GTM:', { id, name, gender});
-      } else {
-        console.log('No user session found after sign in');
-      }
-
-      console.log('Hiding dialog');
+      console.log('Sign in with Google successful, attempting to get user info');
+  
+      const userInfo = await getUserInfo(); // 获取用户信息
+      console.log('User info retrieved:', userInfo);
+  
+      sendToGTM(userInfo.userId, userInfo.name, userInfo.gender, 'thirdParty'); // 发送到 GTM
+      console.log('Data sent to GTM:', {
+        userId: userInfo.userId,
+        name: userInfo.name,
+        gender: userInfo.gender,
+        loginMethod: 'thirdParty'
+      });
+  
       setDialogShow(false);
+      console.log('Dialog hidden');
     } catch (error) {
       console.error('Google account sign in error:', error);
       handleToast(TOAST_TYPE.ERROR, 'Google account sign in error!');
     }
   };
+  
+
 
   // useEffect(() => {
   //   console.log('useEffect triggered:', { status, session, loginMethod: loginMethodRef.current });
