@@ -104,12 +104,11 @@ export default function LoginDialog({ type, setType, dialogShow, setDialogShow }
   };
 
   useEffect(() => {
-    console.log('useEffect triggered');
-    console.log('status:', status);
-    console.log('session:', session);
-    console.log('loginMethod:', loginMethod);
-  
     if (status === 'authenticated' && session?.user && loginMethod) {
+      console.log('useEffect triggered');
+      console.log('status:', status);
+      console.log('session:', session);
+      console.log('loginMethod:', loginMethod);
       console.log('User is authenticated and loginMethod is set');
   
       let { name, id, gender } = session.user;
@@ -128,7 +127,7 @@ export default function LoginDialog({ type, setType, dialogShow, setDialogShow }
     } else {
       console.log('Conditions not met for sending data to GTM');
     }
-  }, [status === "authenticated"]);
+  }, [status]);
   // useEffect(() => {
   //   console.log('useEffect triggered');
   //   console.log('status:', status);
