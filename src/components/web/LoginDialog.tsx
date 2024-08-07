@@ -118,7 +118,7 @@ export default function LoginDialog({ type, setType, dialogShow, setDialogShow }
     } else {
       console.log('Conditions not met for sending data to GTM');
     }
-  }, [status]);
+  }, [status,loginMethod]);
   
   // useEffect(() => {
   //   console.log('useEffect triggered');
