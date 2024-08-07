@@ -95,7 +95,7 @@ export default function LoginDialog({ type, setType, dialogShow, setDialogShow }
 
   const handleProviderSignIn = async () => {
     try {
-      await signIn('google');
+      signIn('google');
       loginMethodRef.current = 'thirdParty'; // 设置登录方法为第三方
       setDialogShow(false);
     } catch (error) {
@@ -115,13 +115,10 @@ export default function LoginDialog({ type, setType, dialogShow, setDialogShow }
       // 发送到 GTM
       sendToGTM(id, name, gender, loginMethodRef.current);
       console.log('Sent data to GTM:', { id, name, gender, loginMethod: loginMethodRef.current });
-
-      // 重置登录方法
-      loginMethodRef.current = null;
     } else {
       console.log('Conditions not met for sending data to GTM');
     }
-  }, [status, session]);
+  }, [status,loginMethodRef]);
 
   const router = useRouter();
   return (
