@@ -36,7 +36,7 @@ export default function Success() {
 
   const getOrder = useCallback(
     async (orderId: string) => {
-      const { status, amount, createdAt, id } = await getOrderInfo(orderId)
+      const { status, amount, createdAt, userId } = await getOrderInfo(orderId)
       if (status === PAY_STATUS.PROGRESS) {
         if (counter >= MAX_TRiES) {
           setStauts(PAY_STATUS.FAILURE)
@@ -53,8 +53,8 @@ export default function Success() {
       }
       if (status === PAY_STATUS.SUCCESS) {
         //发送事件
-        sendPaymentEventToGTM(amount, createdAt, id)
-        console.log('发送支付事件：', amount, createdAt, id)
+        sendPaymentEventToGTM(amount, createdAt, userId)
+        console.log('发送支付事件：', amount, createdAt, userId)
         setStauts(PAY_STATUS.SUCCESS)
         setTimeout(() => {
           router.replace('/')
