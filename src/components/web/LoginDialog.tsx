@@ -64,6 +64,12 @@ export default function LoginDialog({ type, setType, dialogShow, setDialogShow }
         if (res.ok) {
           await signIn('credentials', { email, password });
           setDialogShow(false);
+          // 发送用户注册事件到 GTM
+          window.dataLayer = window.dataLayer || [];
+          window.dataLayer.push({
+          event: 'user_registration',
+          registration_time: new Date().toISOString(),
+      });
         } else {
           handleToast(TOAST_TYPE.ERROR, res.error);
         }
