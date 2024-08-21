@@ -78,7 +78,7 @@ export default function Success() {
       return
     }
     getOrder(orderId)
-  })
+  }, [orderId, getOrder, router]) // 添加依赖数组
 
   return (
     <div className="z-50 fixed left-0 top-0 w-[100vw] h-[100vh] flex items-center justify-center bg-[rgba(0,0,0,0.8)]">
