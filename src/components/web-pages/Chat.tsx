@@ -34,17 +34,34 @@ export default function Chat({ userBotArray, botId }: { userBotArray: Record<str
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeBot])
 
-  const [windowWidth, setWindowWidth] = useState(window.innerWidth)
-  useEffect(() => {
-    const handleResize = () => {
-      setWindowWidth(window.innerWidth)
-    }
-    window.addEventListener('resize', handleResize)
-    return () => {
-      window.removeEventListener('resize', handleResize)
-    }
-  }, [])
+  // const [windowWidth, setWindowWidth] = useState(window.innerWidth)
+  // useEffect(() => {
+  //   const handleResize = () => {
+  //     setWindowWidth(window.innerWidth)
+  //   }
+  //   window.addEventListener('resize', handleResize)
+  //   return () => {
+  //     window.removeEventListener('resize', handleResize)
+  //   }
+  // }, [])
 
+  const [windowWidth, setWindowWidth] = useState(0);
+  const [isMounted, setIsMounted] = useState(false);
+  
+  useEffect(() => {
+    setWindowWidth(window.innerWidth);
+    setIsMounted(true);
+    const handleResize = () => {
+      setWindowWidth(window.innerWidth);
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+  
+  if (!isMounted) {
+    return null; // 或者返回一个加载指示器
+  }
+  
   return (
     <div className="flex-1 flex">
       <ChatLeft activeBot={activeBot} setActiveBot={setActiveBot} currentArray={currentArray} setCurrentArray={setCurrentArray} />
@@ -55,16 +72,17 @@ export default function Chat({ userBotArray, botId }: { userBotArray: Record<str
       }
       {
         windowWidth < 1280 &&
-        <div className={`${fold ? 'block' : 'hidden'}`}>
+        <div className={`${fold ? 'hidden' : 'block'}`}>
           <div className="z-50 fixed left-0 top-0 w-[100vw] h-[100vh] flex items-center justify-center bg-[rgba(0,0,0,0.8)]">
             <div
               onClick={() => {
-                setFold(false)
+                setFold(true)
+                console.log('fold', fold)
               }}
               className="z-50 absolute top-7 right-7 w-7 h-7 bg-center bg-contain bg-no-repeat bg-white rounded-full hover:cursor-pointer"
               style={{ backgroundImage: "url(/assets/close.png)" }}
             ></div>
-            <ChatRight fold={!fold} activeBot={activeBot} />
+            <ChatRight fold={fold} activeBot={activeBot} />
           </div>
         </div>
       }

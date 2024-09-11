@@ -18,5 +18,5 @@ export async function GET(request: NextRequest) {
     .where(
       sql`${usersToBots.botId} = ${id} AND ${usersToBots.userId} = ${userId}`
     )
-  return NextResponse.json({ message: 'delete dialog success!' })
+  return NextResponse.json({ message: 'Delete dialog success!' })
 }

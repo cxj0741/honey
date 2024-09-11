@@ -82,7 +82,7 @@ export default function LeftNav() {
             router.push(url)
           }
         }}
-        className={`flex ${fold ? 'justify-center' : 'justify-start'}`}
+        className={`flex relative group ${fold ? 'justify-center' : 'justify-start'}`}
       >
         <div
           className={`px-4 py-3 rounded-lg flex items-center space-x-4 hover:bg-[rgba(0,0,0,0.04)] hover:cursor-pointer ${fold ? '' : 'flex-1'}`}
@@ -91,22 +91,43 @@ export default function LeftNav() {
           <div className="w-6 h-6 bg-center bg-no-repeat bg-contain" style={{ backgroundImage: `url(${src})` }}></div>
           <div className={`font-medium ${fold ? 'hidden' : 'block'}`}>{title}</div>
         </div>
+        {fold && (
+         <div className="absolute left-full ml-2 py-1 px-2 bg-gray-100 text-gray-800 text-sm rounded-md opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap shadow-md z-50">
+          {title}
+        </div>
+      )}
       </div>
     )
   }
 
   return (
     <>
-      <div className={`bg-white ${fold ? 'w-[88px]' : 'w-[216px]'}`}>
+      <div 
+        className={`bg-white transition-all duration-300 ease-in-out ${fold ? 'w-[88px]' : 'w-[216px]'}`}
+      >
         <div className="w-full h-full py-8 border-r border-[rgba(0,0,0,0.16)] flex flex-col">
           <div className="px-4 flex-1 flex flex-col">
             <div className="h-6 flex items-center justify-center gap-2">
-              <div onClick={() => router.push('/')} className="h-6 bg-center bg-no-repeat bg-contain hover:cursor-pointer" style={{ width: fold ? 0 : '152px', backgroundImage: `url(assets/${fold ? '' : 'Honeybun'}.png)` }}></div>
+              <div 
+                onClick={() => router.push('/')} 
+                className="h-6 bg-center bg-no-repeat bg-contain hover:cursor-pointer transition-all duration-300 ease-in-out" 
+                style={{ 
+                  width: fold ? '0px' : '152px', 
+                  backgroundImage: `url(assets/${fold ? '' : 'Honeybun'}.png)`,
+                  transition: 'width 0.3s ease-in-out, opacity 0.3s ease-in-out',
+                  opacity: fold ? 0 : 1
+                }}
+              ></div>
               <div
                 onClick={() => {
                   setFold(!fold)
                 }}
-                className="w-6 h-6 hover:cursor-pointer bg-center bg-no-repeat bg-contain" style={{ backgroundImage: `url(/assets/${fold ? 'arrowOut' : 'arrowIn'}.png)` }}></div>
+                className="w-6 h-6 hover:cursor-pointer bg-center bg-no-repeat bg-contain transition-all duration-300 ease-in-out" 
+                style={{ 
+                  backgroundImage: `url(/assets/${fold ? 'arrowOut' : 'arrowIn'}.png)`,
+                  transform: fold ? 'rotate(180deg)' : 'rotate(0deg)'
+                }}
+              ></div>
             </div>
             <div className="mt-8 text-black space-y-4">
               <Item
@@ -123,23 +144,21 @@ export default function LeftNav() {
               />
             </div>
             <div className="mt-4 text-black">
-              <div
-                // onClick={() => {
-                //   console.log('Tawk_API CHAT>>>>>')
-                //   if (typeof window.Tawk_API === 'undefined') {
-                //     return
-                //   }
-                //   window.Tawk_API.toggle();
-                // }}
-                onClick={() => { setContactDialogShow(true) }}
-                className={`flex ${fold ? 'justify-center' : 'justify-start'}`}
-              >
-                <div className={`px-4 py-3 rounded-lg flex items-center space-x-4 hover:bg-[rgba(0,0,0,0.04)] hover:cursor-pointer ${fold ? '' : 'flex-1'}`}>
-                  <div className="w-6 h-6 bg-center bg-no-repeat bg-contain" style={{ backgroundImage: 'url(/assets/contactUs.png)' }}></div>
-                  <div className={`font-medium ${fold ? 'hidden' : 'block'}`}>Contact Us</div>
-                </div>
+            <div
+              onClick={() => { setContactDialogShow(true) }}
+              className={`flex relative group ${fold ? 'justify-center' : 'justify-start'}`}
+            >
+              <div className={`px-4 py-3 rounded-lg flex items-center space-x-4 hover:bg-[rgba(0,0,0,0.04)] hover:cursor-pointer ${fold ? '' : 'flex-1'}`}>
+                <div className="w-6 h-6 bg-center bg-no-repeat bg-contain" style={{ backgroundImage: 'url(/assets/contactUs.png)' }}></div>
+                <div className={`font-medium ${fold ? 'hidden' : 'block'} overflow-hidden whitespace-nowrap text-ellipsis`}>Contact Us</div>
               </div>
+              {fold && (
+                <div className="absolute left-full ml-2 py-1 px-2 bg-gray-100 text-gray-800 text-sm rounded-md opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap shadow-md z-50">
+                  Contact Us
+                </div>
+              )}
             </div>
+          </div>
           </div>
 
           {/* <div className="mb-6 h-[1px] bg-[rgba(0,0,0,0.16)]"></div> */}
@@ -209,7 +228,9 @@ export default function LeftNav() {
           </div>
         </div>
       </div >
+      
       <LoginDialog type={type} setType={setType} dialogShow={dialogShow} setDialogShow={setDialogShow} />
+
       <dialog open={contactDialogShow} className="modal bg-transparent">
         <div className="modal-box">
           <h3 className="font-bold text-lg">ATTENTION</h3>
@@ -221,6 +242,7 @@ export default function LeftNav() {
           </div>
         </div>
       </dialog>
+
     </>
   )
 }

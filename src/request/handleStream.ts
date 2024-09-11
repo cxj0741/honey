@@ -82,3 +82,31 @@ export async function sendMessage(apiKey: string, userInfo: {userStr:string, con
   await handleStream()
   return [botStr, images, conversationId]
 }
+
+export async function audioToText(apiKey: string, audioFile: File, user: string): Promise<string> {
+  const url = 'https://aiagent.marsyoo.com/v1/audio-to-text';
+  const formData = new FormData();
+  formData.append('file', audioFile);
+  formData.append('user', user);
+
+  try {
+    const response = await fetch(url, {
+      method: 'POST',
+      mode: 'cors',
+      headers: {
+        'Authorization': `Bearer ${apiKey}`,
+      },
+      body: formData
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const data = await response.json();
+    return data.text;
+  } catch (error) {
+    console.error('Error in audio-to-text:', error);
+    throw error;
+  }
+}
