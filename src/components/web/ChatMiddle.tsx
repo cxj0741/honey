@@ -27,6 +27,7 @@ export default function ChatMiddle({ fold, setFold, activeBot, setActiveBot, cur
   })[])
   const [result, setResult] = useState({
     timestamp: 0,
+    botId: '',
     dialog: { userStr: '', botStr: '', image: '' }
   })
   const chatContainer = useRef(null)
@@ -52,6 +53,8 @@ export default function ChatMiddle({ fold, setFold, activeBot, setActiveBot, cur
   const [inputShow, setInputShow] = useState(true)
   const session = useSession()
   const [dialogShow, setDialogShow] = useState(false)
+  const [respondingBotId, setRespondingBotId] = useState('')
+
   const handleSendMessage = async () => {
     const userStr = (inputRef?.current as any)?.value.trim() || ''
     if (!userStr) { return }
@@ -71,10 +74,11 @@ export default function ChatMiddle({ fold, setFold, activeBot, setActiveBot, cur
     }
 
     setInputShow(false);
+    setRespondingBotId(activeBot.id);
     (inputRef!.current as any).value = ''
     const timestamp = Date.now()
 
-    setResult({ timestamp, dialog: { userStr, botStr: '', image: '' } })
+    setResult({ timestamp, botId: activeBot.id, dialog: { userStr, botStr: '', image: '' } })
     setTimeout(() => {
       if (chatContainer && chatContainer.current) {
         (chatContainer.current as any).scrollTop = (chatContainer.current as any).scrollHeight
@@ -106,7 +110,7 @@ export default function ChatMiddle({ fold, setFold, activeBot, setActiveBot, cur
           botStr = botStr.replace(image, '')
         }
       }
-      setResult({ timestamp, dialog: { userStr, botStr, image } })
+      setResult({ timestamp, botId: activeBot.id, dialog: { userStr, botStr, image } })
       // console.log('succeed send message>>>>> set', botStr, image, conversationId)
       // console.log('conversationId>>>>> set', activeBot.id, conversationId)
       if (!localStorage.getItem(activeBot.id)) {
@@ -136,9 +140,16 @@ export default function ChatMiddle({ fold, setFold, activeBot, setActiveBot, cur
 
     setResult({
       timestamp: 0,
+      botId: '',
       dialog: { userStr: '', botStr: '', image: '' }
     })
     setInputShow(true)
+    setRespondingBotId('');
+    setTimeout(() => {
+      if (inputRef.current) {
+        (inputRef.current as HTMLInputElement).focus();
+      }
+    }, 0);
   }
   const handleKeyDown = (key: string) => {
     if (key === 'Enter') {
@@ -282,17 +293,17 @@ export default function ChatMiddle({ fold, setFold, activeBot, setActiveBot, cur
             ))}
             {/* CURRENT DIANLOG */}
             <div className="w-full space-y-2">
-              {result.dialog.userStr &&
-                (<div className="flex flex-row-reverse items-start">
+              {result.dialog.userStr && result.botId === activeBot.id && (
+                <div className="flex flex-row-reverse items-start">
                   <div className="w-8 h-8 rounded-full bg-top bg-cover bg-no-repeat" style={{ backgroundImage: `url(${session?.data?.user?.image})`, backgroundColor: session?.data?.user?.image ? 'transparent' : '#075985' }}></div>
                   <div className='mr-2 max-w-[70%]'>
                     <div className="px-2 py-3 rounded-lg rounded-tr-sm bg-[rgba(0,0,0,0.08)] text-black">{result.dialog.userStr}</div>
                     <div className="mt-1 ml-1 text-[rgba(0,0,0,0.64)] text-sm text-right">{formatUnixTimestamp(result.timestamp)}</div>
                   </div>
-                </div>)
-              }
-              {(result.timestamp !== 0) &&
-                (result.dialog.botStr ?
+                </div>
+              )}
+              {(result.timestamp !== 0 && result.botId === activeBot.id) && (
+                result.dialog.botStr ?
                   (<div className="flex items-start">
                     <div className="w-8 h-8 rounded-full bg-top bg-cover bg-no-repeat" style={{ backgroundImage: `url(${activeBot.image1})` }}></div>
                     <div className='ml-2 max-w-[70%]'>
@@ -310,15 +321,14 @@ export default function ChatMiddle({ fold, setFold, activeBot, setActiveBot, cur
                       </div>
                     </div>
                   </div>)
-                )
-              }
+              )}
             </div>
           </div>
         </div>
         <div className="absolute left-0 bottom-0 w-full px-4 pb-4 bg-cover bg-bottom bg-no-repeat"
           style={{ backgroundImage: 'url(/assets/chatMiddleBg.png)' }}
         >
-          {inputShow ?
+          {inputShow && respondingBotId !== activeBot.id ?
             <div className='px-2 py-1 rounded-lg flex items-center space-x-1 bg-white'>
               <input
                 ref={inputRef}
@@ -356,7 +366,9 @@ export default function ChatMiddle({ fold, setFold, activeBot, setActiveBot, cur
               ></div>
             </div>
             :
-            <div className='w-full py-2 rounded-xl bg-white text-base text-center'>{activeBot.name} is responding...</div>
+            <div className='w-full py-2 rounded-xl bg-white text-base text-center'>
+              {respondingBotId === activeBot.id ? `${activeBot.name} is responding...` : ''}
+            </div>
           }
         </div>
       </div>

@@ -9,12 +9,42 @@ const priceMap = {
 }
 export default function Premium() {
   const [active, setActive] = useState(12)
+  const [loadingType, setLoadingType] = useState<1 | 3 | 12 | null>(null)
   const session = useSession()
+
   const handlePay = async (type: 1 | 3 | 12) => {
-    const res = await subscribe((session.data?.user as any)?.email, type * (priceMap[type]))
-    // console.log('subscribe', res)
-    window.open(res.checkout_url, '_blank')
+    setLoadingType(type)
+    try {
+      const res = await subscribe((session.data?.user as any)?.email, type * (priceMap[type]))
+      window.location.href = res.checkout_url
+    } catch (error) {
+      console.error('Payment error:', error)
+    } finally {
+      setLoadingType(null)
+    }
   }
+
+  const renderPayButton = (type: 1 | 3 | 12) => {
+    const isLoading = loadingType === type
+    return (
+      <div 
+        onClick={() => !loadingType && handlePay(type)} 
+        className="mt-6 w-full py-3 rounded-lg bg-[#F53276] flex items-center justify-center space-x-2 hover:cursor-pointer"
+      >
+        {isLoading ? (
+          <div className="w-6 h-6 border-t-2 border-white border-solid rounded-full animate-spin"></div>
+        ) : (
+          <>
+            <div className="w-6 h-4 bg-center bg-no-repeat bg-contain" style={{ backgroundImage: 'url(/assets/card.png)' }}></div>
+            <div className='text-white'>
+              Pay with Credit / Debit Card
+            </div>
+          </>
+        )}
+      </div>
+    )
+  }
+
   return (
     <>
       <div className="w-[100vw]">
@@ -25,12 +55,7 @@ export default function Premium() {
             <div onClick={() => setActive(12)} className="flex-1 aspect-[109/162] bg-center bg-contain bg-no-repeat" style={{ backgroundImage: active === 12 ? 'url(/h5Assets/twelveActive.png)' : 'url(/h5Assets/twelve.png)' }}></div>
             <div onClick={() => setActive(3)} className="flex-1 aspect-[109/162] bg-center bg-contain bg-no-repeat" style={{ backgroundImage: active === 3 ? 'url(/h5Assets/threeActive.png)' : 'url(/h5Assets/three.png)' }}></div>
           </div>
-          <div onClick={() => handlePay(active as 1 | 3 | 12)} className="mt-6 w-full py-3 rounded-lg bg-[#F53276] flex items-center justify-center space-x-2 hover:cursor-pointer">
-            <div className="w-6 h-4 bg-center bg-no-repeat bg-contain" style={{ backgroundImage: 'url(/assets/card.png)' }}></div>
-            <div className='text-white'>
-              Pay with Credit / Debit Card
-            </div>
-          </div>
+          {renderPayButton(active as 1 | 3 | 12)}
           <div className="mt-6 w-[62vw] aspect-[232/169] bg-center bg-no-repeat bg-contain" style={{ backgroundImage: 'url(/h5Assets/premiumDesc.png)' }}></div>
         </div>
       </div >

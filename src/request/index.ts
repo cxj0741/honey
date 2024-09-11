@@ -137,7 +137,7 @@ export async function uploadAvatar(file: File) {
 
 export async function uploadAvatarToCloud(formData: FormData) {
   console.log('formData', formData)
-  const res1 = await fetch('https://honeybun-obejcts.vercel.app/upload', {
+  const res1 = await fetch('https://ob.marsyoo.com/upload/', {
     method: 'POST',
     mode: 'cors',
     headers: {
@@ -147,7 +147,7 @@ export async function uploadAvatarToCloud(formData: FormData) {
   })
   const data1 = await res1.json()
   const res2 = await fetch(
-    `https://honeybun-obejcts.vercel.app/generate_presigned_url/?file_key=${
+    `https://ob.marsyoo.com/generate_presigned_url/?file_key=${
       data1.file_key
     }&expiration=${3 * 365 * 24 * 60 * 60}`,
     {

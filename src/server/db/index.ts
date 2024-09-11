@@ -12,13 +12,13 @@ const proConfig = {
 }
 
 const devConfig = {
-  host: 'localhost',
+  host: 'ep-round-king-a6u1v4c7.us-west-2.aws.neon.tech',
   port: 5432,
-  user: 'postgres',
-  password: '123456',
+  user: 'default',
+  password: 'irIh2csCg9Qe',
   // 两个数据库 测试环境和正式环境 honeydemo和honeybun
-  database: 'honeytest',
-  ssl: false,
+  database: 'verceldb',
+  ssl: true,
 }
 let config = proConfig
 // console.log('devConfig>>>>>', devConfig)
